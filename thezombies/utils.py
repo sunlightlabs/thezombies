@@ -14,9 +14,6 @@ def is_valid_json(text):
     obj = None
     try:
         obj = json.loads(text)
-    except ValueError:
-        u_text = str(text.encode(encoding="utf-8"))
-        obj = json.loads(u_text, encoding="utf-8")
-    except Exception as e:
+    except Exception:
         pass
     return obj is not None

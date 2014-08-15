@@ -1,6 +1,7 @@
 import requests
+import json
 
-from .utils import (is_valid_url, is_valid_json)
+from .utils import is_valid_url
 
 
 class Auditable(object):
@@ -9,7 +10,7 @@ class Auditable(object):
         self.instance = instance
 
     @property
-    def valid_url(self):
+    def url_is_valid(self):
         return is_valid_url(self.instance.url)
 
     def __getattr__(self, name):
@@ -26,8 +27,10 @@ class AuditableResponse(Auditable):
         super(AuditableResponse, self).__init__(instance)
         self._unicode_text = None
 
-    def is_valid_json(self):
-        return is_valid_json(self.instance.text)
+    @property
+    def json_is_valid(self):
+        obj = self.unicode_json()
+        return obj is not None
 
     @property
     def unicode_text(self):
@@ -35,11 +38,22 @@ class AuditableResponse(Auditable):
             self._unicode_text = requests.utils.get_unicode_from_response(self.instance)
         return self._unicode_text
 
-    def report(self):
+    def unicode_json(self):
+        json_obj = None
+        try:
+            json_obj = json.dumps(self.unicode_text)
+        except Exception:
+            pass
+        return json_obj
+
+    def audit(self):
         obj = {}
-        attributes = ('status_code', 'apparent_encoding', 'encoding', 'url')
+        attributes = ('status_code', 'apparent_encoding', 'encoding',
+                        'url', 'url_is_valid', 'json_is_valid')
         for a in attributes:
             obj[a] = getattr(self, a, None)
+        obj['content_type'] = self.instance.headers.get('Content-Type', 'Not specified')
+        obj['seconds_elapsed'] = self.instance.elapsed.total_seconds() if self.instance.elapsed else None
         return obj
 
 
