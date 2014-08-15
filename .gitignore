@@ -54,3 +54,6 @@ docs/_build/
 
 # tmp for tmp files
 tmp/*
+
+# ipython notebook stuff
+.ipynb_checkpoints/
