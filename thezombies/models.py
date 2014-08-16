@@ -5,6 +5,8 @@ from .utils import is_valid_url
 
 
 class Auditable(object):
+    audit_attributes = ('status_code', 'apparent_encoding', 'encoding', 'url', 'url_is_valid')
+
     def __init__(self, instance):
         super(Auditable, self).__init__()
         self.instance = instance
@@ -16,8 +18,19 @@ class Auditable(object):
     def __getattr__(self, name):
         return self.instance.__getattribute__(name)
 
+    def audit(self):
+        obj = {}
+        for a in Auditable.audit_attributes:
+            obj[a] = getattr(self, a, None)
+            obj['type'] = self.instance.__class__.__name__.lower()
+        return obj
+
+
 class AuditableRequest(Auditable):
     """docstring for AuditableRequest"""
+
+    def __init__(self, instance):
+        super(AuditableRequest, self).__init__(instance)
 
 
 class AuditableResponse(Auditable):
@@ -30,30 +43,32 @@ class AuditableResponse(Auditable):
     @property
     def json_is_valid(self):
         obj = self.unicode_json()
-        return obj is not None
+        return (obj is not None)
+
+    @property
+    def seconds_elapsed(self):
+        return self.instance.elapsed.total_seconds() if self.instance.elapsed else None
 
     @property
     def unicode_text(self):
         if not self._unicode_text:
-            self._unicode_text = requests.utils.get_unicode_from_response(self.instance)
+            self._unicode_text = self.instance.content.decode(self.instance.apparent_encoding)
         return self._unicode_text
 
     def unicode_json(self):
         json_obj = None
         try:
-            json_obj = json.dumps(self.unicode_text)
+            json_obj = json.loads(self.unicode_text)
         except Exception:
             pass
         return json_obj
 
     def audit(self):
-        obj = {}
-        attributes = ('status_code', 'apparent_encoding', 'encoding',
-                        'url', 'url_is_valid', 'json_is_valid')
-        for a in attributes:
-            obj[a] = getattr(self, a, None)
+        obj = super().audit()
+        obj['json_is_valid'] = getattr(self, 'json_is_valid', None)
         obj['content_type'] = self.instance.headers.get('Content-Type', 'Not specified')
-        obj['seconds_elapsed'] = self.instance.elapsed.total_seconds() if self.instance.elapsed else None
+        obj['seconds_elapsed'] = self.seconds_elapsed
+        obj['content_length'] = len(self.instance.content)
         return obj
 
 
