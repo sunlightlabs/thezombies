@@ -1,5 +1,7 @@
 import json
 
+from jsonschema import validate
+
 from rq.job import Job
 
 import requests
@@ -29,7 +31,16 @@ def parse_json(response):
 def parse_json_from_job(job_id):
     j = Job.fetch(job_id)
     if j.is_finished:
-        parse_json(j.result)
+        return parse_json(j.result)
 
-def validate_json_against_schema(json, schema):
+def validate_json_from_job(job_id, schema_obj):
+    j = Job.fetch(job_id)
+    if j.is_finished:
+        try:
+            validate(j.result, schema_obj)
+            return True
+        except Exception as e:
+            raise e
+
+def find_access_urls(json_obj):
     pass

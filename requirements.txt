@@ -2,3 +2,4 @@ chardet
 rq
 requests
 cachecontrol
+jsonschema
