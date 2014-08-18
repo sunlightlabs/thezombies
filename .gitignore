@@ -57,3 +57,6 @@ tmp/*
 
 # ipython notebook stuff
 .ipynb_checkpoints/
+
+# app
+.webcache/
