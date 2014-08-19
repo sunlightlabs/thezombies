@@ -1,3 +1,4 @@
+import os
 import json
 
 from jsonschema import validate
@@ -44,3 +45,18 @@ def validate_json_from_job(job_id, schema_obj):
 
 def find_access_urls(json_obj):
     pass
+
+def generate_report(report_info, report_dir):
+    for task in report_info.get('tasks'):
+        task_id = task.get('id')
+        if task_id:
+            j = Job.fetch(task_id)
+            task['is_finished'] = j.is_finished
+            task['is_failed'] = j.is_failed
+    agency_info = report_info.get('agency')
+    agency_name = agency_info.get('Agency').strip().lower()
+    report_name = os.path.join(os.path.abspath(report_dir), '{}.json'.format(agency_name))
+    json.dump(report_info, open(report_name, 'w'))
+    return report_info
+
+
