@@ -1,5 +1,10 @@
 chardet
+redis
 rq
 requests
+lockfile
 cachecontrol
 jsonschema
+Flask
+Flask-Sockets
+Gunicorn

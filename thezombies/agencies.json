@@ -1,0 +1,247 @@
+[
+    {
+        "data_listing_web_url": "http://www.usda.gov/wps/portal/usda/usdahome?navid=data",
+        "data_listing_json_url": "http://www.usda.gov/data.json",
+        "agency": "Department of Agriculture",
+        "digitalstrategy": "http://usda.gov/wps/portal/usda/usdahome?navid=DIGITALSTRATEGY",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.commerce.gov/data",
+        "data_listing_json_url": "http://www.commerce.gov/data.json",
+        "agency": "Department of Commerce",
+        "digitalstrategy": "http://www.commerce.gov/digitalstrategy",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://data.defense.gov",
+        "data_listing_json_url": "http://www.defense.gov/data.json",
+        "agency": "Department of Defense",
+        "digitalstrategy": "http://www.defense.gov/digitalstrategy/",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.ed.gov/edblogs/technology/education-data-initiative/",
+        "data_listing_json_url": "http://www2.ed.gov/data.json",
+        "agency": "Department of Education",
+        "digitalstrategy": "http://www.ed.gov/digitalstrategy",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://energy.gov/data/open-energy-data",
+        "data_listing_json_url": "http://energy.gov/sites/prod/files/2013/11/f5/public-data-listing_2013-11-26.json",
+        "agency": "Department of Energy",
+        "digitalstrategy": "http://energy.gov/data/articles/digital-strategy",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://hub.healthdata.gov/pod/data-catalog",
+        "data_listing_json_url": "http://hub.healthdata.gov/data.json",
+        "agency": "Department of Health and Human Services",
+        "digitalstrategy": "http://www.hhs.gov/digitalstrategy",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.dhs.gov/topic/data",
+        "data_listing_json_url": "http://www.dhs.gov/sites/default/files/publications/digital-strategy/data.json",
+        "agency": "Department of Homeland Security",
+        "digitalstrategy": "http://www.dhs.gov/dhs-digital-strategy",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://data.hud.gov/index.html",
+        "data_listing_json_url": "http://portal.hud.gov/hudportal/documents/huddoc?id=HUDPUBLICDATASET.JSON",
+        "agency": "Department of Housing and Urban Development",
+        "digitalstrategy": "http://portal.hud.gov/hudportal/HUD?src=/Digital_Strategy",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.justice.gov/data/",
+        "data_listing_json_url": "http://www.justice.gov/data.json",
+        "agency": "Department of Justice",
+        "digitalstrategy": "http://www.justice.gov/digitalstrategy/#s1-2",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.dol.gov/data",
+        "data_listing_json_url": "http://www.dol.gov/data.json",
+        "agency": "Department of Labor",
+        "digitalstrategy": "http://www.dol.gov/digitalstrategy.html",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.state.gov/data/",
+        "data_listing_json_url": "http://www.state.gov/data.json",
+        "agency": "Department of State",
+        "digitalstrategy": "http://www.state.gov/digitalstrategy/",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://interior.gov/data/index.cfm",
+        "data_listing_json_url": "http://interior.gov/data.json",
+        "agency": "Department of the Interior",
+        "digitalstrategy": "http://interior.gov//digitalstrategy/index.cfm",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.treasury.gov/resource-center/data-chart-center/digitalstrategy/Pages/data.aspx",
+        "data_listing_json_url": "http://www.treasury.gov/jsonfiles/data.json",
+        "agency": "Department of the Treasury",
+        "digitalstrategy": "http://www.treasury.gov/resource-center/data-chart-center/digitalstrategy/pages/default.aspx",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.dot.gov/data",
+        "data_listing_json_url": "http://www.dot.gov/sites/dot.dev/files/data/data.gov/data.json",
+        "agency": "Department of Transportation",
+        "digitalstrategy": "http://www.dot.gov/digitalstrategy",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://www.va.gov/data/",
+        "data_listing_json_url": "http://va.gov/data.json",
+        "agency": "Department of Veterans Affairs",
+        "digitalstrategy": "http://www.va.gov/digitalstrategy/",
+        "agency_type": "Cabinet"
+    },
+    {
+        "data_listing_web_url": "http://gsa.gov/portal/content/181591?utm_source=OCM&utm_medium=print-radio&utm_term=data&utm_campaign=shortcuts",
+        "data_listing_json_url": "http://gsa.gov/data.json",
+        "agency": "General Services Administration",
+        "digitalstrategy": "http://gsa.gov/portal/content/140871?utm_source=OCSIT&utm_medium=print-radio&utm_term=digitalstrategy&utm_campaign=shortcuts",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.epa.gov/data/",
+        "data_listing_json_url": "http://www2.epa.gov/sites/production/files/2013-11/dcat_public_v2.json",
+        "agency": "Environmental Protection Agency",
+        "digitalstrategy": "http://www.epa.gov/digitalstrategy/",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.usaid.gov/data",
+        "data_listing_json_url": "http://www.usaid.gov/data.json",
+        "agency": "USAID",
+        "digitalstrategy": "http://www.usaid.gov/digitalstrategy",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.ssa.gov/data/",
+        "data_listing_json_url": "http://www.ssa.gov/data.json",
+        "agency": "Social Security Administration",
+        "digitalstrategy": "http://ssa.gov/digitalstrategy/",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.sec.gov/data",
+        "data_listing_json_url": "http://www.sec.gov/data.json",
+        "agency": "Securities and Exchange Commission",
+        "digitalstrategy": "http://www.sec.gov/digitalstrategy",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.opm.gov/data/",
+        "data_listing_json_url": "http://www.opm.gov/data.json",
+        "agency": "Office of Personnel Management",
+        "digitalstrategy": "http://www.opm.gov/about-us/open-government/digital-government-strategy/",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.nrc.gov/data/",
+        "data_listing_json_url": "http://www.nrc.gov/data.json",
+        "agency": "Nuclear Regulatory Commission",
+        "digitalstrategy": "http://www.nrc.gov/public-involve/open/digital-government.html",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.ntsb.gov/data/",
+        "data_listing_json_url": "http://www.ntsb.gov/data.json",
+        "agency": "National Transportation Safety Board",
+        "digitalstrategy": "None",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.nsf.gov/data/",
+        "data_listing_json_url": "http://www.nsf.gov/data.json",
+        "agency": "National Science Foundation",
+        "digitalstrategy": "http://www.nsf.gov/digitalstrategy/",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.archives.gov/data/",
+        "data_listing_json_url": "http://www.archives.gov/data.json",
+        "agency": "National Archives",
+        "digitalstrategy": "http://www.archives.gov/digitalstrategy/",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.imls.gov/data/",
+        "data_listing_json_url": "http://www.imls.gov/data.json",
+        "agency": "Institute of Museum and Library Services",
+        "digitalstrategy": "http://www.imls.gov/digitalstrategy/",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "",
+        "data_listing_json_url": "http://www.consumerfinance.gov/data.json",
+        "agency": "Consumer Financial Protection Bureau ",
+        "digitalstrategy": "",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.nationalservice.gov/about/open-government-initiative/transparency/data-sources",
+        "data_listing_json_url": "",
+        "agency": "Corporation for National and Community Service",
+        "digitalstrategy": "",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.fcc.gov/data",
+        "data_listing_json_url": "",
+        "agency": "Federal Communications Commission",
+        "digitalstrategy": "http://www.fcc.gov/digitalstrategy",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.fhfa.gov/datatools/downloads",
+        "data_listing_json_url": "http://www.fhfa.gov/data.json",
+        "agency": "Federal Housing Finance Agency",
+        "digitalstrategy": "",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://data.mcc.gov/",
+        "data_listing_json_url": "http://data.mcc.gov/raw/data.json",
+        "agency": "Millenium Challenge Corporation",
+        "digitalstrategy": "http://www.mcc.gov/pages/activities/activity/digital-strategy",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://data.nasa.gov/",
+        "data_listing_json_url": "http://data.nasa.gov/data.json",
+        "agency": "National Aeronautics and Space Administration",
+        "digitalstrategy": "http://www.nasa.gov/agency/digitalstrategy/index.html",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://rrb.gov/data/",
+        "data_listing_json_url": "http://rrb.gov/data.json",
+        "agency": "Railroad Retirement Board",
+        "digitalstrategy": "",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.sba.gov/about-sba/sba_performance/sba_data_store",
+        "data_listing_json_url": "http://www.sba.gov/tools/sites/default/files/data.json",
+        "agency": "Small Business Administration",
+        "digitalstrategy": "http://www.sba.gov/about-sba/sba_performance/open_government/digital_sba",
+        "agency_type": "Independent"
+    },
+    {
+        "data_listing_web_url": "http://www.peacecorps.gov/about/open/data/",
+        "data_listing_json_url": "",
+        "agency": "Peace Corps",
+        "digitalstrategy": "",
+        "agency_type": "Independent"
+    }
+]

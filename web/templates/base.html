@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Federal Agency Open Data Audit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bower_components/foundation/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bower_components/foundation/css/foundation.css') }}">
+</head>
+<body>
+    <div class="fixed">
+        <nav class="top-bar" data-topbar>
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">Agency Open Data Audit</a></h1>
+                </li>
+            </ul>
+            {% if agencies %}
+            <section class="top-bar-section">
+                <ul class="left">
+                    <li class="has-dropdown">
+                        <a href="#">Agencies</a>
+                        <ul class="dropdown">
+                            {% for item in agencies %}
+                            <li><a href="#{{ item.agency|replace(' ', '-')|lower() }}">{{ item.agency }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            {% endif %}
+        </nav>
+    </div>
+    <div class="container">{% block content %}
+        {% for item in agencies %}
+        <div id="{{ item.agency|replace(' ', '-')|lower() }}" class="row">
+            <h2>{{ item.agency }}</h2>
+            <ul>
+                <li>Data listing: {{ item.data_listing_web_url|default('None/Unknown', true)|urlize(80, true) }}</li>
+
+            </ul>
+        </div>
+        {% endfor %}
+{% endblock %}
+    </div>{% block js %}
+    <script data-main="static/js/main" src="{{ url_for('static', filename='bower_components/requirejs-bower/require.js') }}"></script>
+{% endblock %}
+</body>
+</html>
