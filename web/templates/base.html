@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Federal Agency Open Data Audit</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='bower_components/foundation/css/normalize.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bower_components/foundation/css/foundation.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+    {% assets "all_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
 </head>
 <body>
     <div class="fixed">
@@ -21,8 +21,8 @@
     <div class="container">
         <div class="row">{% block content %}{% endblock %}
         </div>
-    </div>{% block js %}
-    {# // <script data-main="/static/js/main" src="{{ url_for('static', filename='bower_components/requirejs-bower/require.js') }}"></script> #}
+    </div>
+{% block extrajs %}
 {% assets "js_all" %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}

@@ -13,3 +13,10 @@
     <h3>Audit</h3>
     <p><a href="#" class="button">Run Audit</a></p>
 {% endblock %}
+
+{% block extrajs %}
+    {{ super() }}
+    {% assets "js_audit" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+{% endblock %}
