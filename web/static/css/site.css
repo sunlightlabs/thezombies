@@ -1,0 +1,14 @@
+/*
+    CSS 4ever
+*/
+
+.container {
+    margin-top: 20px;
+}
+
+table thead tr {
+    border-bottom: 1px solid #e6e6e6;
+}
+
+table tr.even, table tr.alt, table tr:nth-of-type(even) {
+background: #f2f2f2; }

@@ -1,5 +1,5 @@
 require.config({
-    baseUrl: 'static/bower_components',
+    baseUrl: '/static/bower_components',
     paths: {
         jquery: 'jquery/dist/jquery.min',
         foundation: 'foundation/js/foundation.min',

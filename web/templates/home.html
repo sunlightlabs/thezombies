@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% macro titledurl(url, length=255, nofollow=False) %}
+    <a href="{{ url }}"{% if nofollow %} rel="nofollow"{% endif %} title="{{ url }}">{{ url|truncate(length, True) }}</a>
+{% endmacro %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>Agency</th>
+                <th>Type</th>
+                <th>Data listing (for humans)</th>
+                <th>Data listing (for computers)</th>
+            </tr>
+        </thead>
+        <tbody>{% for item in agencies %}
+            <tr id="{{ item.slug }}">
+                <td><a href="{{ url_for('agency', slug=item.slug) }}">{{ item.agency }}</a></td>
+                <td>{{ item.agency_type }}</td>
+                <td>
+                {{ titledurl(item.data_listing_web_url, 30, true) }}
+                </td>
+                <td>
+                {{ titledurl(item.data_listing_json_url, 30, true) }}
+                </td>
+            </tr>{% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

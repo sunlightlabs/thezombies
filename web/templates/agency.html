@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{ agency.agency }} <small>{{ agency.agency_type }} Agency</small></h2>
+    <dl>
+        <dt>Data Listing (for humans)</dt>
+        <dd>{{ agency.data_listing_web_url|urlize(nofollow=True)|default('None/Unknown', true) }}</dd>
+        <dt>Data Listing (for computers)</dt>
+        <dd>{{ agency.data_listing_json_url|urlize(nofollow=True)|default('None/Unknown', true) }}</dd>
+        <dt>Digital Strategy</dt>
+        <dd>{{ digitalstrategy|urlize(nofollow=True)|default('None/Unknown', true) }}</dd>
+    </dl>
+    <h3>Audit</h3>
+    <p><a href="#" class="button">Run Audit</a></p>
+{% endblock %}
