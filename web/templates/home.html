@@ -16,13 +16,13 @@
         </thead>
         <tbody>{% for item in agencies %}
             <tr id="{{ item.slug }}">
-                <td><a href="{{ url_for('agency', slug=item.slug) }}">{{ item.agency }}</a></td>
+                <td><a href="{{ url_for('agency', slug=item.slug) }}">{{ item.name }}</a></td>
                 <td>{{ item.agency_type }}</td>
                 <td>
-                {{ titledurl(item.data_listing_web_url, 30, true) }}
+                {{ titledurl(item.data_page_url, 30, true) }}
                 </td>
                 <td>
-                {{ titledurl(item.data_listing_json_url, 30, true) }}
+                {{ titledurl(item.data_json_url, 30, true) }}
                 </td>
             </tr>{% endfor %}
         </tbody>

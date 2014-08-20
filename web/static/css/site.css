@@ -12,3 +12,7 @@ table thead tr {
 
 table tr.even, table tr.alt, table tr:nth-of-type(even) {
 background: #f2f2f2; }
+
+.top-bar .name h1 a {
+    color: #80e7a0;
+}

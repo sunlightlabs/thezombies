@@ -7,10 +7,6 @@ from thezombies.models import agencies
 
 app = Flask(__name__)
 
-@app.template_filter()
-def slugify(value):
-    return str(value).replace(' ', '-').lower()
-
 sockets = Sockets(app)
 
 @app.route('/')
@@ -19,7 +15,7 @@ def main():
 
 @app.route('/agency/<slug>')
 def agency(slug):
-    matches = list(filter(lambda x: slugify(x.get('agency')) == slug, agencies))
+    matches = list(filter(lambda x: getattr(x, 'slug', None) == slug, agencies))
     if len(matches) == 1:
         return render_template('agency.html', agency=matches[0])
     else:
