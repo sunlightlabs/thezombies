@@ -1,13 +1,29 @@
 #!/usr/bin/env python
 
+import os.path
+
 from flask import Flask, render_template
 from flask_sockets import Sockets
+from flask.ext.assets import Environment, Bundle
 
 from thezombies.models import agencies
 
 app = Flask(__name__)
-
 sockets = Sockets(app)
+assets = Environment(app)
+
+FOUNDATION_ASSETS_ROOT = 'bower_components/foundation/'
+FOUNDATION_VENDOR_DIR = os.path.join(FOUNDATION_ASSETS_ROOT, 'js/vendor/')
+
+js = Bundle('bower_components/reconnectingWebsocket/reconnecting-websocket.js',
+            os.path.join(FOUNDATION_VENDOR_DIR, 'jquery.js'),
+            os.path.join(FOUNDATION_VENDOR_DIR, 'jquery.cookie.js'),
+            os.path.join(FOUNDATION_VENDOR_DIR, 'placeholder.js'),
+            os.path.join(FOUNDATION_VENDOR_DIR, 'fastclick.js'),
+            os.path.join(FOUNDATION_ASSETS_ROOT, 'js/foundation.min.js'),
+            'js/main.js',
+            filters='uglifyjs', output='js/bundle.min.js')
+assets.register('js_all', js)
 
 @app.route('/')
 def main():

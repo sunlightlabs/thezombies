@@ -7,4 +7,5 @@ cachecontrol
 jsonschema
 Flask
 Flask-Sockets
+Flask-Assets
 Gunicorn

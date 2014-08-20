@@ -22,7 +22,10 @@
         <div class="row">{% block content %}{% endblock %}
         </div>
     </div>{% block js %}
-    <script data-main="/static/js/main" src="{{ url_for('static', filename='bower_components/requirejs-bower/require.js') }}"></script>
+    {# // <script data-main="/static/js/main" src="{{ url_for('static', filename='bower_components/requirejs-bower/require.js') }}"></script> #}
+{% assets "js_all" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 {% endblock %}
 </body>
 </html>
