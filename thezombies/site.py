@@ -4,18 +4,20 @@ import os
 import json
 
 from flask import Flask, render_template
-from flask_sockets import Sockets
+from flask.ext.socketio import SocketIO, emit, send
 
 from thezombies.models import db, Agency
 from thezombies.staticfiles import assets
+from thezombies.tasks import q, fetch_url, parse_json_from_job
 
 app = Flask(__name__)
-sockets = Sockets(app)
 assets.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 db.init_app(app)
 app.config['DEBUG'] = os.environ.get('DEBUG') == 'True'
+socketio = SocketIO(app)
 
+SOCKET_NAMESPACE = '/com'
 
 @app.route('/')
 def main():
@@ -31,10 +33,10 @@ def agency(slug):
 def page_not_found(error):
     return render_template('404.html'), 404
 
-@sockets.route('/com')
-def echo_socket(ws):
-    while True:
-        message = ws.receive()
-        message_obj = json.loads(message)
-        json_msg = json.dumps(message_obj)
-        ws.send(json_msg)
+@socketio.on('connect', namespace=SOCKET_NAMESPACE)
+def test_connect():
+    send('Connection established with server')
+
+@socketio.on('message', namespace=SOCKET_NAMESPACE)
+def handle_message(message):
+    print('received message: ' + message)

@@ -6,7 +6,7 @@ lockfile
 cachecontrol
 jsonschema
 Flask
-Flask-Sockets
+Flask-SocketIO
 Flask-Assets
 Flask-SQLAlchemy
 Flask-Script

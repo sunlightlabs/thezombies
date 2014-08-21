@@ -17,7 +17,7 @@ js_all = Bundle(os.path.join(FOUNDATION_VENDOR_DIR, 'jquery.js'),
             filters='uglifyjs', output='js/gen/bundle.min.js')
 assets.register('js_all', js_all)
 
-js_audit = Bundle('bower_components/reconnectingWebsocket/reconnecting-websocket.js',
+js_audit = Bundle('bower_components/socket.io-client/dist/socket.io.min.js',
             'js/audit.js',
             filters='uglifyjs', output='js/gen/audit.min.js')
 assets.register('js_audit', js_audit)

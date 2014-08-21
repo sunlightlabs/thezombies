@@ -1,0 +1,22 @@
+{
+  "name": "thezombies",
+  "version": "0.1.0",
+  "homepage": "https://github.com/sunlightlabs/thezombies",
+  "authors": [
+    "Daniel Cloud <dcloud@sunlightfoundation.com>"
+  ],
+  "description": "Just keeping a list of web deps here.",
+  "license": null,
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation": "~5.3.3",
+    "socket.io-client": "0.9.17"
+  }
+}

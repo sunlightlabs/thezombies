@@ -1,27 +1,22 @@
-(function($, ReconnectingWebSocket, window, document) {
-    "use strict";
-    var console = window.console || {log: function(msg) {return msg;}};
-    var loc = "ws://" + document.location.host + "/com";
-    var connection = new ReconnectingWebSocket(loc);
-    connection.onopen = function() {
-        console.log("WebSocket connection created");
-    };
-    connection.onmessage = function(event) {
-        var data = JSON.parse(event.data);
-        console.log(data);
-    };
-    connection.onclose = function() {
-        console.log("Connection closed");
-    };
+'use strict';
+var console = window.console || {log: function(msg) {return msg;}};
+var namespace = '/com';
+var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+socket.on('connect', function() {
+    socket.emit('my event', {data: 'I\'m connected!'});
+});
+socket.on('message', function(data) {
+    console.log(data);
+});
 
-    $(document).ready(function($) {
-        $("a.audit.button").on("click", null, function(event) {
-            var id = $(this).data('id');
-            var message = {
-                id: id,
-                audits: 'all'
-            }
-            connection.send(JSON.stringify(message));
-        });
+jQuery(document).ready(function($) {
+    jQuery('a.audit.button').on('click', null, function() {
+        var id = $(this).data('id');
+        var message = {
+            id: id,
+            audits: 'all'
+        };
+         console.log('Send a message');
+        socket.emit(JSON.stringify(message));
     });
-}(jQuery, ReconnectingWebSocket, this, this.document));
+});
