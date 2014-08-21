@@ -8,4 +8,6 @@ jsonschema
 Flask
 Flask-Sockets
 Flask-Assets
+Flask-SQLAlchemy
+Flask-Script
 Gunicorn

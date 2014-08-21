@@ -58,6 +58,10 @@ tmp/*
 # ipython notebook stuff
 .ipynb_checkpoints/
 
+# env
+.env
+settings.cfg
+
 # app
 .webcache/
 .webassets-cache/

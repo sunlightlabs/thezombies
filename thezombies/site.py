@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 import json
 
 from flask import Flask, render_template
 from flask_sockets import Sockets
 
-from thezombies.models import agencies
+from thezombies.models import db, Agency
 from thezombies.staticfiles import assets
 
 app = Flask(__name__)
 sockets = Sockets(app)
 assets.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
+db.init_app(app)
+app.config['DEBUG'] = os.environ.get('DEBUG') == 'True'
 
 
 @app.route('/')

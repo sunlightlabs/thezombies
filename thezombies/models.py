@@ -1,6 +1,11 @@
 import json
 import os.path
 
+from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects import postgresql
+
+db = SQLAlchemy()
+
 try:
     from urllib.parse import urljoin
 except ImportError:
@@ -8,26 +13,24 @@ except ImportError:
 
 from .utils import slugify
 
-FILE_DIR = os.path.abspath(os.path.dirname(__file__))
-AGENCY_JSON_PATH = os.path.join(FILE_DIR, 'fixtures/agencies.json')
 
-agencies_json = json.load(open(AGENCY_JSON_PATH, 'r'))
-
-class Agency(object):
+class Agency(db.Model):
     """Describes an agency"""
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    agency_type = db.Column(db.String(40))
+    slug = db.Column(db.String(120), unique=True)
+    url = db.Column(db.String(255), unique=True)
+
     def __init__(self, raw):
         super(Agency, self).__init__()
-        self.name = raw.get('agency', None)
+        self.name = raw.get('agency', None).strip()
         self.agency_type = raw.get('agency_type', None)
         self.url = raw.get('url', None)
-        self._slug = slugify(self.name)
+        self.slug = slugify(self.name)
         self._data_json_url = urljoin(self.url, 'data.json')
         self._data_page_url = urljoin(self.url, 'data')
         self._digitalstrategy_json_url = urljoin(self.url, 'digitalstrategy.json')
-
-    @property
-    def slug(self):
-        return self._slug
 
     @property
     def data_json_url(self):
@@ -41,6 +44,13 @@ class Agency(object):
     def digitalstrategy_json_url(self):
         return self._digitalstrategy_json_url
 
+    def __repr__(self):
+        return '<Agency %r>' % self.name
 
 
-agencies = [Agency(x) for x in agencies_json]
+def load_agencies_from_json():
+    file_dir = os.path.abspath(os.path.dirname(__file__))
+    agency_json_path = os.path.join(file_dir, 'fixtures/agencies.json')
+    agencies_json = json.load(open(agency_json_path, 'r'))
+
+    return [Agency(x) for x in agencies_json]
