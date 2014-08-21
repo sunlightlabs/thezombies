@@ -10,13 +10,14 @@ socket.on('message', function(data) {
 });
 
 jQuery(document).ready(function($) {
-    jQuery('a.audit.button').on('click', null, function() {
+    jQuery('a.audit.button').on('click', null, function(event) {
+        event.preventDefault();
         var id = $(this).data('id');
-        var message = {
+        var data = {
             id: id,
             audits: 'all'
         };
-         console.log('Send a message');
-        socket.emit(JSON.stringify(message));
+        console.log('Send a message');
+        socket.emit('message', data);
     });
 });

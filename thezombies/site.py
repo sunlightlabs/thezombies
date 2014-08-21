@@ -39,4 +39,5 @@ def test_connect():
 
 @socketio.on('message', namespace=SOCKET_NAMESPACE)
 def handle_message(message):
-    print('received message: ' + message)
+    print('received message: ' + repr(message))
+    send('Message received')
