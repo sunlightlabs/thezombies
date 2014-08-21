@@ -11,7 +11,7 @@
         <dd>{{ agency.digitalstrategy_json_url|urlize(nofollow=True)|default('None/Unknown', true) }}</dd>
     </dl>
     <h3>Audit</h3>
-    <p><a href="#" class="button">Run Audit</a></p>
+    <p><a href="#" class="audit button" data-id="{{ agency.slug }}">Run Audit</a></p>
 {% endblock %}
 
 {% block extrajs %}

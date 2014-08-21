@@ -10,20 +10,12 @@
             <tr>
                 <th>Agency</th>
                 <th>Type</th>
-                <th>Data listing (for humans)</th>
-                <th>Data listing (for computers)</th>
             </tr>
         </thead>
         <tbody>{% for item in agencies %}
             <tr id="{{ item.slug }}">
                 <td><a href="{{ url_for('agency', slug=item.slug) }}">{{ item.name }}</a></td>
                 <td>{{ item.agency_type }}</td>
-                <td>
-                {{ titledurl(item.data_page_url, 30, true) }}
-                </td>
-                <td>
-                {{ titledurl(item.data_json_url, 30, true) }}
-                </td>
             </tr>{% endfor %}
         </tbody>
     </table>

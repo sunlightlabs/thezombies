@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os.path
+import json
 
 from flask import Flask, render_template
 from flask_sockets import Sockets
@@ -19,6 +20,7 @@ js_all = Bundle(os.path.join(FOUNDATION_VENDOR_DIR, 'jquery.js'),
             os.path.join(FOUNDATION_VENDOR_DIR, 'jquery.cookie.js'),
             os.path.join(FOUNDATION_VENDOR_DIR, 'placeholder.js'),
             os.path.join(FOUNDATION_VENDOR_DIR, 'fastclick.js'),
+            os.path.join(FOUNDATION_VENDOR_DIR, 'modernizr.js'),
             os.path.join(FOUNDATION_ASSETS_ROOT, 'js/foundation.min.js'),
             'js/main.js',
             filters='uglifyjs', output='js/bundle.min.js')
@@ -51,8 +53,10 @@ def agency(slug):
 def page_not_found(error):
     return render_template('404.html'), 404
 
-@sockets.route('/echo')
+@sockets.route('/com')
 def echo_socket(ws):
     while True:
         message = ws.receive()
-        ws.send(message)
+        message_obj = json.loads(message)
+        json_msg = json.dumps(message_obj)
+        ws.send(json_msg)
