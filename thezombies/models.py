@@ -28,21 +28,18 @@ class Agency(db.Model):
         self.agency_type = raw.get('agency_type', None)
         self.url = raw.get('url', None)
         self.slug = slugify(self.name)
-        self._data_json_url = urljoin(self.url, 'data.json')
-        self._data_page_url = urljoin(self.url, 'data')
-        self._digitalstrategy_json_url = urljoin(self.url, 'digitalstrategy.json')
 
     @property
     def data_json_url(self):
-        return self._data_json_url
+        return urljoin(self.url, 'data.json')
 
     @property
     def data_page_url(self):
-        return self._data_page_url
+        return urljoin(self.url, 'data')
 
     @property
     def digitalstrategy_json_url(self):
-        return self._digitalstrategy_json_url
+        return urljoin(self.url, 'digitalstrategy.json')
 
     def __repr__(self):
         return '<Agency %r>' % self.name

@@ -19,15 +19,13 @@ app.config['DEBUG'] = os.environ.get('DEBUG') == 'True'
 
 @app.route('/')
 def main():
+    agencies = Agency.query.all()
     return render_template('home.html', agencies=agencies)
 
 @app.route('/agency/<slug>')
 def agency(slug):
-    matches = list(filter(lambda x: getattr(x, 'slug', None) == slug, agencies))
-    if len(matches) == 1:
-        return render_template('agency.html', agency=matches[0])
-    else:
-        abort(404)
+    agency = Agency.query.filter_by(slug=slug).first_or_404()
+    return render_template('agency.html', agency=agency)
 
 @app.errorhandler(404)
 def page_not_found(error):
