@@ -12,14 +12,17 @@ manager = Manager(app)
 
 @manager.command
 def createtables():
+    "Creates database tables"
     db.create_all()
 
 @manager.command
 def droptables():
+    "Drops database tables"
     db.drop_all()
 
 @manager.command
 def loaddata():
+    "Loads some default data into the database"
     objects = load_agencies_from_json()
     db.session.add_all(objects)
     db.session.commit()

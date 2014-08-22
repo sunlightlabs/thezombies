@@ -15,7 +15,7 @@
         "slug": "department-of-defense",
         "agency": "Department of Defense",
         "agency_type": "Cabinet",
-        "url": "http://data.defense.gov"
+        "url": "http://www.defense.gov"
     },
     {
         "slug": "department-of-education",
@@ -33,7 +33,7 @@
         "slug": "department-of-health-and-human-services",
         "agency": "Department of Health and Human Services",
         "agency_type": "Cabinet",
-        "url": "http://hub.healthdata.gov"
+        "url": "http://www.hhs.gov"
     },
     {
         "slug": "department-of-homeland-security",
@@ -45,7 +45,7 @@
         "slug": "department-of-housing-and-urban-development",
         "agency": "Department of Housing and Urban Development",
         "agency_type": "Cabinet",
-        "url": "http://data.hud.gov"
+        "url": "http://www.hud.gov"
     },
     {
         "slug": "department-of-justice",
@@ -183,13 +183,13 @@
         "slug": "millenium-challenge-corporation",
         "agency": "Millenium Challenge Corporation",
         "agency_type": "Independent",
-        "url": "http://data.mcc.gov"
+        "url": "http://www.mcc.gov"
     },
     {
         "slug": "national-aeronautics-and-space-administration",
         "agency": "National Aeronautics and Space Administration",
         "agency_type": "Independent",
-        "url": "http://data.nasa.gov"
+        "url": "http://www.nasa.gov"
     },
     {
         "slug": "railroad-retirement-board",
