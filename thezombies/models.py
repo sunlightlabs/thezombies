@@ -3,6 +3,8 @@ import os.path
 from datetime import datetime
 import pytz
 
+from requests import Request, Response
+
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.dialects.postgresql import HSTORE
@@ -10,9 +12,9 @@ from sqlalchemy.dialects.postgresql import HSTORE
 db = SQLAlchemy()
 
 try:
-    from urllib.parse import urljoin
+    from urllib.parse import urljoin, urlparse
 except ImportError:
-    from urlparse import urljoin
+    from urlparse import urljoin, urlparse
 
 from .utils import slugify
 
@@ -29,8 +31,12 @@ class Report(db.Model):
     def __init__(self, url=None):
         super(Report, self).__init__()
         self.created_at = datetime.now(pytz.utc)
+        self.data = MutableDict()
         if url:
             self.url = url
+
+    def __repr__(self):
+        return '<Report {0}>'.format(self.url)
 
 
 class Agency(db.Model):
@@ -62,7 +68,43 @@ class Agency(db.Model):
         return urljoin(self.url, 'digitalstrategy.json')
 
     def __repr__(self):
-        return '<Agency %r>' % self.name
+        return '<Agency {0}>'.format(self.name)
+
+class ReportableResponse(object):
+    """docstring for ReportableResponse"""
+    def __init__(self, obj):
+        super(ReportableResponse, self).__init__()
+        if isinstance(obj, Response):
+            self.response = obj
+        else:
+            raise TypeError('Object must be a requests.Response instance')
+
+    def generate_report(self):
+
+        def build_extra_data(resp):
+            base_attrs = ('encoding', 'apparent_encoding', 'status_code')
+            data_obj = {}
+            data_obj['headers'] = dict(resp.headers)
+            for attr in base_attrs:
+                value = getattr(resp, attr, None)
+                data_obj[attr] = value
+            url_history = [] if (len(resp.history)) else None
+            for r in resp.history:
+                url_history.append(r.url)
+            data_obj['history.urls'] = url_history
+            return data_obj
+
+        report = Report()
+        report.url = self.response.url
+        urlparts = urlparse(report.url)
+        like_qs = '%{0}%'.format(urlparts.netloc)
+        agency = Agency.query.filter(Agency.url.like(like_qs)).first()
+        if agency:
+            report.agency = agency
+        data = build_extra_data(self.response)
+        report.data.update(data)
+
+        return report
 
 
 def load_agencies_from_json():
