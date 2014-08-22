@@ -3,13 +3,16 @@ import json
 
 from jsonschema import validate
 
+from rq import Connection, Queue
 from rq.job import Job
+from redis import Redis
 
 import requests
 from cachecontrol import CacheControl
-from cachecontrol.caches import FileCache
 
-session = CacheControl(requests.Session(), cache=FileCache('.webcache'), cache_etags=False)
+session = CacheControl(requests.Session(), cache_etags=False)
+q = Queue(connection=Redis())
+
 
 def fetch_url(url):
     resp = session.get(url)

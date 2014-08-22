@@ -1,8 +1,11 @@
 import json
 import os.path
+from datetime import datetime
+import pytz
 
 from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy.dialects import postgresql
+from sqlalchemy.ext.mutable import MutableDict
+from sqlalchemy.dialects.postgresql import HSTORE
 
 db = SQLAlchemy()
 
@@ -14,13 +17,30 @@ except ImportError:
 from .utils import slugify
 
 
+class Report(db.Model):
+    """A Report on agency, usually concerning data at a url"""
+    id = db.Column(db.Integer, primary_key=True)
+    agency_id = db.Column(db.Integer, db.ForeignKey('agency.id'))
+    created_at = db.Column(db.DateTime(timezone=True))
+    url = db.Column(db.String(200))
+    message = db.Column(db.Text)
+    data = db.Column(MutableDict.as_mutable(HSTORE))
+
+    def __init__(self, url=None):
+        super(Report, self).__init__()
+        self.created_at = datetime.now(pytz.utc)
+        if url:
+            self.url = url
+
+
 class Agency(db.Model):
     """Describes an agency"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     agency_type = db.Column(db.String(40))
     slug = db.Column(db.String(120), unique=True)
-    url = db.Column(db.String(255), unique=True)
+    url = db.Column(db.String(200), unique=True)
+    reports = db.relationship('Report', backref='agency', lazy='dynamic')
 
     def __init__(self, raw):
         super(Agency, self).__init__()

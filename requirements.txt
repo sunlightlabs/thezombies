@@ -8,6 +8,7 @@ jsonschema
 Flask
 Flask-SocketIO
 Flask-Assets
+psycopg2
 Flask-SQLAlchemy
 Flask-Script
 Gunicorn
