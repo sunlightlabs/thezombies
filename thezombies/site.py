@@ -8,7 +8,7 @@ from flask.ext.socketio import SocketIO, emit, send
 
 from thezombies.models import db, Agency
 from thezombies.staticfiles import assets
-from thezombies.tasks import q, fetch_url, parse_json_from_job
+from thezombies.tasks import fetch_url, parse_json_from_job
 
 app = Flask(__name__)
 assets.init_app(app)
