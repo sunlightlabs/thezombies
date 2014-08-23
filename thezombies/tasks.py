@@ -34,3 +34,24 @@ def parse_json(response):
 def find_access_urls(json_obj):
     pass
 
+@celery.task
+def generate_report_for_response(resp):
+    reporter = ReportableResponse(resp)
+    report = reporter.generate_report()
+    return report
+
+@celery.task
+def generate_report(result):
+    if isinstance(result, requests.Response):
+        report = generate_report_for_response(result)
+        return report
+    return None
+
+    return report_info
+
+@celery.task
+def save_report_for_result(db, result):
+    report = generate_report(result)
+    if report:
+        db.session.add(report)
+        db.session.commit()
