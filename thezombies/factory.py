@@ -2,13 +2,13 @@ import os
 
 from celery import Celery
 from flask import Flask
-# from flask.ext.socketio import SocketIO
+from flask.ext.socketio import SocketIO
 from flask.ext.sqlalchemy import SQLAlchemy
 from thezombies.staticfiles import assets
 from flask.ext.script import Manager
 
 db = SQLAlchemy()
-# socketio = SocketIO()
+socketio = SocketIO()
 
 
 def create_app(package_name, settings_override=None):
@@ -21,6 +21,7 @@ def create_app(package_name, settings_override=None):
 
     db.init_app(app)
     assets.init_app(app)
+    socketio.init_app(app)
 
     return app
 
