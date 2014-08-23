@@ -31,22 +31,6 @@ def parse_json(response):
     return obj
 
 @celery.task
-def parse_json_from_job(job_id):
-    j = Job.fetch(job_id)
-    if j.is_finished:
-        return parse_json(j.result)
-
-@celery.task
-def validate_json_from_job(job_id, schema_obj):
-    j = Job.fetch(job_id)
-    if j.is_finished:
-        try:
-            validate(j.result, schema_obj)
-            return True
-        except Exception as e:
-            raise e
-
-@celery.task
 def find_access_urls(json_obj):
     pass
 
