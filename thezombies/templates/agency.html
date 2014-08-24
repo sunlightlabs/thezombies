@@ -1,23 +1,24 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% load staticfiles %}{% load compress %}
 
 {% block content %}
     <h2>{{ agency.name }} <small>{{ agency.agency_type }} Agency</small></h2>
-    <h3 class="small">Website: {{ agency.url|urlize(nofollow=True) }}</h3>
+    <h3 class="small">Website: {{ agency.url|urlize }}</h3>
     <dl>
         <dt>Data Listing (for humans)</dt>
-        <dd>{{ agency.data_page_url|urlize(nofollow=True)|default('None/Unknown', true) }}</dd>
+        <dd>{{ agency.data_page_url|urlize|default:'None/Unknown' }}</dd>
         <dt>Data Listing (for computers)</dt>
-        <dd>{{ agency.data_json_url|urlize(nofollow=True)|default('None/Unknown', true) }}</dd>
+        <dd>{{ agency.data_json_url|urlize|default:'None/Unknown' }}</dd>
         <dt>Digital Strategy</dt>
-        <dd>{{ agency.digitalstrategy_json_url|urlize(nofollow=True)|default('None/Unknown', true) }}</dd>
+        <dd>{{ agency.digitalstrategy_json_url|urlize|default:'None/Unknown' }}</dd>
     </dl>
     <h3>Audit</h3>
     <p><a href="#" class="audit button" data-id="{{ agency.slug }}">Run Audit</a></p>
 {% endblock %}
 
 {% block extrajs %}
-    {{ super() }}
-    {% assets "js_audit" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+    {{ block.super }}
+    {% compress js %}
+    <script type="text/javascript" src="/static/bower_components/socket.io-client/dist/socket.io.min.js"></script>
+    <script type="text/javascript" src="/static/js/audit.js"></script>
+    {% endcompress %}
 {% endblock %}

@@ -1,59 +1,40 @@
 import json
-import os.path
-from datetime import datetime
-import pytz
 
 from requests import Request, Response
 
-from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy.ext.mutable import MutableDict
-from sqlalchemy.dialects.postgresql import HSTORE
-
-db = SQLAlchemy()
+from django.db import models
+from django_hstore import hstore
+from django.utils.text import slugify
 
 try:
     from urllib.parse import urljoin, urlparse
 except ImportError:
     from urlparse import urljoin, urlparse
 
-from .utils import slugify
 
-
-class Report(db.Model):
+class Report(models.Model):
     """A Report on agency, usually concerning data at a url"""
-    id = db.Column(db.Integer, primary_key=True)
-    agency_id = db.Column(db.Integer, db.ForeignKey('agency.id'))
-    created_at = db.Column(db.DateTime(timezone=True))
-    url = db.Column(db.String(200))
-    message = db.Column(db.Text)
-    data = db.Column(MutableDict.as_mutable(HSTORE))
-
-    def __init__(self, url=None):
-        super(Report, self).__init__()
-        self.created_at = datetime.now(pytz.utc)
-        self.data = MutableDict()
-        if url:
-            self.url = url
+    agency = models.ForeignKey('Agency')
+    created_at = models.DateTimeField(auto_now_add=True)
+    url = models.CharField(max_length=200)
+    message = models.TextField(blank=True)
+    data = hstore.DictionaryField()
 
     def __repr__(self):
         return '<Report {0}>'.format(self.url)
 
 
-class Agency(db.Model):
+class Agency(models.Model):
     """Describes an agency"""
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True)
-    agency_type = db.Column(db.String(40))
-    slug = db.Column(db.String(120), unique=True)
-    url = db.Column(db.String(200), unique=True)
-    reports = db.relationship('Report', backref='agency', lazy='dynamic')
+    name = models.CharField(max_length=100, unique=True)
+    agency_type = models.CharField(max_length=40)
+    slug = models.SlugField(max_length=120, unique=True)
+    url = models.CharField(max_length=200, unique=True)
 
-    def __init__(self, raw):
-        super(Agency, self).__init__()
-        self.name = raw.get('agency', None).strip()
-        self.agency_type = raw.get('agency_type', None)
-        self.url = raw.get('url', None)
-        self.slug = slugify(self.name)
+    def save(self, *args, **kwargs):
+        if self.slug is None or self.slug == '':
+            self.slug = slugify(self.name)
+        super(Blog, self).save(*args, **kwargs) # Call the "real" save() method.
 
     @property
     def data_json_url(self):

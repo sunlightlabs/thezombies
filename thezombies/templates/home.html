@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{% macro titledurl(url, length=255, nofollow=False) %}
-    <a href="{{ url }}"{% if nofollow %} rel="nofollow"{% endif %} title="{{ url }}">{{ url|truncate(length, True) }}</a>
-{% endmacro %}
-
 {% block content %}
     <table>
         <thead>
@@ -14,7 +10,7 @@
         </thead>
         <tbody>{% for item in agencies %}
             <tr id="{{ item.slug }}">
-                <td><a href="{{ url_for('agency', slug=item.slug) }}">{{ item.name }}</a></td>
+                <td><a href="{% url 'thezombies.views.agency' item.slug %}">{{ item.name }}</a></td>
                 <td>{{ item.agency_type }}</td>
             </tr>{% endfor %}
         </tbody>

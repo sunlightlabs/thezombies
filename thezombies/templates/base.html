@@ -1,12 +1,14 @@
-<!DOCTYPE html>
+<!DOCTYPE html>{% load staticfiles %}{% load compress %}
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Federal Agency Open Data Audit</title>
-    {% assets "all_css" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
+    {% compress css %}
+    <link rel="stylesheet" href="/static/bower_components/foundation/css/normalize.css">
+    <link rel="stylesheet" href="/static/bower_components/foundation/css/foundation.css">
+    <link rel="stylesheet" href="/static/css/site.css">
+    {% endcompress %}
 </head>
 <body>
     <div class="fixed">
@@ -23,9 +25,14 @@
         </div>
     </div>
 {% block extrajs %}
-{% assets "js_all" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+{% compress js %}
+    <script src="/static/bower_components/foundation/js/vendor/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/bower_components/foundation/js/vendor/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/bower_components/foundation/js/vendor/placeholder.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/bower_components/foundation/js/vendor/fastclick.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/bower_components/foundation/js/vendor/modernizr.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/bower_components/foundation/js/foundation.min.js" type="text/javascript" charset="utf-8"></script>
+{% endcompress %}
 {% endblock %}
 </body>
 </html>

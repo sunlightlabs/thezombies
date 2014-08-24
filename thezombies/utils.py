@@ -17,6 +17,3 @@ def is_valid_json(text):
     except Exception:
         pass
     return obj is not None
-
-def slugify(value):
-    return str(value).replace(' ', '-').lower()
