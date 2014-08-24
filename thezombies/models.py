@@ -106,10 +106,3 @@ class ReportableResponse(object):
 
         return report
 
-
-def load_agencies_from_json():
-    file_dir = os.path.abspath(os.path.dirname(__file__))
-    agency_json_path = os.path.join(file_dir, 'fixtures/agencies.json')
-    agencies_json = json.load(open(agency_json_path, 'r'))
-
-    return [Agency(x) for x in agencies_json]

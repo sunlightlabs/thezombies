@@ -10,5 +10,6 @@ Flask-SocketIO
 Flask-Assets
 psycopg2
 Flask-SQLAlchemy
+Flask-Migrate
 Flask-Script
 Gunicorn

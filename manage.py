@@ -1,31 +1,26 @@
 #!/usr/bin/env python
 
-from flask.ext.script import Manager
-# from flask.ext.assets import ManageAssets
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.script import Manager, Shell
+from flask.ext.migrate import Migrate, MigrateCommand
 
-from thezombies.site import app
-from thezombies.models import load_agencies_from_json
+from thezombies.factory import create_app
+from thezombies import models
+from thezombies.models import db
 from thezombies.staticfiles import assets
 
+app = create_app(__name__)
 manager = Manager(app)
+migrate = Migrate(app, db)
+
+@manager.shell
+def make_shell_context():
+    return dict(app=app, db=db, models=models)
+
+manager.add_command("shell", Shell(make_context=make_shell_context))
+manager.add_command('db', MigrateCommand)
 # manager.add_command("assets", ManageAssets(assets))
 
-# @manager.command
-# def createtables():
-#     "Creates database tables"
-#     db.create_all()
-
-# @manager.command
-# def droptables():
-#     "Drops database tables"
-#     db.drop_all()
-
-# @manager.command
-# def loaddata():
-#     "Loads some default data into the database"
-#     objects = load_agencies_from_json()
-#     db.session.add_all(objects)
-#     db.session.commit()
 
 if __name__ == "__main__":
     manager.run()
