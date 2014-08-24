@@ -55,21 +55,6 @@ ROOT_URLCONF = 'thezombies.urls'
 
 WSGI_APPLICATION = 'thezombies.wsgi.application'
 
-# Staticfiles
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    # other finders..
-    'compressor.finders.CompressorFinder',
-)
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
-
-STATIC_ROOT = os.getenv('STATIC_ROOT', None)
-
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
@@ -98,3 +83,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
+STATIC_ROOT = os.getenv('STATIC_ROOT', None)
+
+# Celery
+
+BROKER_URL = os.getenv('BROKER_URL', "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', "redis://localhost:6379/1")
+CELERYD_TASK_TIME_LIMIT = 300
+

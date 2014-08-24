@@ -1,10 +1,10 @@
 redis
 Gunicorn
-celery
+'celery[gevent,redis]'
 requests
+cachecontrol
 jsonschema
 psycopg2
 https://www.djangoproject.com/download/1.7c3/tarball/#egg=Django
 django-hstore
 django_compressor
-gunicorn

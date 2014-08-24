@@ -1,26 +1,23 @@
+from __future__ import absolute_import
 import json
 
 from jsonschema import validate
 import requests
 from cachecontrol import CacheControl
-from flask.ext.sqlalchemy import SQLAlchemy
+from celery import shared_task
 from celery.utils.log import get_task_logger
 
-from thezombies.factory import create_celery_app
 from thezombies.models import ReportableResponse
-
-db = SQLAlchemy()
-celery = create_celery_app()
 
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
 
-@celery.task
+@shared_task
 def fetch_url(url):
     resp = session.get(url)
     return resp
 
-@celery.task
+@shared_task
 def parse_json(response):
     obj = None
     if response is None:
@@ -35,11 +32,11 @@ def parse_json(response):
             raise e
     return obj
 
-@celery.task
+@shared_task
 def find_access_urls(json_obj):
     pass
 
-@celery.task
+@shared_task
 def generate_report_for_response(args):
     logger.info("Got this as an arg {}".format(repr(args)))
     logger.info("It has type {}".format(type(args)))
@@ -50,7 +47,7 @@ def generate_report_for_response(args):
     report = reporter.generate_report()
     return report
 
-@celery.task
+@shared_task
 def save_report_for_response(args):
     logger.info("Got this as an arg {}".format(repr(args)))
     logger.info("It has type {}".format(type(args)))
@@ -61,8 +58,7 @@ def save_report_for_response(args):
     try:
         report = generate_report_for_response(obj)
         try:
-            db.session.add(report)
-            db.session.commit()
+            report.save()
         except Exception as e:
             return e
     except Exception as e:
