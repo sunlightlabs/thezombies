@@ -16,12 +16,16 @@ class Report(models.Model):
     """A Report on agency, usually concerning data at a url"""
     agency = models.ForeignKey('Agency')
     created_at = models.DateTimeField(auto_now_add=True)
-    url = models.CharField(max_length=200)
+    url = models.URLField(max_length=200)
     message = models.TextField(blank=True)
     data = hstore.DictionaryField()
+    objects = hstore.HStoreManager()
 
     def __repr__(self):
-        return '<Report {0}>'.format(self.url)
+        return '<Report: {0}>'.format(self.url)
+
+    def __str__(self):
+        return self.__repr__()
 
 
 class Agency(models.Model):
@@ -29,7 +33,12 @@ class Agency(models.Model):
     name = models.CharField(max_length=100, unique=True)
     agency_type = models.CharField(max_length=40)
     slug = models.SlugField(max_length=120, unique=True)
-    url = models.CharField(max_length=200, unique=True)
+    url = models.URLField(max_length=200, unique=True)
+
+    class Meta:
+        verbose_name_plural = "agencies"
+        ordering = ('agency_type', 'name')
+
 
     def save(self, *args, **kwargs):
         if self.slug is None or self.slug == '':
@@ -49,7 +58,11 @@ class Agency(models.Model):
         return urljoin(self.url, 'digitalstrategy.json')
 
     def __repr__(self):
-        return '<Agency {0}>'.format(self.name)
+        return '<Agency: {0}>'.format(self.name)
+
+    def __str__(self):
+        return self.__repr__()
+
 
 class ReportableResponse(object):
     """docstring for ReportableResponse"""
@@ -78,12 +91,11 @@ class ReportableResponse(object):
         report = Report()
         report.url = self.response.url
         urlparts = urlparse(report.url)
-        like_qs = '%{0}%'.format(urlparts.netloc)
-        agency = Agency.query.filter(Agency.url.like(like_qs)).first()
+        agency = Agency.objects.get(url__contains=urlparts.netloc)
         if agency:
             report.agency = agency
         data = build_extra_data(self.response)
-        report.data.update(data)
+        report.data = data
 
         return report
 

@@ -7,4 +7,5 @@ jsonschema
 psycopg2
 https://www.djangoproject.com/download/1.7c3/tarball/#egg=Django
 django-hstore
-django_compressor
+django-compressor
+whitenoise
