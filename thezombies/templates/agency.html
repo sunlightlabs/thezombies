@@ -4,16 +4,18 @@
     <dl>
         <dt>Website</dt>
         <dd>{{ agency.url|urlize }}</dd>
-        <dt>Data Listing (for humans)</dt>
-        <dd>{{ agency.data_page_url|urlize|default:'None/Unknown' }}</dd>
-        <dt>Data Listing (for computers)</dt>
-        <dd>{{ agency.data_json_url|urlize|default:'None/Unknown' }}</dd>
-        <dt>Digital Strategy</dt>
-        <dd>{{ agency.digitalstrategy_json_url|urlize|default:'None/Unknown' }}</dd>
     </dl>
-    {% for report in agency.reports.all %}
+    {% regroup agency.reports.all by url as url_list %}
+    {% for report_url in url_list %}
     <section>
-        <h3>Report on {{ report.url }}</h3>
+        <h3>Reports on
+        {% if report_url.grouper == agency.data_json_url %}
+        Data Catalog
+        {% elif report_url.grouper == agency.digitalstrategy_json_url %}
+        Digital Strategy
+        {% endif %}
+        <small>{{ report_url.grouper|urlize }}</small>
+        </h3>
         <table>
             <thead>
                 <tr>
@@ -28,6 +30,7 @@
                 </tr>
             </thead>
             <tbody>
+            {% for report in report_url.list %}
                 <tr>
                     <td>{{ report.created_at|localtime }}</td>
                     <td>{{ report.responses.earliest.requested_url }}</td>
@@ -38,6 +41,7 @@
                     <td>{{ report.responses.earliest.content_type|default:'Unknown' }}</td>
                     <td>{{ report.responses.earliest.content_valid|yesno:"Yes,No,Unknown" }}</td>
                 </tr>
+            {% endfor %}
             </tbody>
         </table>
     </section>

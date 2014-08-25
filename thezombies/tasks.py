@@ -5,12 +5,12 @@ import os
 from jsonschema import validate, ValidationError
 import requests
 from cachecontrol import CacheControl
-from celery import shared_task, chord, chain
+from celery import shared_task, chord, chain, group
 from celery.utils.log import get_task_logger
 
 from django.conf import settings
 import requests
-from thezombies.models import ReportOnResponse, RequestsResponse
+from thezombies.models import ReportOnResponse, RequestsResponse, Agency
 
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
@@ -65,7 +65,14 @@ def parse_json_from_response(response):
     return jsondata
 
 @shared_task
-def validate_json_catalog(jsondata, response, report):
+def parse_json_from_response_with_report(args_tuple):
+    report, response = args_tuple
+    jsondata = parse_json_from_response(response)
+    return (jsondata, report, response)
+
+@shared_task
+def validate_json_catalog(args_tuple):
+    jsondata, report, response = args_tuple
     is_valid = False
     if catalog_schema and jsondata:
         try:
@@ -75,9 +82,21 @@ def validate_json_catalog(jsondata, response, report):
             is_valid =  False
     else:
         raise IOError('Unable to load json schema')
-    report.info['is_valid_json'] = is_valid
     report.content_valid = True
+    if not report.info:
+        report.info = {}
+    report.info['is_valid_json'] = is_valid
     report.save()
     return is_valid
 
 
+@shared_task
+def crawl_json_catalog_urls():
+    agencies = Agency.objects.all()
+    groupchain = group([chain(
+                    fetch_url.s(agency.data_json_url),
+                    save_report_for_response.s(),
+                    parse_json_from_response_with_report.s(),
+                    validate_json_catalog.s()
+                ) for agency in agencies])
+    return groupchain()
