@@ -24,6 +24,7 @@
                     <th>Reported encoding</th>
                     <th>Apparent encoding</th>
                     <th>Reported Content Type</th>
+                    <th>Content is valid</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,6 +36,7 @@
                     <td>{{ report.responses.earliest.encoding|default:'None' }}</td>
                     <td>{{ report.responses.earliest.apparent_encoding|default:'Unknown' }}</td>
                     <td>{{ report.responses.earliest.content_type|default:'Unknown' }}</td>
+                    <td>{{ report.responses.earliest.content_valid|yesno:"Yes,No,Unknown" }}</td>
                 </tr>
             </tbody>
         </table>

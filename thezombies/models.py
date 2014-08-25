@@ -20,6 +20,9 @@ class Report(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField(blank=True)
     url = models.URLField(blank=True, null=True)
+    info = hstore.DictionaryField(blank=True, null=True)
+
+    objects = hstore.HStoreManager()
 
     def __repr__(self):
         return '<Report: {0}>'.format(self.url if self.url else self.id)

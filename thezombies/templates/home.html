@@ -6,12 +6,14 @@
             <tr>
                 <th>Agency</th>
                 <th>Type</th>
+                <th>Last Report</th>
             </tr>
         </thead>
         <tbody>{% for item in agencies %}
             <tr id="{{ item.slug }}">
                 <td><a href="{% url 'thezombies.views.agency' item.slug %}">{{ item.name }}</a></td>
                 <td>{{ item.agency_type }}</td>
+                <td>{{ item.reports.last.created_at }}</td>
             </tr>{% endfor %}
         </tbody>
     </table>

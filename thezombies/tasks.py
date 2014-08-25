@@ -1,36 +1,27 @@
 from __future__ import absolute_import
 import json
+import os
 
-from jsonschema import validate
+from jsonschema import validate, ValidationError
 import requests
 from cachecontrol import CacheControl
-from celery import shared_task, chord
+from celery import shared_task, chord, chain
 from celery.utils.log import get_task_logger
 
-from thezombies.models import ReportOnResponse
+from django.conf import settings
+import requests
+from thezombies.models import ReportOnResponse, RequestsResponse
 
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
+
+SCHEMA_PATH = getattr(settings, 'DATA_CATALOG_SCHEMA_PATH', None)
+catalog_schema = json.load(open(SCHEMA_PATH, 'r')) if SCHEMA_PATH else None
 
 @shared_task
 def fetch_url(url):
     resp = session.get(url)
     return resp
-
-@shared_task
-def parse_json(response):
-    obj = None
-    if response is None:
-        raise Exception('Empty response')
-    try:
-        obj = response.json()
-    except Exception as e:
-        content_str = response.content.decode(response.apparent_encoding)
-        try:
-            obj = json.loads(content_str)
-        except Exception as e:
-            raise e
-    return obj
 
 @shared_task
 def find_access_urls(json_obj):
@@ -54,5 +45,39 @@ def save_report_for_response(args):
 
 @shared_task
 def report_on_url(url):
-    return fetch_url.apply_async((url,), link=save_report_for_response.s())
+    return chain(fetch_url.s(url), save_report_for_response.s())()
+
+@shared_task
+def parse_json_from_response(response):
+    jsondata = None
+    if response is None:
+        raise Exception('No response given')
+    is_requests_response = isinstance(response, requests.Response)
+    content = response.content if is_requests_response else response.content.read()
+    try:
+        jsondata = response.json()
+    except Exception as e:
+        content_str = content.decode(response.apparent_encoding, 'replace')
+        try:
+            jsondata = json.loads(content_str)
+        except Exception as e:
+            raise e
+    return jsondata
+
+@shared_task
+def validate_json_catalog(jsondata, response, report):
+    is_valid = False
+    if catalog_schema and jsondata:
+        try:
+            validate(jsondata, catalog_schema)
+            is_valid = True
+        except ValidationError as e:
+            is_valid =  False
+    else:
+        raise IOError('Unable to load json schema')
+    report.info['is_valid_json'] = is_valid
+    report.content_valid = True
+    report.save()
+    return is_valid
+
 

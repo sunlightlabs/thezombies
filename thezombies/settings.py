@@ -113,3 +113,8 @@ BROKER_URL = os.getenv('BROKER_URL', "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', "redis://localhost:6379/1")
 CELERYD_TASK_TIME_LIMIT = 300
 
+# JSON Schema
+
+DATA_CATALOG_SCHEMA_PATH = os.path.join(BASE_DIR, 'schema/1_0_final/catalog.json')
+
+
