@@ -1,9 +1,9 @@
-{% extends "base.html" %}{% load staticfiles %}{% load compress %}
-
+{% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}
 {% block content %}
     <h2>{{ agency.name }} <small>{{ agency.agency_type }} Agency</small></h2>
-    <h3 class="small">Website: {{ agency.url|urlize }}</h3>
     <dl>
+        <dt>Website</dt>
+        <dd>{{ agency.url|urlize }}</dd>
         <dt>Data Listing (for humans)</dt>
         <dd>{{ agency.data_page_url|urlize|default:'None/Unknown' }}</dd>
         <dt>Data Listing (for computers)</dt>
@@ -11,14 +11,41 @@
         <dt>Digital Strategy</dt>
         <dd>{{ agency.digitalstrategy_json_url|urlize|default:'None/Unknown' }}</dd>
     </dl>
-    <h3>Audit</h3>
-    <p><a href="#" class="audit button" data-id="{{ agency.slug }}">Run Audit</a></p>
+    {% for report in agency.reports.all %}
+    <section>
+        <h3>Report on {{ report.url }}</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Report date</th>
+                    <th>Requested url</th>
+                    <th>Final url</th>
+                    <th>HTTP status</th>
+                    <th>Reported encoding</th>
+                    <th>Apparent encoding</th>
+                    <th>Reported Content Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.created_at|localtime }}</td>
+                    <td>{{ report.responses.earliest.requested_url }}</td>
+                    <td>{{ report.responses.earliest.url }}</td>
+                    <td>{{ report.responses.earliest.status_code }}</td>
+                    <td>{{ report.responses.earliest.encoding|default:'None' }}</td>
+                    <td>{{ report.responses.earliest.apparent_encoding|default:'Unknown' }}</td>
+                    <td>{{ report.responses.earliest.content_type|default:'Unknown' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    {% endfor %}
 {% endblock %}
 
 {% block extrajs %}
     {{ block.super }}
-    {% compress js %}
-    <script type="text/javascript" src="/static/bower_components/socket.io-client/dist/socket.io.min.js"></script>
-    <script type="text/javascript" src="/static/js/audit.js"></script>
-    {% endcompress %}
+    {# {% compress js %} #}
+    {# // <script type="text/javascript" src="/static/bower_components/socket.io-client/dist/socket.io.min.js"></script> #}
+    {# // <script type="text/javascript" src="/static/js/audit.js"></script> #}
+    {# {% endcompress %} #}
 {% endblock %}

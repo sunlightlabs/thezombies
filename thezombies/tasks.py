@@ -4,10 +4,10 @@ import json
 from jsonschema import validate
 import requests
 from cachecontrol import CacheControl
-from celery import shared_task
+from celery import shared_task, chord
 from celery.utils.log import get_task_logger
 
-from thezombies.models import ReportableResponse
+from thezombies.models import ReportOnResponse
 
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
@@ -37,32 +37,22 @@ def find_access_urls(json_obj):
     pass
 
 @shared_task
-def generate_report_for_response(args):
-    logger.info("Got this as an arg {}".format(repr(args)))
-    logger.info("It has type {}".format(type(args)))
+def save_report_for_response(args):
+    """Returns a tuple containing a Report and a RequestsResponse object"""
     obj = args
     if isinstance(args, list) and len(args) == 1:
         obj = args[0]
-    reporter = ReportableResponse(obj)
-    report = reporter.generate_report()
-    return report
+    reporter = ReportOnResponse(obj)
+    report, response = reporter.generate()
+    try:
+        report.save()
+        report.responses.add(response)
+        response.save()
+        return (report, response)
+    except Exception, e:
+        raise e
 
 @shared_task
-def save_report_for_response(args):
-    logger.info("Got this as an arg {}".format(repr(args)))
-    logger.info("It has type {}".format(type(args)))
-    obj = args
-    if isinstance(args, list) and len(args) == 1:
-        obj = args[0]
-    report = None
-    try:
-        report = generate_report_for_response(obj)
-        try:
-            report.save()
-        except Exception as e:
-            return e
-    except Exception as e:
-        return e
-    return report
-
+def report_on_url(url):
+    return fetch_url.apply_async((url,), link=save_report_for_response.s())
 

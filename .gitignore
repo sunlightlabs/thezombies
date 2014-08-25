@@ -67,4 +67,5 @@ settings.cfg
 .webassets-cache/
 gen/
 staticfiles/
+media/
 !*.sql
