@@ -8,10 +8,10 @@ class AgencyAdmin(admin.ModelAdmin):
 
 class ResponseInline(admin.TabularInline):
     model = RequestsResponse
-    exclude = ('headers',)
+    exclude = ('headers', 'content')
     readonly_fields = ('url', 'requested_url', 'content',
         'encoding', 'apparent_encoding', 'status_code', 'reason',
-        'content_type', 'content_length', 'content_valid')
+        'content_type', 'content_length')
 
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'url', 'agency', 'created_at')

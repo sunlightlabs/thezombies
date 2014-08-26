@@ -4,7 +4,6 @@ import uuid
 from requests import Request, Response
 
 from django.db import models
-from django.core.files.base import ContentFile
 from django_hstore import hstore
 from django.utils.text import slugify
 
@@ -12,7 +11,6 @@ try:
     from urllib.parse import urljoin, urlparse
 except ImportError:
     from urlparse import urljoin, urlparse
-
 
 class Report(models.Model):
     """A Report on agency, usually concerning data at a url"""
@@ -32,6 +30,30 @@ class Report(models.Model):
 
     class Meta:
         get_latest_by = 'created_at'
+        ordering =  ('-created_at',)
+
+class RequestsResponseManager(hstore.HStoreManager):
+
+    def create_from_response(self, resp):
+        """
+        Create a RequestsResponse object from a requests.Response
+        """
+        if isinstance(resp, Response):
+            obj = self.create(url=resp.url, status_code=resp.status_code,
+                encoding=resp.encoding, reason=resp.reason)
+            obj.requested_url= resp.history[0].url if len(resp.history) > 0 else resp.request.url
+            obj.headers = dict(resp.headers)
+            # TODO: defer detection of apparent encoding. A task, perhaps
+            obj.apparent_encoding = resp.apparent_encoding
+            content_length = resp.headers.get('content-length', None)
+            if content_length:
+                obj.content_length = int(content_length)
+            if obj.content_length and obj.content_length > 0:
+                obj.content = resp.content
+            obj.content_type = resp.headers.get('content-type', None)
+            return obj
+        else:
+            raise TypeError('create_from_response expects a requests.Response object')
 
 class RequestsResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -39,36 +61,15 @@ class RequestsResponse(models.Model):
     requested_url = models.URLField()
     encoding = models.CharField(max_length=40, blank=True, null=True)
     apparent_encoding = models.CharField(max_length=40, blank=True, null=True)
-    content = models.FileField(upload_to='responses', blank=True, null=True)
+    content = models.BinaryField(blank=True, null=True)
     content_type = models.CharField(max_length=40, blank=True, null=True)
     content_length = models.PositiveIntegerField(blank=True, null=True)
     status_code = models.IntegerField(max_length=3)
     reason = models.CharField(max_length=80, help_text='Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".')
     headers = hstore.DictionaryField()
-    content_valid = models.NullBooleanField()
     report = models.ForeignKey('Report', related_name='responses', null=True, blank=True)
 
-    objects = hstore.HStoreManager()
-
-    @classmethod
-    def create_from_response(cls, resp):
-        if isinstance(resp, Response):
-            obj = cls(url=resp.url, status_code=resp.status_code,
-                encoding=resp.encoding, reason=resp.reason)
-            obj.requested_url= resp.history[0].url if len(resp.history) > 0 else resp.request.url
-            obj.headers = dict(resp.headers)
-            obj.apparent_encoding = resp.apparent_encoding
-            content_length = resp.headers.get('content-length', None)
-            if content_length:
-                obj.content_length = int(content_length)
-            if obj.content_length and obj.content_length > 0:
-                file_id = uuid.uuid4().hex
-                content_file = ContentFile(resp.content)
-                obj.content.save(file_id, content_file)
-            obj.content_type = resp.headers.get('content-type', None)
-            return obj
-        else:
-            raise TypeError('create_from_response expects a requests.Response object')
+    objects = RequestsResponseManager()
 
     class Meta:
         verbose_name = 'Requests Response'
@@ -116,25 +117,3 @@ class Agency(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class ReportOnResponse(object):
-    """docstring for ReportOnResponse"""
-    def __init__(self, obj):
-        super(ReportOnResponse, self).__init__()
-        if isinstance(obj, Response):
-            self.response = obj
-        else:
-            raise TypeError('Object must be a requests.Response instance')
-
-    def generate(self):
-        """Returns a tuple containing a Report and a RequestsResponse object"""
-        response_obj = RequestsResponse.create_from_response(self.response)
-        report = Report(url=response_obj.requested_url)
-        urlparts = urlparse(response_obj.requested_url)
-        agency = Agency.objects.get(url__contains=urlparts.netloc)
-        if agency:
-            report.agency = agency
-
-        return (report, response_obj)
-

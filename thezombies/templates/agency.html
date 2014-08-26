@@ -26,7 +26,8 @@
                     <th>Reported encoding</th>
                     <th>Apparent encoding</th>
                     <th>Reported Content Type</th>
-                    <th>Content is valid</th>
+                    <th>Content is valid json</th>
+                    <th>Content is valid data catalog</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +40,8 @@
                     <td>{{ report.responses.earliest.encoding|default:'None' }}</td>
                     <td>{{ report.responses.earliest.apparent_encoding|default:'Unknown' }}</td>
                     <td>{{ report.responses.earliest.content_type|default:'Unknown' }}</td>
-                    <td>{{ report.responses.earliest.content_valid|yesno:"Yes,No,Unknown" }}</td>
+                    <td>{{ report.info.is_valid_json|default:'Unknown'|title }}</td>
+                    <td>{{ report.info.is_valid_data_catalog|default:'Unknown'|title }}</td>
                 </tr>
             {% endfor %}
             </tbody>
