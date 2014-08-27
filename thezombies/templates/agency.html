@@ -23,13 +23,10 @@
                     {# <th>Requested url</th> #}
                     <th>Final url</th>
                     <th>HTTP status</th>
-                    <th>Reported encoding</th>
-                    <th>Apparent encoding</th>
-                    <th>Reported Content Type</th>
                     <th>Parsable as JSON</th>
                     <th>JSON has errors</th>
-                    <th>Content is valid data catalog</th>
-                    <th>Errors</th>
+                    <th>Is valid data catalog</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -37,15 +34,12 @@
                 <tr>
                     <td>{{ report.created_at|localtime }}</td>
                     {# <td>{{ report.responses.earliest.requested_url }}</td> #}
-                    <td>{{ report.responses.earliest.url }}</td>
+                    <td>{{ report.responses.earliest.url|urlizetrunc:26 }}</td>
                     <td>{{ report.responses.earliest.status_code }}</td>
-                    <td>{{ report.responses.earliest.encoding|default:'None' }}</td>
-                    <td>{{ report.responses.earliest.apparent_encoding|default:'Unknown' }}</td>
-                    <td>{{ report.responses.earliest.content_type|default:'Unknown' }}</td>
-                    <td><span class="label {{ report.info.json_parsed|truthy:'success,alert' }}">{{ report.info.json_parsed|truthy|title }}</span></td>
-                    <td><span class="label {{ report.info.json_errors|truthy:'alert,success' }}">{{ report.info.json_errors|truthy|title }}</span></td>
-                    <td><span class="label {{ report.info.is_valid_data_catalog|truthy:'success,alert' }}">{{ report.info.is_valid_data_catalog|truthy|title }}</span></td>
-                    <td>{{ report.errors|join:"|" }}</td>
+                    <td><span class="label {{ report.info.json_parsed|truthy:'success,alert,secondary' }}">{{ report.info.json_parsed|truthy:"yes,no,unknown"|title }}</span></td>
+                    <td><span class="label {{ report.info.json_errors|truthy:'alert,success,secondary' }}">{{ report.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td>
+                    <td><span class="label {{ report.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ report.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td>
+                    <td>View full report</td>
                 </tr>
             {% endfor %}
             </tbody>
