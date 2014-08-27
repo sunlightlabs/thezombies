@@ -10,5 +10,6 @@ psycopg2
 pytz
 https://www.djangoproject.com/download/1.7c3/tarball/#egg=Django
 django-hstore
+djorm-pgarray
 django-compressor
 whitenoise

@@ -50,9 +50,6 @@ class ResultDict(dict):
     def errors(self):
         return self._errors
 
-    def errors_seqdict(self):
-        return { str(n): value for n,value in enumerate(self.errors) }
-
 @shared_task
 def fetch_url(url):
     resp = error = None
@@ -90,7 +87,7 @@ def report_for_agency_url(agency_id, url):
             report = Report.objects.create(agency_id=agency_id, url=response.requested_url, info={})
         else:
             report = Report.objects.create(agency_id=agency_id, info={})
-        report.errors.update(returnval.errors_seqdict())
+        report.errors.extend(returnval.errors)
         report.save()
         returnval['report_id'] = report.id
         if response:
@@ -143,17 +140,17 @@ def parse_json_from_response_with_report(taskarg):
     response = RequestsResponse.objects.get(id=response_id)
     response_content = str(response.content)
     encoding = response.encoding if response.encoding else response.apparent_encoding
-    result_dict = parse_json({'content':response_content, 'encoding':response.apparent_encoding})
+    result_dict = parse_json({'content':response_content, 'encoding':encoding})
     jsondata = result_dict.get('json', None)
     parse_errors = result_dict.get('parse_errors', False)
     if jsondata:
          returnval['json'] = jsondata
     report_info['json_errors'] = True if parse_errors else False
     report_info['json_parsed'] = True if jsondata else False
-    errors = result_dict.get('errors', [])
-    for err in errors:
-        returnval.add_error(err)
-    returnval['report_info'] = report_info
+    errors = result_dict.get('errors', None)
+    if errors:
+        returnval.errors.extend(errors)
+    returnval.get('report_info', {}).update(report_info)
     return returnval
 
 @shared_task
@@ -163,9 +160,7 @@ def validate_json_catalog(taskarg):
     """
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
-    jsondata = taskarg.get('jsondata', None)
-    report_id = taskarg.get('report_id', None)
-    response_id = taskarg.get('response_id', None)
+    jsondata = taskarg.get('json', None)
     report_info = taskarg.get('report_info', {})
     returnval = ResultDict(taskarg)
     is_valid = False
@@ -177,7 +172,7 @@ def validate_json_catalog(taskarg):
             is_valid = False
             returnval.add_error(e)
     report_info['is_valid_data_catalog'] = is_valid
-    returnval['report_info'] = report_info
+    returnval.get('report_info', {}).update(report_info)
     return returnval
 
 @shared_task
@@ -197,7 +192,7 @@ def save_report_info(taskarg):
                     report.info = {}
                 report.info.update(report_info)
                 if len(returnval.errors):
-                    report.errors.update(returnval.errors_seqdict())
+                    report.errors.extend(returnval.errors)
                 report.save()
                 returnval['saved'] = True
         except DatabaseError as e:

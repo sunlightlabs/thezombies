@@ -16,6 +16,7 @@ class ReportAdmin(admin.ModelAdmin):
     list_display = ('agency', 'url', 'created_at')
     list_filter = ('agency',)
     ordering =  ('-created_at',)
+    readonly_fields = ('info', 'errors',)
     inlines = (ResponseInline,)
 
     def display_name(self, obj):

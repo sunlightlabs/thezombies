@@ -2,6 +2,7 @@ from requests import Request, Response
 
 from django.db import models
 from django_hstore import hstore
+from djorm_pgarray.fields import TextArrayField
 from django.utils.text import slugify
 
 try:
@@ -16,7 +17,7 @@ class Report(models.Model):
     message = models.TextField(blank=True)
     url = models.URLField(blank=True, null=True)
     info = hstore.DictionaryField(blank=True, null=True, default={})
-    errors = hstore.DictionaryField(blank=True, null=True, default={})
+    errors = TextArrayField(blank=True, null=True, default=[])
 
     objects = hstore.HStoreManager()
 
