@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}
+{% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
 {% block content %}
     <h2>{{ agency.name }} <small>{{ agency.agency_type }} Agency</small></h2>
     <dl>
@@ -20,7 +20,7 @@
             <thead>
                 <tr>
                     <th>Report date</th>
-                    <th>Requested url</th>
+                    {# <th>Requested url</th> #}
                     <th>Final url</th>
                     <th>HTTP status</th>
                     <th>Reported encoding</th>
@@ -29,20 +29,23 @@
                     <th>Parsable as JSON</th>
                     <th>JSON has errors</th>
                     <th>Content is valid data catalog</th>
+                    <th>Errors</th>
                 </tr>
             </thead>
             <tbody>
             {% for report in report_url.list %}
                 <tr>
                     <td>{{ report.created_at|localtime }}</td>
-                    <td>{{ report.responses.earliest.requested_url }}</td>
+                    {# <td>{{ report.responses.earliest.requested_url }}</td> #}
                     <td>{{ report.responses.earliest.url }}</td>
                     <td>{{ report.responses.earliest.status_code }}</td>
                     <td>{{ report.responses.earliest.encoding|default:'None' }}</td>
                     <td>{{ report.responses.earliest.apparent_encoding|default:'Unknown' }}</td>
                     <td>{{ report.responses.earliest.content_type|default:'Unknown' }}</td>
-                    <td>{{ report.info.json_parsed|default:'Unknown'|title }}</td>
-                    <td>{{ report.info.json_errors|default:'Unknown'|title }}</td>
+                    <td><span class="label {{ report.info.json_parsed|truthy:'success,alert' }}">{{ report.info.json_parsed|truthy|title }}</span></td>
+                    <td><span class="label {{ report.info.json_errors|truthy:'alert,success' }}">{{ report.info.json_errors|truthy|title }}</span></td>
+                    <td><span class="label {{ report.info.is_valid_data_catalog|truthy:'success,alert' }}">{{ report.info.is_valid_data_catalog|truthy|title }}</span></td>
+                    <td>{{ report.errors|join:"|" }}</td>
                 </tr>
             {% endfor %}
             </tbody>
