@@ -3,6 +3,8 @@ Gunicorn
 'celery[gevent,redis]'
 requests
 cachecontrol
+simplejson
+ujson
 jsonschema
 psycopg2
 pytz

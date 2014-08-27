@@ -1,7 +1,11 @@
 from __future__ import absolute_import
-import json
 import os
 from UserDict import UserDict
+try:
+    import simplejson as json
+except ImportError:
+    import json
+import ujson
 
 from jsonschema import validate, ValidationError
 import requests
@@ -20,30 +24,49 @@ logger = get_task_logger(__name__)
 SCHEMA_PATH = getattr(settings, 'DATA_CATALOG_SCHEMA_PATH', None)
 catalog_schema = json.load(open(SCHEMA_PATH, 'r')) if SCHEMA_PATH else None
 
-class ReturnValue(UserDict):
-    """Provides a dict-like object with an errors attribute"""
-    def __init__(self, data={}, errors={}):
-        UserDict.__init__(self, data)
-        self._errors = errors
-        self.data['errors'] = self._errors
+class ResultDict(dict):
+    """
+        Provides a dict-like object with an errors list.
+        Vulnerable to overwriting errors using .update(), so don't do that.
+    """
+    def __init__(self, data=None, errors=None):
+        super(ResultDict, self).__init__()
+        self._errors = errors if errors else []
+        if data:
+            self.update(data)
+            if not errors and hasattr(data, 'errors'):
+                self._errors.extend(data.errors)
+        self['errors'] = self._errors
 
     def add_error(self, error):
-        """Provide an error object, ReturnValue will store the class and value of that error"""
+        """Provide an error object, ResultDict will store the class and value of that error"""
         if error:
             error_name = error.__class__.__name__
-            self._errors[error_name] = str(error)
-            self.data['errors'].update(self._errors)
+            error_str = '{0}: {1}'.format(error_name, str(error))
+            self._errors.append(error_str)
+            self['errors'] = self._errors
+
+    @property
+    def errors(self):
+        return self._errors
+
+    def errors_seqdict(self):
+        return { str(n): value for n,value in enumerate(self.errors) }
 
 @shared_task
 def fetch_url(url):
     resp = error = None
-    returnval = ReturnValue()
+    returnval = ResultDict()
     try:
         resp = session.get(url)
     except requests.exceptions.HTTPError as e:
-        error = str(e)
+        returnval.add_error(e)
+    if resp:
+        try:
+            resp.raise_for_status()
+        except Exception as e:
+            returnval.add_error(e)
     returnval['response'] = resp
-    returnval.add_error(error)
     return returnval
 
 @shared_task
@@ -56,6 +79,7 @@ def report_for_agency_url(agency_id, url):
     Task to save a basic report given an agency_id and a url.
     """
     result = fetch_url((url))
+    returnval = ResultDict(result)
     resp_data = result.get('response', None)
     report_id = response_id = None
     report_info = {}
@@ -66,17 +90,14 @@ def report_for_agency_url(agency_id, url):
             report = Report.objects.create(agency_id=agency_id, url=response.requested_url, info={})
         else:
             report = Report.objects.create(agency_id=agency_id, info={})
+        report.errors.update(returnval.errors_seqdict())
         report.save()
-        report_id = report.id
+        returnval['report_id'] = report.id
         if response:
             report.responses.add(response)
             response.save()
-            response_id = response.id
-    returnval = ReturnValue({
-            'report_id': report_id,
-            'report_info': report_info,
-            'response_id': response_id
-            })
+            returnval['response_id'] = response.id
+    returnval['report_info'] = report_info
     return returnval
 
 @shared_task
@@ -87,22 +108,25 @@ def parse_json(taskarg):
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
     content = taskarg.get('content', None)
-    apparent_encoding = taskarg.get('apparent_encoding', None)
-    jsondata = error = None
-    returnval = ReturnValue()
+    encoding = taskarg.get('encoding', 'iso-8859-1')
+    jsondata = None
+    parse_errors = False
+    returnval = ResultDict()
     if content is None:
         returnval.add_error(Exception('No content to parse'))
-    try:
-        jsondata = json.loads(content)
-    except Exception as e:
-        returnval.add_error(e)
-        if apparent_encoding:
-            content_str = content.decode(apparent_encoding, 'replace')
+    else:
+        try:
+            jsondata = json.loads(content, encoding=encoding)
+        except Exception as e:
+            parse_errors = True
+            returnval.add_error(e)
+            content_str = content.decode(encoding, 'replace')
             try:
-                jsondata = json.loads(content_str, encoding=apparent_encoding)
+                jsondata = ujson.loads(content_str)
             except Exception as e:
+                parse_errors = True
                 returnval.add_error(e)
-    returnval.update({ 'json': jsondata })
+    returnval.update({ 'json': jsondata, 'parse_errors': parse_errors })
     return returnval
 
 @shared_task
@@ -115,17 +139,20 @@ def parse_json_from_response_with_report(taskarg):
     report_id = taskarg.get('report_id', None)
     response_id = taskarg.get('response_id', None)
     report_info = taskarg.get('report_info', {})
-    returnval = ReturnValue(taskarg)
+    returnval = ResultDict(taskarg)
     response = RequestsResponse.objects.get(id=response_id)
     response_content = str(response.content)
-    result_dict = parse_json({'content':response_content, 'apparent_encoding':response.apparent_encoding})
+    encoding = response.encoding if response.encoding else response.apparent_encoding
+    result_dict = parse_json({'content':response_content, 'encoding':response.apparent_encoding})
     jsondata = result_dict.get('json', None)
+    parse_errors = result_dict.get('parse_errors', False)
     if jsondata:
          returnval['json'] = jsondata
-    report_info['is_valid_json'] = True if jsondata else False
-    errors = result_dict.get('errors', None)
-    if errors:
-        returnval['errors'].update(errors)
+    report_info['json_errors'] = True if parse_errors else False
+    report_info['json_parsed'] = True if jsondata else False
+    errors = result_dict.get('errors', [])
+    for err in errors:
+        returnval.add_error(err)
     returnval['report_info'] = report_info
     return returnval
 
@@ -140,7 +167,7 @@ def validate_json_catalog(taskarg):
     report_id = taskarg.get('report_id', None)
     response_id = taskarg.get('response_id', None)
     report_info = taskarg.get('report_info', {})
-    returnval = ReturnValue(taskarg)
+    returnval = ResultDict(taskarg)
     is_valid = False
     if jsondata and catalog_schema:
         try:
@@ -157,12 +184,11 @@ def validate_json_catalog(taskarg):
 def save_report_info(taskarg):
     report_id = taskarg.get('report_id', None)
     report_info = taskarg.get('report_info', {})
-    errors = taskarg.get('errors', None) # Move errors into report_info
-    if errors:
-        report_info['errors'] = errors
+    returnval = ResultDict(taskarg)
     report_info.pop('content', None) # Let's not save content in our report
     report_info.pop('json', None) # Let's not save json in our report
     logger.info("Saving report info {0}".format(repr(report_info)))
+    returnval['saved'] = False
     if report_info and report_id:
         try:
             with transaction.atomic():
@@ -170,11 +196,13 @@ def save_report_info(taskarg):
                 if not report.info:
                     report.info = {}
                 report.info.update(report_info)
+                if len(returnval.errors):
+                    report.errors.update(returnval.errors_seqdict())
                 report.save()
-                return True
+                returnval['saved'] = True
         except DatabaseError as e:
             raise e
-    return False
+    return returnval
 
 @shared_task
 def crawl_json_catalog_urls():

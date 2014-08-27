@@ -1,6 +1,3 @@
-import json
-import uuid
-
 from requests import Request, Response
 
 from django.db import models
@@ -18,7 +15,8 @@ class Report(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField(blank=True)
     url = models.URLField(blank=True, null=True)
-    info = hstore.DictionaryField(blank=True, null=True)
+    info = hstore.DictionaryField(blank=True, null=True, default={})
+    errors = hstore.DictionaryField(blank=True, null=True, default={})
 
     objects = hstore.HStoreManager()
 

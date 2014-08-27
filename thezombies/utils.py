@@ -1,6 +1,9 @@
 import requests
 import re
-import json
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 # A riff on http://tools.ietf.org/html/rfc3986#appendix-B
 RFC_URL_REGEX = "^((https?):)(//([^/?#]+))([^?#]*)(\?([^#]*))?(#(.*))?$"
