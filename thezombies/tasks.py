@@ -1,6 +1,4 @@
 from __future__ import absolute_import
-import os
-from UserDict import UserDict
 try:
     import simplejson as json
 except ImportError:
@@ -11,6 +9,7 @@ from jsonschema import validate, ValidationError
 import requests
 from cachecontrol import CacheControl
 from celery import shared_task, chord, chain, group
+from celery.result import AsyncResult
 from celery.utils.log import get_task_logger
 
 from django.conf import settings
@@ -49,6 +48,12 @@ class ResultDict(dict):
     @property
     def errors(self):
         return self._errors
+
+@shared_task
+def error_handler(uuid):
+    result = AsyncResult(uuid)
+    exc = result.get(propagate=False)
+    print('Task {0} raised exception: {1!r}\n{2!r}'.format(uuid, exc, result.traceback))
 
 @shared_task
 def fetch_url(url):
@@ -94,6 +99,9 @@ def report_for_agency_url(agency_id, url):
             report.responses.add(response)
             response.save()
             returnval['response_id'] = response.id
+    if not resp_data.ok:
+        # If the response is not okay, raise an error so we can handle that as an error
+        resp_data.raise_for_status()
     returnval['report_info'] = report_info
     return returnval
 
@@ -203,7 +211,8 @@ def save_report_info(taskarg):
 def crawl_json_catalog_urls():
     agencies = Agency.objects.all()
     groupchain = group([chain(
-                    report_for_agency_url.s(agency.id, agency.data_json_url),
+                    report_for_agency_url.subtask((agency.id, agency.data_json_url),
+                                                  options={'link_error':error_handler.s()}),
                     parse_json_from_response_with_report.s(),
                     validate_json_catalog.s(),
                     save_report_info.s()
