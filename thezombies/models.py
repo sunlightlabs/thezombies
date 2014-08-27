@@ -47,9 +47,8 @@ class RequestsResponseManager(hstore.HStoreManager):
             content_length = resp.headers.get('content-length', None)
             if content_length:
                 obj.content_length = int(content_length)
-            if obj.content_length and obj.content_length > 0:
-                obj.content = resp.content
             obj.content_type = resp.headers.get('content-type', None)
+            obj.content = resp.content
             return obj
         else:
             raise TypeError('create_from_response expects a requests.Response object')
