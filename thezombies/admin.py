@@ -14,7 +14,7 @@ class ResponseInline(admin.TabularInline):
 
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('agency', 'url', 'created_at')
-    list_filter = ('agency',)
+    search_fields = ('agency', 'url')
     ordering =  ('-created_at',)
     readonly_fields = ('info', 'errors',)
     inlines = (ResponseInline,)
@@ -27,7 +27,8 @@ class ReportAdmin(admin.ModelAdmin):
 
 class RequestsResponseAdmin(admin.ModelAdmin):
     list_display = ('url', 'status_code', 'requested_url', 'content_type', 'report', 'created_at')
-    list_filter = ('report',)
+    list_filter = ('status_code',)
+    search_fields = ('url', 'requested_url')
     exclude = ('content',)
     ordering =  ('-created_at',)
 
