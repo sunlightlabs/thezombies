@@ -9,12 +9,11 @@ class AgencyAdmin(admin.ModelAdmin):
 class ResponseInline(admin.TabularInline):
     model = RequestsResponse
     exclude = ('headers', 'content')
-    readonly_fields = ('url', 'requested_url', 'content',
-        'encoding', 'apparent_encoding', 'status_code', 'reason',
-        'content_type', 'content_length')
+    readonly_fields = ('url', 'requested_url', 'encoding', 'apparent_encoding',
+        'status_code', 'reason', 'content_type', 'content_length')
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('display_name', 'url', 'agency', 'created_at')
+    list_display = ('agency', 'url', 'created_at')
     list_filter = ('agency',)
     ordering =  ('-created_at',)
     inlines = (ResponseInline,)
@@ -28,6 +27,7 @@ class ReportAdmin(admin.ModelAdmin):
 class RequestsResponseAdmin(admin.ModelAdmin):
     list_display = ('url', 'status_code', 'requested_url', 'content_type', 'report', 'created_at')
     list_filter = ('report',)
+    exclude = ('content',)
     ordering =  ('-created_at',)
 
 admin.site.register(Agency, AgencyAdmin)
