@@ -82,7 +82,7 @@ def report_for_agency_url(agency_id, url):
     report_info = {}
     response = None
     with transaction.atomic():
-        if resp_data:
+        if resp_data is not None:
             response = RequestsResponse.objects.create_from_response(resp_data)
             report = Report.objects.create(agency_id=agency_id, url=response.requested_url, info={})
         else:
