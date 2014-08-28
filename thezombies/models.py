@@ -17,8 +17,6 @@ class Report(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     message = models.TextField(blank=True)
     url = models.URLField(blank=True, null=True)
-    info = hstore.DictionaryField(blank=True, null=True, default={})
-    errors = TextArrayField(blank=True, null=True, default=[])
 
     objects = hstore.HStoreManager()
 
@@ -84,6 +82,8 @@ class URLResponse(models.Model):
     status_code = models.IntegerField(max_length=3)
     reason = models.CharField(max_length=80, help_text='Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".')
     headers = hstore.DictionaryField()
+    info = hstore.DictionaryField(blank=True, null=True, default={})
+    errors = TextArrayField(blank=True, null=True, default=[])
     report = models.ForeignKey('Report', related_name='responses', null=True, blank=True)
 
     objects = URLResponseManager()

@@ -16,7 +16,6 @@ class ReportAdmin(admin.ModelAdmin):
     list_display = ('agency', 'url', 'created_at')
     search_fields = ('agency', 'url')
     ordering =  ('-created_at',)
-    readonly_fields = ('info', 'errors',)
     inlines = (ResponseInline,)
 
     def display_name(self, obj):
@@ -31,6 +30,7 @@ class URLResponseAdmin(admin.ModelAdmin):
     search_fields = ('url', 'requested_url')
     exclude = ('content',)
     ordering =  ('-created_at',)
+    readonly_fields = ('info', 'errors',)
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Report, ReportAdmin)

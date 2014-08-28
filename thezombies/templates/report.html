@@ -9,7 +9,7 @@
         <dd>{{ report.responses.earliest.status_code }}: <strong>{{ report.responses.earliest.status_code|httpreason|title }}</strong> </dd>
         {% if report.responses.earliest.status_code = 200 %}
         <dt>Parsable JSON?</dt>
-        <dd>{{ report.info.json_parsed|truthy:"yes,no,unknown"|title }}</dd>
+        <dd>{{ report.info.is_json|truthy:"yes,no,unknown"|title }}</dd>
         {% endif %}
     </dl>
     <section id="errors">

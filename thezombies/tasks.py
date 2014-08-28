@@ -84,25 +84,25 @@ def report_for_agency_url(agency_id, url):
     returnval = ResultDict(result)
     resp_data = result.get('response', None)
     report_id = response_id = None
-    report_info = {}
+    response_info = {}
     response = None
     with transaction.atomic():
         if resp_data is not None:
             response = URLResponse.objects.create_from_response(resp_data)
-            report = Report.objects.create(agency_id=agency_id, url=response.requested_url, info={})
+            report = Report.objects.create(agency_id=agency_id, url=response.requested_url)
         else:
-            report = Report.objects.create(agency_id=agency_id, info={})
-        report.errors.extend(returnval.errors)
+            report = Report.objects.create(agency_id=agency_id)
         report.save()
         returnval['report_id'] = report.id
         if response:
+            response.errors.extend(returnval.errors)
             report.responses.add(response)
             response.save()
             returnval['response_id'] = response.id
     if not resp_data.ok:
         # If the response is not okay, raise an error so we can handle that as an error
         resp_data.raise_for_status()
-    returnval['report_info'] = report_info
+    returnval['response_info'] = response_info
     return returnval
 
 @shared_task
@@ -143,7 +143,7 @@ def parse_json_from_response_with_report(taskarg):
         taskarg = taskarg[0]
     report_id = taskarg.get('report_id', None)
     response_id = taskarg.get('response_id', None)
-    report_info = taskarg.get('report_info', {})
+    response_info = taskarg.get('response_info', {})
     returnval = ResultDict(taskarg)
     response = URLResponse.objects.get(id=response_id)
     response_content = response.content.string()
@@ -153,12 +153,12 @@ def parse_json_from_response_with_report(taskarg):
     parse_errors = result_dict.get('parse_errors', False)
     if jsondata:
          returnval['json'] = jsondata
-    report_info['json_errors'] = True if parse_errors else False
-    report_info['json_parsed'] = True if jsondata else False
+    response_info['json_errors'] = True if parse_errors else False
+    response_info['is_json'] = True if jsondata else False
     errors = result_dict.get('errors', None)
     if errors:
         returnval.errors.extend(errors)
-    returnval.get('report_info', {}).update(report_info)
+    returnval.get('response_info', {}).update(response_info)
     return returnval
 
 @shared_task
@@ -169,7 +169,7 @@ def validate_json_catalog(taskarg):
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
     jsondata = taskarg.get('json', None)
-    report_info = taskarg.get('report_info', {})
+    response_info = taskarg.get('response_info', {})
     returnval = ResultDict(taskarg)
     is_valid = False
     if jsondata and catalog_schema:
@@ -179,33 +179,35 @@ def validate_json_catalog(taskarg):
         except ValidationError as e:
             is_valid = False
             returnval.add_error(e)
-    report_info['is_valid_data_catalog'] = is_valid
-    returnval.get('report_info', {}).update(report_info)
+    response_info['is_valid_data_catalog'] = is_valid
+    returnval.get('response_info', {}).update(response_info)
     return returnval
 
 @shared_task
-def save_report_info(taskarg):
+def save_response_info(taskarg):
     report_id = taskarg.get('report_id', None)
-    report_info = taskarg.get('report_info', {})
+    response_id = taskarg.get('response_id', None)
+    response_info = taskarg.get('response_info', {})
     returnval = ResultDict(taskarg)
-    report_info.pop('content', None) # Let's not save content in our report
-    report_info.pop('json', None) # Let's not save json in our report
-    logger.info("Saving report info {0}".format(repr(report_info)))
+    response_info.pop('content', None) # Let's not save content in our report
+    response_info.pop('json', None) # Let's not save json in our report
+    logger.info("Saving report info {0}".format(repr(response_info)))
     returnval['saved'] = False
-    if report_info and report_id:
-        try:
-            with transaction.atomic():
-                report = Report.objects.get(id=report_id)
-                if not report.info:
-                    report.info = {}
-                report.info.update(report_info)
-                if len(returnval.errors):
-                    report.errors.extend(returnval.errors)
-                report.save()
-                returnval['saved'] = True
-        except DatabaseError as e:
-            raise e
-    return returnval
+    if response_info:
+        if report_id:
+            try:
+                with transaction.atomic():
+                    report = Report.objects.get(id=report_id)
+                    report.save()
+                    if response_id:
+                        response = URLResponse.objects.get(id=response_id)
+                        response.info.update(response_info)
+                        if len(returnval.errors):
+                            response.errors.extend(returnval.errors)
+                        response.save()
+                    returnval['saved'] = True
+            except DatabaseError as e:
+                raise e
 
 @shared_task
 def crawl_json_catalog_urls():
@@ -215,7 +217,7 @@ def crawl_json_catalog_urls():
                                                   options={'link_error':error_handler.s()}),
                     parse_json_from_response_with_report.s(),
                     validate_json_catalog.s(),
-                    save_report_info.s()
+                    save_response_info.s()
                 ) for agency in agencies])
     return groupchain()
 
