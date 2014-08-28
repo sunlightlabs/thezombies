@@ -1,28 +1,46 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
 {% block content %}
     <h2>Report on {{ report.url|urlizetrunc:60 }}</h2>
-    {# <h3><small>Agency:</small> {{report.agency }}</h3> #}
-    <dl>
-        <dt>Created</dt>
-        <dd>{{ report.created_at }}</dd>
-        <dt>Status</dt>
-        <dd>{{ report.responses.earliest.status_code }}: <strong>{{ report.responses.earliest.status_code|httpreason|title }}</strong> </dd>
-        {% if report.responses.earliest.status_code = 200 %}
-        <dt>Parsable JSON?</dt>
-        <dd>{{ report.info.is_json|truthy:"yes,no,unknown"|title }}</dd>
-        {% endif %}
-    </dl>
+    <h3><small>Agency:</small> {{report.agency }}</h3>
+    <p><strong>Created:</strong> {{ report.created_at }}</p>
+    <section>
+        <h3>URLs visited</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Final url</th>
+                    <th>HTTP status</th>
+                    <th>Parsable as JSON</th>
+                    <th>JSON has errors</th>
+                    <th>Is valid data catalog</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for resp in report.responses.all %}
+                <tr>
+                    <td>{{ resp.url }}</td>
+                    <td>{{ resp.status_code|httpreason:True }}</td>
+                    <td><span class="label {{ resp.info.is_json|truthy:'success,alert,secondary' }}">{{ resp.info.is_json|truthy:"yes,no,unknown"|title }}</span></td>
+                    <td><span class="label {{ resp.info.json_errors|truthy:'alert,success,secondary' }}">{{ resp.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td>
+                    <td><span class="label {{ resp.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ resp.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
     <section id="errors">
         <h3>Errors</h3>
     {% if report.responses.earliest.status_code != 200 %}
         <p>Received an error of "{{ report.responses.earliest.status_code|httpreason:True }}" while attempting to access {{ report.url }}</p>
     {% else %}
-        {% for error in report.errors %}
-        <div class="panel failure"><pre>{{ error }}</pre></div>
-        {% empty %}
-        <h4 class="success">No errors found.</h4>
+        {% for resp in report.responses.all %}
+        <h4><small>Errors for: </small>{{ resp.requested_url }}</h4>
+            {% for error in resp.errors %}
+            <div class="panel failure"><pre class="error">{{ error }}</pre></div>
+            {% empty %}
+            <h4 class="success">No errors found.</h4>
+            {% endfor %}
         {% endfor %}
     {% endif %}
     </section>
-
 {% endblock %}

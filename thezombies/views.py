@@ -13,3 +13,7 @@ def agency(request, slug):
 def report(request, id):
     report = get_object_or_404(Report, id=id)
     return render_to_response('report.html', {'report':report})
+
+def reports(request):
+    reports = Report.objects.all()
+    return render_to_response('reports.html', {'reports':reports})

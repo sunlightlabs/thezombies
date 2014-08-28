@@ -4,6 +4,7 @@ from django.db import models
 from django_hstore import hstore
 from djorm_pgarray.fields import TextArrayField
 from django.utils.text import slugify
+from django.core.urlresolvers import reverse
 
 try:
     from urllib.parse import urljoin, urlparse
@@ -29,6 +30,9 @@ class Report(models.Model):
     class Meta:
         get_latest_by = 'created_at'
         ordering =  ('-created_at',)
+
+    def get_absolute_url(self):
+        return reverse('thezombies.views.report', kwargs={'id': str(self.id)})
 
 class URLResponseManager(hstore.HStoreManager):
 
@@ -134,3 +138,8 @@ class Agency(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('thezombies.views.agency', kwargs={'slug': self.slug})
+
+

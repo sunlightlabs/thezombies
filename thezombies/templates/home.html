@@ -11,7 +11,7 @@
         </thead>
         <tbody>{% for item in agencies %}
             <tr id="{{ item.slug }}">
-                <td><a href="{% url 'thezombies.views.agency' item.slug %}">{{ item.name }}</a></td>
+                <td><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></td>
                 <td>{{ item.agency_type }}</td>
                 <td>{{ item.reports.last.created_at }}</td>
             </tr>{% endfor %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% load staticfiles %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>Report</th>
+                <th>Agency</th>
+                <th>Created</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody>{% for item in reports %}
+            <tr>
+                <td><a href="{{ item.get_absolute_url }}">{{ item }}</a></td>
+                <td>{{ item.agency.name }}</td>
+                <td>{{ item.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+                <td>{{ item.updated_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+            </tr>{% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
