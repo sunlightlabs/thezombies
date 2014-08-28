@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
+{% block content %}
+    <h2>Report on {{ report.url|urlizetrunc:60 }}</h2>
+    {# <h3><small>Agency:</small> {{report.agency }}</h3> #}
+    <dl>
+        <dt>Created</dt>
+        <dd>{{ report.created_at }}</dd>
+        <dt>Status</dt>
+        <dd>{{ report.responses.earliest.status_code }}: <strong>{{ report.responses.earliest.status_code|httpreason|title }}</strong> </dd>
+        {% if report.responses.earliest.status_code = 200 %}
+        <dt>Parsable JSON?</dt>
+        <dd>{{ report.info.json_parsed|truthy:"yes,no,unknown"|title }}</dd>
+        {% endif %}
+    </dl>
+    <section id="errors">
+        <h3>Errors</h3>
+        {% for error in report.errors %}
+        <div class="panel"><pre>{{ error }}</pre></div>
+        {% endfor %}
+    </section>
+
+{% endblock %}

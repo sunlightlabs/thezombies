@@ -20,7 +20,6 @@
             <thead>
                 <tr>
                     <th>Report date</th>
-                    {# <th>Requested url</th> #}
                     <th>Final url</th>
                     <th>HTTP status</th>
                     <th>Parsable as JSON</th>
@@ -33,13 +32,12 @@
             {% for report in report_url.list %}
                 <tr>
                     <td>{{ report.created_at|localtime }}</td>
-                    {# <td>{{ report.responses.earliest.requested_url }}</td> #}
                     <td>{{ report.responses.earliest.url|urlizetrunc:26 }}</td>
                     <td>{{ report.responses.earliest.status_code }}</td>
                     <td><span class="label {{ report.info.json_parsed|truthy:'success,alert,secondary' }}">{{ report.info.json_parsed|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ report.info.json_errors|truthy:'alert,success,secondary' }}">{{ report.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ report.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ report.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td>
-                    <td>View full report</td>
+                    <td><a href='{% url "thezombies.views.report" id=report.id %}'>View full report</a></td>
                 </tr>
             {% endfor %}
             </tbody>

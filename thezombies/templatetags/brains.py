@@ -1,5 +1,6 @@
 from django import template
 from django.template.defaultfilters import stringfilter, yesno
+from django.http.response import REASON_PHRASES
 
 register = template.Library()
 
@@ -13,3 +14,13 @@ def truthy(value, arg=None):
     elif value.lower() == 'false':
         truthiness = False
     return yesno(truthiness, arg)
+
+@register.filter
+def httpreason(value):
+    """Uses django's REASON_PHRASES to change a status_code into a textual reason."""
+    try:
+        value_int = int(value)
+    except TypeError:
+        return ''
+    return REASON_PHRASES.get(value_int, 'UNKNOWN STATUS CODE')
+
