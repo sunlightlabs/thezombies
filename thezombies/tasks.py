@@ -15,7 +15,7 @@ from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.db import transaction, DatabaseError
 import requests
-from thezombies.models import Report, RequestsResponse, Agency
+from thezombies.models import Report, URLResponse, Agency
 
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
@@ -88,7 +88,7 @@ def report_for_agency_url(agency_id, url):
     response = None
     with transaction.atomic():
         if resp_data is not None:
-            response = RequestsResponse.objects.create_from_response(resp_data)
+            response = URLResponse.objects.create_from_response(resp_data)
             report = Report.objects.create(agency_id=agency_id, url=response.requested_url, info={})
         else:
             report = Report.objects.create(agency_id=agency_id, info={})
@@ -145,8 +145,8 @@ def parse_json_from_response_with_report(taskarg):
     response_id = taskarg.get('response_id', None)
     report_info = taskarg.get('report_info', {})
     returnval = ResultDict(taskarg)
-    response = RequestsResponse.objects.get(id=response_id)
-    response_content = str(response.content)
+    response = URLResponse.objects.get(id=response_id)
+    response_content = response.content.string()
     encoding = response.encoding if response.encoding else response.apparent_encoding
     result_dict = parse_json({'content':response_content, 'encoding':encoding})
     jsondata = result_dict.get('json', None)

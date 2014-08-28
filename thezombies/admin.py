@@ -1,5 +1,5 @@
 from django.contrib import admin
-from thezombies.models import Agency, Report, RequestsResponse
+from thezombies.models import Agency, Report, URLResponse
 
 
 class AgencyAdmin(admin.ModelAdmin):
@@ -7,10 +7,10 @@ class AgencyAdmin(admin.ModelAdmin):
     list_display = ('name', 'agency_type', 'url')
 
 class ResponseInline(admin.TabularInline):
-    model = RequestsResponse
+    model = URLResponse
     exclude = ('headers', 'content')
     readonly_fields = ('url', 'requested_url', 'encoding', 'apparent_encoding',
-        'status_code', 'reason', 'content_type', 'content_length')
+        'status_code', 'reason')
 
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('agency', 'url', 'created_at')
@@ -25,8 +25,8 @@ class ReportAdmin(admin.ModelAdmin):
             name = '{0} on {1}'.format(name, obj.url)
         return name
 
-class RequestsResponseAdmin(admin.ModelAdmin):
-    list_display = ('url', 'status_code', 'requested_url', 'content_type', 'report', 'created_at')
+class URLResponseAdmin(admin.ModelAdmin):
+    list_display = ('url', 'status_code', 'requested_url', 'report', 'created_at')
     list_filter = ('status_code',)
     search_fields = ('url', 'requested_url')
     exclude = ('content',)
@@ -34,5 +34,5 @@ class RequestsResponseAdmin(admin.ModelAdmin):
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Report, ReportAdmin)
-admin.site.register(RequestsResponse, RequestsResponseAdmin)
+admin.site.register(URLResponse, URLResponseAdmin)
 

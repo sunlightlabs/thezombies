@@ -14,6 +14,7 @@ class Report(models.Model):
     """A Report on agency, usually concerning data at a url"""
     agency = models.ForeignKey('Agency', related_name='reports')
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     message = models.TextField(blank=True)
     url = models.URLField(blank=True, null=True)
     info = hstore.DictionaryField(blank=True, null=True, default={})
@@ -31,43 +32,61 @@ class Report(models.Model):
         get_latest_by = 'created_at'
         ordering =  ('-created_at',)
 
-class RequestsResponseManager(hstore.HStoreManager):
+class URLResponseManager(hstore.HStoreManager):
 
     def create_from_response(self, resp):
         """
-        Create a RequestsResponse object from a requests.Response
+        Create a URLResponse object from a requests.Response
         """
         if isinstance(resp, Response):
-            obj = self.create(url=resp.url, status_code=resp.status_code,
+            content_type = resp.headers.get('content-type', None)
+            content = ResponseContent(binary=resp.content, content_type=content_type)
+            content.save()
+            obj = self.create(content=content, url=resp.url, status_code=resp.status_code,
                 encoding=resp.encoding, reason=resp.reason)
             obj.requested_url= resp.history[0].url if len(resp.history) > 0 else resp.request.url
             obj.headers = dict(resp.headers)
             # TODO: defer detection of apparent encoding. A task, perhaps
             obj.apparent_encoding = resp.apparent_encoding
-            content_length = resp.headers.get('content-length', None)
-            if content_length:
-                obj.content_length = int(content_length)
-            obj.content_type = resp.headers.get('content-type', None)
-            obj.content = resp.content
             return obj
         else:
             raise TypeError('create_from_response expects a requests.Response object')
 
-class RequestsResponse(models.Model):
+class ResponseContent(models.Model):
+    binary = models.BinaryField(blank=True, null=True)
+    content_type = models.CharField(max_length=40, blank=True, null=True)
+    length = models.IntegerField(blank=True, editable=False)
+
+    class Meta:
+        verbose_name = 'ResponseContent'
+        verbose_name_plural = 'ResponsesContents'
+
+    def save(self, *args, **kwargs):
+        self.length = len(self.binary) if self.binary else 0
+        super(ResponseContent, self).save(*args, **kwargs)
+
+    def string(self):
+        return str(self.binary)
+
+    def __repr__(self):
+        return '<ResponseContent: {0 bytes>'.format(self.length)
+
+    def __str__(self):
+        return self.__repr__()
+
+class URLResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     url = models.URLField()
     requested_url = models.URLField()
     encoding = models.CharField(max_length=40, blank=True, null=True)
     apparent_encoding = models.CharField(max_length=40, blank=True, null=True)
-    content = models.BinaryField(blank=True, null=True)
-    content_type = models.CharField(max_length=40, blank=True, null=True)
-    content_length = models.PositiveIntegerField(blank=True, null=True)
+    content = models.OneToOneField(ResponseContent, related_name='content_for', editable=False)
     status_code = models.IntegerField(max_length=3)
     reason = models.CharField(max_length=80, help_text='Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".')
     headers = hstore.DictionaryField()
     report = models.ForeignKey('Report', related_name='responses', null=True, blank=True)
 
-    objects = RequestsResponseManager()
+    objects = URLResponseManager()
 
     class Meta:
         verbose_name = 'Requests Response'
@@ -75,7 +94,7 @@ class RequestsResponse(models.Model):
         get_latest_by = 'created_at'
 
     def __repr__(self):
-        return '<RequestsResponse: {0}>'.format(self.url)
+        return '<URLResponse: {0}>'.format(self.url)
 
     def __str__(self):
         return self.__repr__()
