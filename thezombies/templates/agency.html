@@ -19,7 +19,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>Report date</th>
+                    <th>Report created</th>
+                    <th>Report updated</th>
                     <th>Final url</th>
                     <th>HTTP status</th>
                     <th>Parsable as JSON</th>
@@ -31,9 +32,10 @@
             <tbody>
             {% for report in report_url.list %}
                 <tr>
-                    <td>{{ report.created_at|localtime }}</td>
+                    <td>{{ report.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+                    <td>{{ report.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                     <td>{{ report.responses.earliest.url|urlizetrunc:26 }}</td>
-                    <td>{{ report.responses.earliest.status_code }}</td>
+                    <td>{{ report.responses.earliest.status_code|httpreason:True }}</td>
                     <td><span class="label {{ report.info.json_parsed|truthy:'success,alert,secondary' }}">{{ report.info.json_parsed|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ report.info.json_errors|truthy:'alert,success,secondary' }}">{{ report.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ report.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ report.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td>

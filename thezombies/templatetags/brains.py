@@ -16,11 +16,16 @@ def truthy(value, arg=None):
     return yesno(truthiness, arg)
 
 @register.filter
-def httpreason(value):
-    """Uses django's REASON_PHRASES to change a status_code into a textual reason."""
+def httpreason(value, arg=False):
+    """
+       Uses django's REASON_PHRASES to change a status_code into a textual reason.
+       Optional True/False argument allows you to return a string with code number *and* phrase. Defaults to False"""
     try:
         value_int = int(value)
     except TypeError:
         return ''
-    return REASON_PHRASES.get(value_int, 'UNKNOWN STATUS CODE')
+    phrase = REASON_PHRASES.get(value_int, 'UNKNOWN STATUS CODE')
+    if arg:
+        phrase = '{0}: {1}'.format(value, phrase)
+    return phrase
 

@@ -14,9 +14,15 @@
     </dl>
     <section id="errors">
         <h3>Errors</h3>
+    {% if report.responses.earliest.status_code != 200 %}
+        <p>Received an error of "{{ report.responses.earliest.status_code|httpreason:True }}" while attempting to access {{ report.url }}</p>
+    {% else %}
         {% for error in report.errors %}
-        <div class="panel"><pre>{{ error }}</pre></div>
+        <div class="panel failure"><pre>{{ error }}</pre></div>
+        {% empty %}
+        <h4 class="success">No errors found.</h4>
         {% endfor %}
+    {% endif %}
     </section>
 
 {% endblock %}
