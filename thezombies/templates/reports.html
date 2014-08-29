@@ -1,6 +1,7 @@
 {% extends "base.html" %}{% load staticfiles %}
 
 {% block content %}
+    <p>{{ reports|length }} reports</p>
     <table>
         <thead>
             <tr>
@@ -12,7 +13,7 @@
         </thead>
         <tbody>{% for item in reports %}
             <tr>
-                <td><a href="{{ item.get_absolute_url }}">{{ item }}</a></td>
+                <td><a href="{{ item.get_absolute_url }}">{{ item|truncatechars:40 }}</a></td>
                 <td>{{ item.agency.name }}</td>
                 <td>{{ item.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                 <td>{{ item.updated_at|date:"SHORT_DATETIME_FORMAT" }}</td>

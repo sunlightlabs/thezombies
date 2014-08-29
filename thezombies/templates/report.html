@@ -4,11 +4,12 @@
     <h3><small>Agency:</small> {{report.agency }}</h3>
     <p><strong>Created:</strong> {{ report.created_at }}</p>
     <section>
-        <h3>URLs visited</h3>
+        <h3>URLs visited for report</h3>
         <table>
             <thead>
                 <tr>
                     <th>Final url</th>
+                    <th>URL redirects</th>
                     <th>HTTP status</th>
                     <th>Parsable as JSON</th>
                     <th>JSON has errors</th>
@@ -19,6 +20,7 @@
             {% for resp in report.responses.all %}
                 <tr>
                     <td>{{ resp.url }}</td>
+                    <td>{{ resp.history|length }}</td>
                     <td>{{ resp.status_code|httpreason:True }}</td>
                     <td><span class="label {{ resp.info.is_json|truthy:'success,alert,secondary' }}">{{ resp.info.is_json|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ resp.info.json_errors|truthy:'alert,success,secondary' }}">{{ resp.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td>
@@ -34,7 +36,9 @@
         <p>Received an error of "{{ report.responses.earliest.status_code|httpreason:True }}" while attempting to access {{ report.url }}</p>
     {% else %}
         {% for resp in report.responses.all %}
-        <h4><small>Errors for: </small>{{ resp.requested_url }}</h4>
+        {% if resp.errors %}
+        <h4 class="subheader">{{ resp.errors|length }} errors for: {{ resp.requested_url|urlize }}</h4>
+        {% endif %}
             {% for error in resp.errors %}
             <div class="panel failure"><pre class="error">{{ error }}</pre></div>
             {% empty %}

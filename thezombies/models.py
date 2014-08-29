@@ -25,7 +25,7 @@ class Report(models.Model):
         return '<Report: {0}>'.format(self.url if self.url else self.id)
 
     def __str__(self):
-        return self.__repr__()
+        return 'Report on {0}'.format(self.url if self.url else self.agency)
 
     class Meta:
         get_latest_by = 'created_at'
@@ -50,6 +50,12 @@ class URLResponseManager(hstore.HStoreManager):
             obj.headers = dict(resp.headers)
             # TODO: defer detection of apparent encoding. A task, perhaps
             obj.apparent_encoding = resp.apparent_encoding
+            for n, hist in enumerate(resp.history):
+                histobj = self.create(url=hist.url, status_code=hist.status_code, encoding=resp.encoding)
+                histobj.headers = dict(hist.headers)
+                histobj.save()
+                obj.history[str(n)] = histobj
+
             return obj
         else:
             raise TypeError('create_from_response expects a requests.Response object')
@@ -82,7 +88,8 @@ class URLResponse(models.Model):
     requested_url = models.URLField()
     encoding = models.CharField(max_length=40, blank=True, null=True)
     apparent_encoding = models.CharField(max_length=40, blank=True, null=True)
-    content = models.OneToOneField(ResponseContent, related_name='content_for', editable=False)
+    content = models.OneToOneField(ResponseContent, null=True, related_name='content_for', editable=False)
+    history = hstore.ReferencesField(blank=True, null=True)
     status_code = models.IntegerField(max_length=3)
     reason = models.CharField(max_length=80, help_text='Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".')
     headers = hstore.DictionaryField()
