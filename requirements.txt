@@ -1,6 +1,6 @@
 redis
 Gunicorn
-'celery[gevent,redis]'
+celery[gevent,redis]
 requests
 cachecontrol
 simplejson
