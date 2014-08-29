@@ -112,7 +112,7 @@ MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 BROKER_URL = os.getenv('BROKER_URL', "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', "redis://localhost:6379/1")
 CELERY_DISABLE_RATE_LIMITS = True
-CELERYD_TASK_TIME_LIMIT = 300
+CELERYD_TASK_TIME_LIMIT = 10 * 60
 CELERY_ACCEPT_CONTENT = ['pickle', 'json']
 
 # JSON Schema

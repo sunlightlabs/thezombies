@@ -1,11 +1,13 @@
 from __future__ import absolute_import
+from itertools import islice
+
 try:
     import simplejson as json
 except ImportError:
     import json
 import ujson
 
-from jsonschema import validate, ValidationError
+from jsonschema import Draft4Validator, ValidationError
 import requests
 from cachecontrol import CacheControl
 from celery import shared_task, chord, chain, group
@@ -20,8 +22,10 @@ from thezombies.models import Report, URLResponse, Agency
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
 
+SCHEMA_ERROR_LIMIT = 100
 SCHEMA_PATH = getattr(settings, 'DATA_CATALOG_SCHEMA_PATH', None)
 catalog_schema = json.load(open(SCHEMA_PATH, 'r')) if SCHEMA_PATH else None
+validator = Draft4Validator(catalog_schema)
 
 class ResultDict(dict):
     """
@@ -41,7 +45,10 @@ class ResultDict(dict):
         """Provide an error object, ResultDict will store the class and value of that error"""
         if error:
             error_name = error.__class__.__name__
-            error_str = '{0}: {1}'.format(error_name, str(error))
+            error_message = getattr(error, 'message', str(error))
+            if isinstance(error, ValidationError):
+                error_message = '{} >>\n {}'.format(error.message, error.schema)
+            error_str = '{0}: {1}'.format(error_name, error_message)
             self._errors.append(error_str)
             self['errors'] = self._errors
 
@@ -173,12 +180,12 @@ def validate_json_catalog(taskarg):
     returnval = ResultDict(taskarg)
     is_valid = False
     if jsondata and catalog_schema:
-        try:
-            validate(jsondata, catalog_schema)
-            is_valid = True
-        except ValidationError as e:
-            is_valid = False
-            returnval.add_error(e)
+        is_valid = validator.is_valid(jsondata)
+        if not is_valid:
+            # Save up to SCHEMA_ERROR_LIMIT errors from schema validation
+            error_iter = islice(validator.iter_errors(jsondata), SCHEMA_ERROR_LIMIT)
+            for e in error_iter:
+                returnval.add_error(e)
     response_info['is_valid_data_catalog'] = is_valid
     returnval.get('response_info', {}).update(response_info)
     return returnval
