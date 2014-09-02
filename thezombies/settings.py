@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django_hstore',
     'thezombies',
     'compressor',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (

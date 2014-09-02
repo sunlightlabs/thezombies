@@ -2,7 +2,7 @@ redis
 Gunicorn
 celery[gevent,redis]
 requests
-cachecontrol
+CacheControl
 simplejson
 ujson
 jsonschema
@@ -13,3 +13,4 @@ django-hstore
 djorm-pgarray
 django-compressor
 whitenoise
+django-extensions
