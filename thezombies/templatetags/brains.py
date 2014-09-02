@@ -22,7 +22,7 @@ def httpreason(value, arg=False):
        Optional True/False argument allows you to return a string with code number *and* phrase. Defaults to False"""
     try:
         value_int = int(value)
-    except TypeError:
+    except Exception:
         return ''
     phrase = REASON_PHRASES.get(value_int, 'UNKNOWN STATUS CODE')
     if arg:
