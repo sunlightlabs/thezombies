@@ -112,11 +112,15 @@ class URLResponse(models.Model):
     def __str__(self):
         return self.__repr__()
 
+    @property
     def content_type(self):
         if self.content:
             return self.content.content_type
         else:
-            return self.headers('content-type', 'Unknown')
+            content_type = 'Unknown'
+            if self.headers:
+                content_type = self.headers.get('content-type', 'Unknown')
+            return content_type
 
 
 class Agency(models.Model):
