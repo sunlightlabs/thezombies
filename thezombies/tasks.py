@@ -63,11 +63,14 @@ def error_handler(uuid):
     print('Task {0} raised exception: {1!r}\n{2!r}'.format(uuid, exc, result.traceback))
 
 @shared_task
-def fetch_url(url):
-    resp = error = None
+def request_url(url, method='GET'):
+    """
+        Task to request a url, a GET request by default. Tracks and returns errors.
+    """
+    resp = None
     returnval = ResultDict()
     try:
-        resp = session.get(url)
+        resp = session.request(method, url, allow_redirects=True)
     except requests.exceptions.HTTPError as e:
         returnval.add_error(e)
     if resp:
@@ -79,15 +82,75 @@ def fetch_url(url):
     return returnval
 
 @shared_task
-def find_access_urls(json_obj):
-    pass
+def find_data_access_urls(agency_id, catalog_url):
+    latest_date = URLResponse.objects.datetimes('created_at', 'minute').latest()
+    recent_responses = URLResponse.objects.filter(requested_url=catalog_url, created_at__day=latest_date.day)
+    response = None
+    if recent_responses.count() > 0:
+        response = recent_responses.latest()
+    else:
+        print('No stored response, fetch url')
+        fetch_val = request_url(catalog_url)
+        resp_data = fetch_val.get('response', None)
+        response = URLResponse.objects.create_from_response(resp_data)
+    result_dict = parse_json({'content':response.content.string(), 'encoding':response.encoding})
+    jsondata = result_dict.get('json', None)
+    returnval = ResultDict({'agency_id': agency_id, 'catalog_url':catalog_url})
+    access_urls = set()
+    if jsondata:
+        for item in jsondata:
+            isPublic = item.get('accessLevel', None) == 'public'
+            hasAccessURL = 'accessURL' in item
+            hasDistribution = 'distribution' in item
+            if hasDistribution:
+                distribution = item.get('distribution', [])
+                for d in distribution:
+                    if 'accessURL' in d:
+                        access_urls.add(d.get('accessURL'))
+            elif hasAccessURL:
+                access_urls.add(item.get('accessURL'))
+    else:
+        # Report some error or something
+        report.message = "Unable to load json data from '{0}'. Cannot find accessURLs for datasets"
+    returnval['access_urls'] = access_urls
+    return returnval
+
+@shared_task
+def report_on_data_access_urls(taskarg):
+    agency_id = taskarg.get('agency_id', None)
+    catalog_url = taskarg.get('catalog_url', None)
+    access_urls = taskarg.get('access_urls', [])
+    returnval = ResultDict(taskarg)
+    if agency_id:
+        report = Report.objects.create(agency_id=agency_id)
+        returnval['report_id'] = report.id
+        response_ids = []
+        if len(access_urls) > 0:
+            for url in access_urls:
+                result = request_url(url, 'HEAD')
+                response = result.get('response', None)
+                if response:
+                    resp_obj = URLResponse.objects.create_from_response(response, save_content=False)
+                    report.responses.add(resp_obj)
+                    resp_obj.save()
+                    response_ids.append(resp_obj.id)
+                else:
+                    print(result.errors)
+                    print('Got no response, durn!')
+        else:
+            report.message = "No dataset accessURLs were found for {0}".format(catalog_url)
+        report.save()
+        return returnval
+    else:
+        raise Exception('An agency id is required to create a report on data accessURLs.')
+
 
 @shared_task
 def report_for_agency_url(agency_id, url):
     """
     Task to save a basic report given an agency_id and a url.
     """
-    result = fetch_url((url))
+    result = request_url((url))
     returnval = ResultDict(result)
     resp_data = result.get('response', None)
     report_id = response_id = None
