@@ -17,7 +17,10 @@ from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.db import transaction, DatabaseError
 import requests
-from thezombies.models import Report, URLResponse, Agency
+from requests.exceptions import (MissingSchema, InvalidSchema, InvalidURL)
+from requests.packages.urllib3.exceptions import ProtocolError
+
+from thezombies.models import (Report, URLResponse, Agency)
 
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
@@ -60,20 +63,50 @@ class ResultDict(dict):
 def error_handler(uuid):
     result = AsyncResult(uuid)
     exc = result.get(propagate=False)
-    print('Task {0} raised exception: {1!r}\n{2!r}'.format(uuid, exc, result.traceback))
+    logger.warn('Task {0} raised exception: {1!r}\n{2!r}'.format(uuid, exc, result.traceback))
+
+@shared_task
+def check_and_correct_url(url, method='GET'):
+    """Check a url for issues, record exceptions, and attempt to correct the url.
+
+    :param url: URL to check and correct
+    :param method: http method to use, as a string. Default is 'GET'
+    """
+    returnval = ResultDict({'initial_url': url})
+    req = requests.Request(method.upper(), url)
+    try:
+        preq = req.prepare()
+    except MissingSchema as e:
+        returnval.add_error(e)
+        new_url = 'http://{}'.format(req.url)
+        req.url = new_url
+        try:
+            preq = req.prepare()
+            returnval['corrected_url'] = preq.url
+        except Exception as e:
+            returnval.add_error(e)
+    except Exception as e:
+        returnval.add_error(e)
+
+    return returnval
 
 @shared_task
 def request_url(url, method='GET'):
-    """
-        Task to request a url, a GET request by default. Tracks and returns errors.
+    """Task to request a url, a GET request by default. Tracks and returns errors.
+
+    :param url: URL to request
+    :param method: http method to use, as a string. Default is 'GET'
     """
     resp = None
-    returnval = ResultDict()
+    checker_result = check_and_correct_url(url)
+    valid_url = checker_result.get('corrected_url', url)
+    returnval = ResultDict(checker_result)
     try:
-        resp = session.request(method, url, allow_redirects=True)
-    except requests.exceptions.HTTPError as e:
+        resp = session.request(method.upper(), valid_url, allow_redirects=True)
+    except Exception as e:
         returnval.add_error(e)
-    if resp:
+    # a non-None requests.Response will evaluate to False if it carries an HTTPError value
+    if resp is not None:
         try:
             resp.raise_for_status()
         except Exception as e:
@@ -89,7 +122,7 @@ def find_data_access_urls(agency_id, catalog_url):
     if recent_responses.count() > 0:
         response = recent_responses.latest()
     else:
-        print('No stored response, fetch url')
+        logger.info('No stored response, fetch url')
         fetch_val = request_url(catalog_url)
         resp_data = fetch_val.get('response', None)
         response = URLResponse.objects.create_from_response(resp_data)
@@ -129,14 +162,15 @@ def report_on_data_access_urls(taskarg):
             for url in access_urls:
                 result = request_url(url, 'HEAD')
                 response = result.get('response', None)
-                if response:
+                if result.errors:
+                    returnval.errors.extend(result.errors)
+                if response is not None:
                     resp_obj = URLResponse.objects.create_from_response(response, save_content=False)
                     report.responses.add(resp_obj)
                     resp_obj.save()
                     response_ids.append(resp_obj.id)
                 else:
-                    print(result.errors)
-                    print('Got no response, durn!')
+                    logger.error("Error fetching and saving '{0}'!".format(url))
         else:
             report.message = "No dataset accessURLs were found for {0}".format(catalog_url)
         report.save()
@@ -144,11 +178,29 @@ def report_on_data_access_urls(taskarg):
     else:
         raise Exception('An agency id is required to create a report on data accessURLs.')
 
+@shared_task
+def crawl_agency_datasets(agency_id):
+    """Task that crawl the datasets from an agency data catalog.
+    Chains find_data_access_urls and report_on_data_access_urls tasks.
+
+    :param agency_id: Database id of the agency whose catalog should be crawled.
+
+    """
+    agency = Agency.objects.get(id=agency_id)
+    taskchain = chain(
+                    find_data_access_urls.subtask((agency.id, agency.data_json_url),
+                                                  options={'link_error':error_handler.s()}),
+                    report_on_data_access_urls.s()
+                )
+    return taskchain()
 
 @shared_task
 def report_for_agency_url(agency_id, url):
-    """
-    Task to save a basic report given an agency_id and a url.
+    """Task to save a basic report given an agency_id and a url.
+
+    :param agency_id: Database id of the agency to create a report for.
+    :param url: URL to report on.
+
     """
     result = request_url((url))
     returnval = ResultDict(result)
@@ -179,6 +231,8 @@ def report_for_agency_url(agency_id, url):
 def parse_json(taskarg):
     """
     Task to parse json from content
+
+    :param taskarg: ResultDict or regular dict containing values for keys 'content and optionally 'encoding'.
     """
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
