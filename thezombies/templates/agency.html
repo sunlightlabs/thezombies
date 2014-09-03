@@ -1,21 +1,17 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
 {% block content %}
-    <h2>{{ agency.name }} <small>{{ agency.agency_type }} Agency</small></h2>
-    <dl>
-        <dt>Website</dt>
-        <dd>{{ agency.url|urlize }}</dd>
-    </dl>
-    {% regroup agency.reports.all by url as url_list %}
-    {% for report_url in url_list %}
+    <header>
+        <h2>{{ agency.name }} <small>{{ agency.agency_type }} Agency</small></h2>
+        <dl>
+            <dt>Website</dt>
+            <dd>{{ agency.url|urlize }}</dd>
+        </dl>
+
+    </header>
+    {% regroup agency.reports.all by get_report_type_display as reports_by_type %}
+    {% for report_type in reports_by_type %}
     <section>
-        <h3>Reports on
-        {% if report_url.grouper == agency.data_json_url %}
-        Data Catalog
-        {% elif report_url.grouper == agency.digitalstrategy_json_url %}
-        Digital Strategy
-        {% endif %}
-        <small>{{ report_url.grouper|urlize }}</small>
-        </h3>
+        <h3>{{ report_type.grouper }}</h3>
         <table>
             <thead>
                 <tr>
@@ -30,15 +26,21 @@
                 </tr>
             </thead>
             <tbody>
-            {% for report in report_url.list %}
+            {% for report in report_type.list %}
                 <tr>
                     <td>{{ report.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                     <td>{{ report.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                     <td>{{ report.responses.earliest.url|urlizetrunc:26 }}</td>
                     <td>{{ report.responses.earliest.status_code|httpreason:True }}</td>
+                    {% if report.report_type == 'DCV' %}
                     <td><span class="label {{ report.responses.earliest.info.is_json|truthy:'success,alert,secondary' }}">{{ report.responses.earliest.info.is_json|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ report.responses.earliest.info.json_errors|truthy:'alert,success,secondary' }}">{{ report.responses.earliest.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ report.responses.earliest.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ report.responses.earliest.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td>
+                    {% else %}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    {% endif %}
                     <td><a href='{% url "thezombies.views.report" id=report.id %}'>View full report</a></td>
                 </tr>
             {% endfor %}

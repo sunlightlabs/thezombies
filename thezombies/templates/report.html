@@ -1,50 +1,63 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
 {% block content %}
-    <h2>Report on {{ report.url|urlizetrunc:60 }}</h2>
-    <h3><small>Agency:</small> {{report.agency }}</h3>
-    <p><strong>Created:</strong> {{ report.created_at }}</p>
+    <header>
+        <h2>{{ report.get_report_type_display }}</h2>
+        {% if report.url %}
+        <h3 class="subhead">Catalog URL: {{ report.url|urlizetrunc:60 }}</h3>
+        {% endif %}
+        <h3><small>Agency:</small> <a href="{{ report.agency.get_absolute_url }}">{{ report.agency }}</a></h3>
+        <p><strong>Created:</strong> {{ report.created_at }}</p>
+    </header>
     <section>
-        <h3>URLs visited for report</h3>
+        <h3>Visted {{ report.responses.count }} URLs for report</h3>
         <table>
             <thead>
                 <tr>
-                    <th>Final url</th>
-                    <th>URL redirects</th>
+                    <th>No.</th>
+                    <th>Requested url</th>
+                    <th>Content type</th>
                     <th>HTTP status</th>
-                    <th>Parsable as JSON</th>
-                    <th>JSON has errors</th>
-                    <th>Is valid data catalog</th>
+                    {# <th>Parsable as JSON</th> #}
+                    {# <th>JSON has errors</th> #}
+                    {# <th>Is valid data catalog</th> #}
+                    <th>Errors</th>
                 </tr>
             </thead>
             <tbody>
             {% for resp in report.responses.all %}
                 <tr>
-                    <td>{{ resp.url }}</td>
-                    <td>{{ resp.history|length }}</td>
+                    <td><a href="#response-{{ forloop.counter }}">#{{ forloop.counter }}</a></td>
+                    <td>{{ resp.requested_url }}</td>
+                    <td>{{ resp.content_type|default:"Not reported" }}</td>
                     <td>{{ resp.status_code|httpreason:True }}</td>
-                    <td><span class="label {{ resp.info.is_json|truthy:'success,alert,secondary' }}">{{ resp.info.is_json|truthy:"yes,no,unknown"|title }}</span></td>
-                    <td><span class="label {{ resp.info.json_errors|truthy:'alert,success,secondary' }}">{{ resp.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td>
-                    <td><span class="label {{ resp.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ resp.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td>
+                    {# <td><span class="label {{ resp.info.is_json|truthy:'success,alert,secondary' }}">{{ resp.info.is_json|truthy:"yes,no,unknown"|title }}</span></td> #}
+                    {# <td><span class="label {{ resp.info.json_errors|truthy:'alert,success,secondary' }}">{{ resp.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td> #}
+                    {# <td><span class="label {{ resp.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ resp.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td> #}
+                    <td>
+                    {% if resp.errors %}
+                    {{ resp.errors.count|default:"None" }}
+                    {% elif resp.status_code > 299 %}
+                    See HTTP status
+                    {% else %}
+                    None
+                    {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </section>
-    <section id="errors">
-        <h3>Errors</h3>
-    {% if report.responses.earliest.status_code != 200 %}
-        <p>Received an error of "{{ report.responses.earliest.status_code|httpreason:True }}" while attempting to access {{ report.url }}</p>
-    {% else %}
-        {% for resp in report.responses.all %}
-        {% if resp.errors %}
-        <h4 class="subheader">{{ resp.errors|length }} errors for: {{ resp.requested_url|urlize }}</h4>
-        {% endif %}
-            {% for error in resp.errors %}
-            <div class="panel failure"><pre class="error">{{ error }}</pre></div>
-            {% empty %}
-            <h4 class="success">No errors found.</h4>
-            {% endfor %}
-        {% endfor %}
-    {% endif %}
+    {% for resp in report.responses.all %}
+    <section class="details panel" id="response-{{ forloop.counter }}">
+        <h4><small>Details for:</small> {{ resp.url }}</h4>
+        <dl>
+            <dt>Status code</dt>
+            <dd>{{ resp.status_code|httpreason:True }}</dd>
+            <dt>Content type</dt>
+            <dd>{{ resp.content_type }}</dd>
+            <dt>Number of non-HTTP Errors</dt>
+            <dd>{{ resp.errors|length }} errors</dd>
+        </dl>
     </section>
+    {% endfor %}
 {% endblock %}
