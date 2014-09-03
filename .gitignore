@@ -69,3 +69,4 @@ gen/
 staticfiles/
 media/
 !*.sql
+sandbox/
