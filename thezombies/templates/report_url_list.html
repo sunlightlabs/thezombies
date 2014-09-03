@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
+{% block content %}
+{% include "_report_header.html" %}
+{% if is_paginated %}
+<p>URLs: <strong>{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of {{ paginator.count }}</p>
+{% endif %}
+{% include "_pagination_links.html" %}
+<table>
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Status code</th>
+            <th>Content type</th>
+            <th>Number of non-HTTP Errors</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for resp in responses.all %}
+        <tr>
+            <td>{{ resp.requested_url }}</td>
+            <td><span class="label {% spaceless %}
+            {% if resp.status_code > 299 %}
+                alert
+            {% else %}
+                warn
+            {% endif %}            {% endspaceless %}">{{ resp.status_code|httpreason:True }}</span></td>
+            <td>{{ resp.content_type }}</td>
+            <td>{{ resp.errors.count|default:"None" }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% include "_pagination_links.html" %}
+{% if is_paginated %}
+<p>URLs: <strong>{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of {{ paginator.count }}</p>
+{% endif %}
+{% endblock %}

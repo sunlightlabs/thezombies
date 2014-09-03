@@ -1,38 +1,24 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
 {% block content %}
-    <header>
-        <h2>{{ report.get_report_type_display }}</h2>
-        {% if report.url %}
-        <h3 class="subhead">Catalog URL: {{ report.url|urlizetrunc:60 }}</h3>
-        {% endif %}
-        <h3><small>Agency:</small> <a href="{{ report.agency.get_absolute_url }}">{{ report.agency }}</a></h3>
-        <p><strong>Created:</strong> {{ report.created_at }}</p>
-    </header>
+    {% include "_report_header.html" %}
     <section>
         <h3>Visted {{ report.responses.count }} URLs for report</h3>
         <table>
+            <caption>Here are the first 10 responses:</caption>
             <thead>
                 <tr>
-                    <th>No.</th>
                     <th>Requested url</th>
                     <th>Content type</th>
                     <th>HTTP status</th>
-                    {# <th>Parsable as JSON</th> #}
-                    {# <th>JSON has errors</th> #}
-                    {# <th>Is valid data catalog</th> #}
                     <th>Errors</th>
                 </tr>
             </thead>
             <tbody>
-            {% for resp in report.responses.all %}
+            {% for resp in report.responses.all|slice:":10" %}
                 <tr>
-                    <td><a href="#response-{{ forloop.counter }}">#{{ forloop.counter }}</a></td>
-                    <td>{{ resp.requested_url|urlizetrunc:40 }}</td>
+                    <td>{{ resp.requested_url|urlizetrunc:60 }}</td>
                     <td>{{ resp.content_type|default:"Not reported" }}</td>
                     <td>{{ resp.status_code|httpreason:True }}</td>
-                    {# <td><span class="label {{ resp.info.is_json|truthy:'success,alert,secondary' }}">{{ resp.info.is_json|truthy:"yes,no,unknown"|title }}</span></td> #}
-                    {# <td><span class="label {{ resp.info.json_errors|truthy:'alert,success,secondary' }}">{{ resp.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td> #}
-                    {# <td><span class="label {{ resp.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ resp.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td> #}
                     <td>
                     {% if resp.errors %}
                     {{ resp.errors.count|default:"None" }}
@@ -46,18 +32,6 @@
             {% endfor %}
             </tbody>
         </table>
+        <p><a href="{% url 'report-url-list' pk=report.pk %}">View all results</a></p>
     </section>
-    {% for resp in report.responses.all %}
-    <section class="details panel" id="response-{{ forloop.counter }}">
-        <h4><small>Details for:</small> {{ resp.url }}</h4>
-        <dl>
-            <dt>Status code</dt>
-            <dd>{{ resp.status_code|httpreason:True }}</dd>
-            <dt>Content type</dt>
-            <dd>{{ resp.content_type }}</dd>
-            <dt>Number of non-HTTP Errors</dt>
-            <dd>{{ resp.errors|length }} errors</dd>
-        </dl>
-    </section>
-    {% endfor %}
 {% endblock %}

@@ -29,16 +29,5 @@
             </tr>{% endfor %}
         </tbody>
     </table>
-    {% if is_paginated %}
-    <ul class="pagination">
-        <li class="arrow {% if not page_obj.has_previous %}unavailable{% endif %}"><a href="{% spaceless %}
-            {% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}
-        {% endspaceless %}
-        ">&laquo; Previous</a></li>
-        <li>Page {{ page_obj.number }} of {{ paginator.num_pages }}</li>
-        <li class="arrow {% if not page_obj.has_next %}unavailable{% endif %}"><a href="{% spaceless %}
-            {% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}
-        {% endspaceless %}">Next &raquo;</a></li>
-    </ul>
-    {% endif %}
+    {% include "_pagination_links.html" %}
 {% endblock %}
