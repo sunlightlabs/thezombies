@@ -1,7 +1,10 @@
 {% extends "base.html" %}{% load staticfiles %}
 
 {% block content %}
-    <p>{{ reports|length }} reports</p>
+    <header>
+        <h2>Reports</h2>
+        <h3 class="subhead">{{ reports|length }} reports</h3>
+    </header>
     <table>
         <thead>
             <tr>

@@ -45,7 +45,7 @@ class Report(models.Model):
         ordering =  ('-created_at',)
 
     def get_absolute_url(self):
-        return reverse('thezombies.views.report', kwargs={'id': str(self.id)})
+        return reverse('report-detail', kwargs={'id': str(self.id)})
 
 class URLResponseManager(hstore.HStoreManager):
 
@@ -115,8 +115,8 @@ class URLResponse(models.Model):
     objects = URLResponseManager()
 
     class Meta:
-        verbose_name = 'URLResponse'
-        verbose_name_plural = 'URLResponses'
+        verbose_name = 'URL Response'
+        verbose_name_plural = 'URL Responses'
         get_latest_by = 'created_at'
 
     def __repr__(self):
@@ -172,6 +172,6 @@ class Agency(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('thezombies.views.agency', kwargs={'slug': self.slug})
+        return reverse('agency-detail', kwargs={'slug': self.slug})
 
 

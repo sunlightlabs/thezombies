@@ -41,7 +41,7 @@
                     <td></td>
                     <td></td>
                     {% endif %}
-                    <td><a href='{% url "thezombies.views.report" id=report.id %}'>View full report</a></td>
+                    <td><a href='{{ report.get_absolute_url }}'>View full report</a></td>
                 </tr>
             {% endfor %}
             </tbody>

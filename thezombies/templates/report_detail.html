@@ -27,7 +27,7 @@
             {% for resp in report.responses.all %}
                 <tr>
                     <td><a href="#response-{{ forloop.counter }}">#{{ forloop.counter }}</a></td>
-                    <td>{{ resp.requested_url }}</td>
+                    <td>{{ resp.requested_url|urlizetrunc:40 }}</td>
                     <td>{{ resp.content_type|default:"Not reported" }}</td>
                     <td>{{ resp.status_code|httpreason:True }}</td>
                     {# <td><span class="label {{ resp.info.is_json|truthy:'success,alert,secondary' }}">{{ resp.info.is_json|truthy:"yes,no,unknown"|title }}</span></td> #}
