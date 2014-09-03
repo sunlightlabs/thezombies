@@ -45,7 +45,7 @@ class Report(models.Model):
         ordering =  ('-created_at',)
 
     def get_absolute_url(self):
-        return reverse('report-detail', kwargs={'id': str(self.id)})
+        return reverse('report-detail', kwargs={'pk': str(self.pk)})
 
 class URLResponseManager(hstore.HStoreManager):
 

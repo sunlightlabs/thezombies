@@ -16,6 +16,7 @@ class AgencyView(DetailView):
 class ReportList(ListView):
     model = Report
     context_object_name = 'reports'
+    paginate_by = 50
     template_name = 'reports_list.html'
 
 class ReportView(DetailView):

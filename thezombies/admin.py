@@ -13,7 +13,8 @@ class ResponseInline(admin.TabularInline):
         'status_code', 'reason')
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('agency', 'url', 'created_at')
+    list_display = ('agency', 'report_type', 'url', 'created_at')
+    list_filter = ('report_type',)
     search_fields = ('agency', 'url')
     ordering =  ('-created_at',)
     inlines = (ResponseInline,)
