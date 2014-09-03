@@ -157,9 +157,13 @@ def find_data_access_urls(agency_id, catalog_url):
 def report_on_data_access_urls(taskarg):
     agency_id = taskarg.get('agency_id', None)
     catalog_url = taskarg.get('catalog_url', None)
-    access_urls = taskarg.get('access_urls', [])
-    access_urls.remove(None)
+    access_urls = taskarg.get('access_urls', set())
     returnval = ResultDict(taskarg)
+    try:
+        access_urls.remove(None)
+        returnval.add_error(Exception('Found an accessURL with no associated value.'))
+    except KeyError:
+        pass
     returnval['report_type'] = Report.DATA_CATALOG_CRAWL
     if agency_id:
         report = Report.objects.create(agency_id=agency_id, report_type=Report.DATA_CATALOG_CRAWL)
