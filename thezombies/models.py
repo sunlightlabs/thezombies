@@ -13,6 +13,19 @@ except ImportError:
 
 class Report(models.Model):
     """A Report on agency, usually concerning data at a url"""
+
+    GENERIC_REPORT = 'RPT'
+    DATA_CATALOG_VALIDATION = 'DCV'
+    DATA_CATALOG_CRAWL = 'DCC'
+
+    REPORT_TYPE_CHOICES = (
+        (GENERIC_REPORT, 'Generic Report'),
+        (DATA_CATALOG_VALIDATION, 'Data Catalog Validation'),
+        (DATA_CATALOG_CRAWL, 'Data Catalog Crawl'),
+    )
+
+    report_type = models.CharField(max_length=3,
+                                    choices=REPORT_TYPE_CHOICES, default=GENERIC_REPORT)
     agency = models.ForeignKey('Agency', related_name='reports')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -25,7 +38,7 @@ class Report(models.Model):
         return '<Report: {0}>'.format(self.url if self.url else self.id)
 
     def __str__(self):
-        return 'Report on {0}'.format(self.url if self.url else self.agency)
+        return '{report_type} for {identifier}'.format(report_type=self.get_report_type_display(), identifier=self.url if self.url else self.agency)
 
     class Meta:
         get_latest_by = 'created_at'
@@ -86,8 +99,8 @@ class ResponseContent(models.Model):
 
 class URLResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    url = models.URLField()
-    requested_url = models.URLField()
+    url = models.TextField() # We may get (and want to store) really long or invalid urls, so...
+    requested_url = models.TextField() # We may get (and want to store) really long or invalid urls, so...
     encoding = models.CharField(max_length=40, blank=True, null=True)
     apparent_encoding = models.CharField(max_length=40, blank=True, null=True)
     content = models.OneToOneField(ResponseContent, null=True, related_name='content_for', editable=False)
@@ -102,8 +115,8 @@ class URLResponse(models.Model):
     objects = URLResponseManager()
 
     class Meta:
-        verbose_name = 'Requests Response'
-        verbose_name_plural = 'Requests Responses'
+        verbose_name = 'URLResponse'
+        verbose_name_plural = 'URLResponses'
         get_latest_by = 'created_at'
 
     def __repr__(self):

@@ -116,16 +116,21 @@ def request_url(url, method='GET'):
 
 @shared_task
 def find_data_access_urls(agency_id, catalog_url):
-    latest_date = URLResponse.objects.datetimes('created_at', 'minute').latest()
-    recent_responses = URLResponse.objects.filter(requested_url=catalog_url, created_at__day=latest_date.day)
+    latest_dates = URLResponse.objects.datetimes('created_at', 'minute')
+    recent_responses = None
+    if latest_dates:
+        latest_date = latest_dates.latest()
+        recent_responses = URLResponse.objects.filter(requested_url=catalog_url, created_at__day=latest_date.day)
+
     response = None
-    if recent_responses.count() > 0:
+    if recent_responses and recent_responses.count() > 0:
         response = recent_responses.latest()
     else:
         logger.info('No stored response, fetch url')
         fetch_val = request_url(catalog_url)
         resp_data = fetch_val.get('response', None)
-        response = URLResponse.objects.create_from_response(resp_data)
+        with transaction.atomic():
+            response = URLResponse.objects.create_from_response(resp_data)
     result_dict = parse_json({'content':response.content.string(), 'encoding':response.encoding})
     jsondata = result_dict.get('json', None)
     returnval = ResultDict({'agency_id': agency_id, 'catalog_url':catalog_url})
@@ -153,9 +158,11 @@ def report_on_data_access_urls(taskarg):
     agency_id = taskarg.get('agency_id', None)
     catalog_url = taskarg.get('catalog_url', None)
     access_urls = taskarg.get('access_urls', [])
+    access_urls.remove(None)
     returnval = ResultDict(taskarg)
+    returnval['report_type'] = Report.DATA_CATALOG_CRAWL
     if agency_id:
-        report = Report.objects.create(agency_id=agency_id)
+        report = Report.objects.create(agency_id=agency_id, report_type=Report.DATA_CATALOG_CRAWL)
         returnval['report_id'] = report.id
         response_ids = []
         if len(access_urls) > 0:
@@ -165,15 +172,17 @@ def report_on_data_access_urls(taskarg):
                 if result.errors:
                     returnval.errors.extend(result.errors)
                 if response is not None:
-                    resp_obj = URLResponse.objects.create_from_response(response, save_content=False)
-                    report.responses.add(resp_obj)
-                    resp_obj.save()
-                    response_ids.append(resp_obj.id)
+                    with transaction.atomic():
+                        resp_obj = URLResponse.objects.create_from_response(response, save_content=False)
+                        report.responses.add(resp_obj)
+                        resp_obj.save()
+                        response_ids.append(resp_obj.id)
                 else:
                     logger.error("Error fetching and saving '{0}'!".format(url))
         else:
             report.message = "No dataset accessURLs were found for {0}".format(catalog_url)
         report.save()
+        returnval['response_ids'] = response_ids
         return returnval
     else:
         raise Exception('An agency id is required to create a report on data accessURLs.')
@@ -195,11 +204,12 @@ def crawl_agency_datasets(agency_id):
     return taskchain()
 
 @shared_task
-def report_for_agency_url(agency_id, url):
+def report_for_agency_url(agency_id, url, report_type=Report.GENERIC_REPORT):
     """Task to save a basic report given an agency_id and a url.
 
     :param agency_id: Database id of the agency to create a report for.
     :param url: URL to report on.
+    :param report_type: Optional report type (as provided by Report model)
 
     """
     result = request_url((url))
@@ -214,6 +224,7 @@ def report_for_agency_url(agency_id, url):
             report = Report.objects.create(agency_id=agency_id, url=response.requested_url)
         else:
             report = Report.objects.create(agency_id=agency_id)
+        report.report_type = report_type
         report.save()
         returnval['report_id'] = report.id
         if response:
@@ -259,13 +270,12 @@ def parse_json(taskarg):
     return returnval
 
 @shared_task
-def parse_json_from_response_with_report(taskarg):
+def parse_json_from_response(taskarg):
     """
-    Task to follow a report_for_agency_url task
+    Task to parse json from a response.
     """
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
-    report_id = taskarg.get('report_id', None)
     response_id = taskarg.get('response_id', None)
     response_info = taskarg.get('response_info', {})
     returnval = ResultDict(taskarg)
@@ -305,11 +315,13 @@ def validate_json_catalog(taskarg):
                 returnval.add_error(e)
     response_info['is_valid_data_catalog'] = is_valid
     returnval.get('response_info', {}).update(response_info)
+    returnval['report_type'] = Report.DATA_CATALOG_VALIDATION
     return returnval
 
 @shared_task
 def save_response_info(taskarg):
     report_id = taskarg.get('report_id', None)
+    report_type = taskarg.get('report_type', Report.GENERIC_REPORT)
     response_id = taskarg.get('response_id', None)
     response_info = taskarg.get('response_info', {})
     returnval = ResultDict(taskarg)
@@ -322,6 +334,7 @@ def save_response_info(taskarg):
             try:
                 with transaction.atomic():
                     report = Report.objects.get(id=report_id)
+                    report.report_type = report_type
                     report.save()
                     if response_id:
                         response = URLResponse.objects.get(id=response_id)
@@ -334,12 +347,12 @@ def save_response_info(taskarg):
                 raise e
 
 @shared_task
-def crawl_json_catalog_urls():
+def validate_data_catalogs():
     agencies = Agency.objects.all()
     groupchain = group([chain(
-                    report_for_agency_url.subtask((agency.id, agency.data_json_url),
+                    report_for_agency_url.subtask((agency.id, agency.data_json_url, Report.DATA_CATALOG_VALIDATION),
                                                   options={'link_error':error_handler.s()}),
-                    parse_json_from_response_with_report.s(),
+                    parse_json_from_response.s(),
                     validate_json_catalog.s(),
                     save_response_info.s()
                 ) for agency in agencies])
