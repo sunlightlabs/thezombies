@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 
-from thezombies.models import (Agency, Report, URLResponse)
+from thezombies.models import (Agency, Report, URLInspection)
 
 
 class AgencyList(ListView):
@@ -32,7 +32,7 @@ class ReportURLList(ListView):
 
     def get_queryset(self):
         self.report = get_object_or_404(Report, pk=self.kwargs.get('pk'))
-        return URLResponse.objects.filter(report=self.report)
+        return URLInspection.objects.filter(report=self.report)
 
     def get_context_data(self, **kwargs):
         context = super(ReportURLList, self).get_context_data(**kwargs)

@@ -16,11 +16,11 @@ from celery.utils.log import get_task_logger
 
 from django.conf import settings
 from django.db import transaction, DatabaseError
+from django.core.exceptions import ObjectDoesNotExist
 import requests
 from requests.exceptions import (MissingSchema, InvalidSchema, InvalidURL)
-from requests.packages.urllib3.exceptions import ProtocolError
 
-from thezombies.models import (Report, URLResponse, Agency)
+from thezombies.models import (Report, URLInspection, Agency)
 
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
@@ -48,7 +48,10 @@ class ResultDict(dict):
         """Provide an error object, ResultDict will store the class and value of that error"""
         if error:
             error_name = error.__class__.__name__
-            error_message = getattr(error, 'message', str(error))
+            if error.message and error.message != '':
+                error_message = error.message
+            else:
+                 error_message = ', '.join([str(a) for a in error.args])
             if isinstance(error, ValidationError):
                 error_message = '{} >>\n {}'.format(error.message, error.schema)
             error_str = '{0}: {1}'.format(error_name, error_message)
@@ -116,11 +119,16 @@ def request_url(url, method='GET'):
 
 @shared_task
 def find_data_access_urls(agency_id, catalog_url):
-    latest_dates = URLResponse.objects.datetimes('created_at', 'minute')
+    """Task to find accessURLs in a data catalog JSON. Tracks and returns errors.
+
+    :param agency_id: Database id of the agency whose catalog should be searched
+    :param catalog_url: The url of the catalog to search. Generally accessible on agency.data_json_url
+    """
+    latest_dates = URLInspection.objects.datetimes('created_at', 'minute')
     recent_responses = None
     if latest_dates:
         latest_date = latest_dates.latest()
-        recent_responses = URLResponse.objects.filter(requested_url=catalog_url, created_at__day=latest_date.day)
+        recent_responses = URLInspection.objects.filter(requested_url=catalog_url, created_at__day=latest_date.day)
 
     response = None
     if recent_responses and recent_responses.count() > 0:
@@ -130,7 +138,7 @@ def find_data_access_urls(agency_id, catalog_url):
         fetch_val = request_url(catalog_url)
         resp_data = fetch_val.get('response', None)
         with transaction.atomic():
-            response = URLResponse.objects.create_from_response(resp_data)
+            response = URLInspection.objects.create_from_response(resp_data)
     result_dict = parse_json({'content':response.content.string(), 'encoding':response.encoding})
     jsondata = result_dict.get('json', None)
     returnval = ResultDict({'agency_id': agency_id, 'catalog_url':catalog_url})
@@ -149,12 +157,47 @@ def find_data_access_urls(agency_id, catalog_url):
                 access_urls.add(item.get('accessURL'))
     else:
         # Report some error or something
-        report.message = "Unable to load json data from '{0}'. Cannot find accessURLs for datasets"
+        report.messages.append("Unable to load json data from '{0}'. Cannot find accessURLs for datasets")
     returnval['access_urls'] = access_urls
     return returnval
 
+@shared_task(ignore_result=True)
+def check_data_access_url(taskarg):
+    """Task to check an accessURL from a data catalog, using a HEAD request. Tracks and returns errors.
+
+    :param taskarg: A dictionary containing a url, and optionally a report_id
+    """
+    returnval = ResultDict(taskarg)
+    url = taskarg.get('url', None)
+    report_id = taskarg.get('report_id', None)
+    if url:
+        result = request_url(url, 'HEAD')
+        response = result.get('response', None)
+        returnval.errors.extend(result.errors)
+        if response is not None:
+            with transaction.atomic():
+                resp_obj = URLInspection.objects.create_from_response(response, save_content=False)
+                resp_obj.errors = result.errors
+                if report_id:
+                    resp_obj.report_id = report_id
+                resp_obj.save()
+                returnval['response_id'] = resp_obj.id
+        else:
+            with transaction.atomic():
+                resp_obj = URLInspection.objects.create(requested_url=url, errors=result.errors)
+                if report_id:
+                    resp_obj.report_id = report_id
+                resp_obj.save()
+                returnval['response_id'] = resp_obj.id
+
+    return returnval
+
 @shared_task
-def report_on_data_access_urls(taskarg):
+def report_on_data_access_url_list(taskarg):
+    """Task to build a report on accessURLs from a data catalog. Spawns asynchronous report_on_data_access_url tasks
+
+    :param taskarg: A dictionary containing an agency_id, a catalog_url, and a set of access_urls
+    """
     agency_id = taskarg.get('agency_id', None)
     catalog_url = taskarg.get('catalog_url', None)
     access_urls = taskarg.get('access_urls', set())
@@ -168,25 +211,17 @@ def report_on_data_access_urls(taskarg):
     if agency_id:
         report = Report.objects.create(agency_id=agency_id, report_type=Report.DATA_CATALOG_CRAWL)
         returnval['report_id'] = report.id
-        response_ids = []
         if len(access_urls) > 0:
             for url in access_urls:
-                result = request_url(url, 'HEAD')
-                response = result.get('response', None)
-                if result.errors:
-                    returnval.errors.extend(result.errors)
-                if response is not None:
-                    with transaction.atomic():
-                        resp_obj = URLResponse.objects.create_from_response(response, save_content=False)
-                        report.responses.add(resp_obj)
-                        resp_obj.save()
-                        response_ids.append(resp_obj.id)
-                else:
-                    logger.error("Error fetching and saving '{0}'!".format(url))
+                # Spawn asynchronous tasks to check_data_access_url.
+                # Hope that atomic transactions prevents bad things from happening.
+                check_data_access_url.delay({'url': url, 'report_id': report.id })
         else:
-            report.message = "No dataset accessURLs were found for {0}".format(catalog_url)
-        report.save()
-        returnval['response_ids'] = response_ids
+            message = "No dataset accessURLs were found for {0}".format(catalog_url)
+            report.messages.append(message)
+
+        with transaction.atomic():
+            report.save()
         return returnval
     else:
         raise Exception('An agency id is required to create a report on data accessURLs.')
@@ -194,7 +229,7 @@ def report_on_data_access_urls(taskarg):
 @shared_task
 def crawl_agency_datasets(agency_id):
     """Task that crawl the datasets from an agency data catalog.
-    Chains find_data_access_urls and report_on_data_access_urls tasks.
+    Chains find_data_access_urls and report_on_data_access_url_list tasks.
 
     :param agency_id: Database id of the agency whose catalog should be crawled.
 
@@ -203,7 +238,7 @@ def crawl_agency_datasets(agency_id):
     taskchain = chain(
                     find_data_access_urls.subtask((agency.id, agency.data_json_url),
                                                   options={'link_error':error_handler.s()}),
-                    report_on_data_access_urls.s()
+                    report_on_data_access_url_list.s()
                 )
     return taskchain()
 
@@ -224,7 +259,7 @@ def report_for_agency_url(agency_id, url, report_type=Report.GENERIC_REPORT):
     response = None
     with transaction.atomic():
         if resp_data is not None:
-            response = URLResponse.objects.create_from_response(resp_data)
+            response = URLInspection.objects.create_from_response(resp_data)
             report = Report.objects.create(agency_id=agency_id, url=response.requested_url)
         else:
             report = Report.objects.create(agency_id=agency_id)
@@ -283,7 +318,7 @@ def parse_json_from_response(taskarg):
     response_id = taskarg.get('response_id', None)
     response_info = taskarg.get('response_info', {})
     returnval = ResultDict(taskarg)
-    response = URLResponse.objects.get(id=response_id)
+    response = URLInspection.objects.get(id=response_id)
     response_content = response.content.string()
     encoding = response.encoding if response.encoding else response.apparent_encoding
     result_dict = parse_json({'content':response_content, 'encoding':encoding})
@@ -341,7 +376,7 @@ def save_response_info(taskarg):
                     report.report_type = report_type
                     report.save()
                     if response_id:
-                        response = URLResponse.objects.get(id=response_id)
+                        response = URLInspection.objects.get(id=response_id)
                         response.info.update(response_info)
                         if len(returnval.errors):
                             response.errors.extend(returnval.errors)

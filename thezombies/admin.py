@@ -1,18 +1,10 @@
 from django.contrib import admin
-from thezombies.models import Agency, Report, URLResponse
+from thezombies.models import Agency, Report, URLInspection
 
 
 class AgencyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ('name', 'agency_type', 'url')
-
-class ResponseInline(admin.TabularInline):
-    model = URLResponse
-    max_num = 10
-    extra = 0
-    can_delete = False
-    exclude = ('headers', 'content')
-    readonly_fields = ('url', 'requested_url', 'encoding', 'status_code', 'reason')
 
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('agency', 'report_type', 'url', 'created_at')
@@ -41,15 +33,15 @@ class ReportAdmin(admin.ModelAdmin):
             name = '{0} on {1}'.format(name, obj.url)
         return name
 
-class URLResponseAdmin(admin.ModelAdmin):
-    list_display = ('url', 'status_code', 'requested_url', 'report', 'created_at')
+class URLInspectionAdmin(admin.ModelAdmin):
+    list_display = ('requested_url', 'url', 'status_code', 'report', 'created_at')
     list_filter = ('status_code',)
-    search_fields = ('url', 'requested_url')
+    search_fields = ('requested_url', 'url')
     exclude = ('content',)
     ordering =  ('-created_at',)
-    readonly_fields = ('info', 'errors',)
+    readonly_fields = ('requested_url', 'url', 'info', 'errors')
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Report, ReportAdmin)
-admin.site.register(URLResponse, URLResponseAdmin)
+admin.site.register(URLInspection, URLInspectionAdmin)
 
