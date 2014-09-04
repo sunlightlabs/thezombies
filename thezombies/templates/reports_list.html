@@ -3,7 +3,7 @@
 {% block content %}
     <header>
         <h2>Reports</h2>
-        <h4 class="subhead">
+        <h4 class="subheader">
         {% if is_paginated %}
         {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ paginator.count }} reports
         {% else %}

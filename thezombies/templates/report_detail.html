@@ -2,7 +2,13 @@
 {% block content %}
     {% include "_report_header.html" %}
     <section>
-        <h3>Visted {{ report.responses.count }} URLs for report</h3>
+        <h3>Summary</h3>
+    {% if report.messages|length %}
+        {% for msg in report.messages %}
+            <p>{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+        <h4 class="subheader">Visted {{ report.responses.count }} URLs for report</h4>
         <table>
             <caption>Here are the first 10 responses:</caption>
             <thead>
@@ -18,10 +24,10 @@
                 <tr>
                     <td>{{ resp.requested_url|urlizetrunc:60 }}</td>
                     <td>{{ resp.content_type|default:"Not reported" }}</td>
-                    <td>{{ resp.status_code|httpreason:True }}</td>
+                    <td>{{ resp.status_code|httpreason:True|default:"Unknown" }}</td>
                     <td>
-                    {% if resp.errors %}
-                    {{ resp.errors.count|default:"None" }}
+                    {% if resp.errors.count > 0 %}
+                    {{ resp.errors|join:", " }}
                     {% elif resp.status_code > 299 %}
                     See HTTP status
                     {% else %}

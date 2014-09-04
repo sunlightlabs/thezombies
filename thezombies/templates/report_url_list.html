@@ -1,6 +1,7 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
 {% block content %}
 {% include "_report_header.html" %}
+<h5><a href="{{ report.get_absolute_url }}">Return to summary page</a></h5>
 {% if is_paginated %}
 <p>URLs: <strong>{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of {{ paginator.count }}</p>
 {% endif %}
@@ -19,11 +20,12 @@
         <tr>
             <td>{{ resp.requested_url }}</td>
             <td><span class="label {% spaceless %}
-            {% if resp.status_code > 299 %}
-                alert
-            {% else %}
+            {% if resp.status_code < 400 %}
                 warn
-            {% endif %}            {% endspaceless %}">{{ resp.status_code|httpreason:True }}</span></td>
+            {% else %}
+                alert
+            {% endif %}
+            {% endspaceless %}">{{ resp.status_code|httpreason:True|default:"Unknown" }}</span></td>
             <td>{{ resp.content_type }}</td>
             <td>{{ resp.errors.count|default:"None" }}</td>
         </tr>
