@@ -12,8 +12,8 @@ class ReportAdmin(admin.ModelAdmin):
     search_fields = ('agency', 'url')
     ordering =  ('-created_at',)
     date_hierarchy = 'created_at'
-    readonly_fields = ('responses_total_count', 'responses_failure_count', 'responses_404_count',
-                        'responses_html_count', 'created_at', 'updated_at', 'messages')
+    readonly_fields = ('inspections_total_count', 'inspections_failure_count', 'inspections_404_count',
+                        'inspections_html_count', 'created_at', 'updated_at', 'messages')
     fieldsets = (
         (None, {
                 'fields': (('agency', 'report_type'), ('created_at', 'updated_at'), 'notes', 'url')
@@ -21,8 +21,8 @@ class ReportAdmin(admin.ModelAdmin):
         ('Messages', {
                 'fields': ('messages',)
             }),
-        ('Responses', {
-                'fields': ('responses_total_count', 'responses_failure_count', 'responses_404_count', 'responses_html_count'),
+        ('URL Inspections', {
+                'fields': ('inspections_total_count', 'inspections_failure_count', 'inspections_404_count', 'inspections_html_count'),
                 'classes': ('wide',),
             }),
     )

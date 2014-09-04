@@ -56,17 +56,17 @@ class Report(models.Model):
     def get_absolute_url(self):
         return reverse('report-detail', kwargs={'pk': str(self.pk)})
 
-    def responses_failure_count(self):
-        return self.responses.filter(status_code__gte=400).count()
+    def inspections_failure_count(self):
+        return self.inspections.filter(status_code__gte=400).count()
 
-    def responses_404_count(self):
-        return self.responses.filter(status_code=404).count()
+    def inspections_404_count(self):
+        return self.inspections.filter(status_code=404).count()
 
-    def responses_html_count(self):
-        return self.responses.filter(headers__contains={'content-type':'text/html'}).count()
+    def inspections_html_count(self):
+        return self.inspections.filter(headers__contains={'content-type':'text/html'}).count()
 
-    def responses_total_count(self):
-        return self.responses.count()
+    def inspections_total_count(self):
+        return self.inspections.count()
 
 
 class URLInspectionManager(hstore.HStoreManager):
@@ -132,7 +132,7 @@ class URLInspection(models.Model):
     headers = hstore.DictionaryField(default=dictionary_default)
     info = hstore.DictionaryField(blank=True, null=True, default=dictionary_default)
     errors = TextArrayField(blank=True, null=True, default=list_default)
-    report = models.ForeignKey('Report', related_name='responses', null=True, blank=True)
+    report = models.ForeignKey('Report', related_name='inspections', null=True, blank=True)
 
     objects = URLInspectionManager()
 

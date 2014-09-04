@@ -268,7 +268,7 @@ def report_for_agency_url(agency_id, url, report_type=Report.GENERIC_REPORT):
         returnval['report_id'] = report.id
         if response:
             response.errors.extend(returnval.errors)
-            report.responses.add(response)
+            report.inspections.add(response)
             response.save()
             returnval['response_id'] = response.id
     if not resp_data.ok:

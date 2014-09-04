@@ -20,14 +20,14 @@
         <tr>
             <td>{{ resp.requested_url }}</td>
             <td><span class="label {% spaceless %}
-            {% if resp.status_code < 400 %}
+            {% if resp.status_code and resp.status_code < 400 %}
                 warn
             {% else %}
                 alert
             {% endif %}
             {% endspaceless %}">{{ resp.status_code|httpreason:True|default:"Unknown" }}</span></td>
             <td>{{ resp.content_type }}</td>
-            <td>{{ resp.errors.count|default:"None" }}</td>
+            <td>{{ resp.errors|length }}</td>
         </tr>
 {% endfor %}
     </tbody>
