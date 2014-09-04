@@ -11,6 +11,12 @@ try:
 except ImportError:
     from urlparse import urljoin, urlparse
 
+def list_default():
+    return []
+
+def dictionary_default():
+    return {}
+
 class Report(models.Model):
     """A Report on agency, usually concerning data at a url"""
 
@@ -29,10 +35,9 @@ class Report(models.Model):
     agency = models.ForeignKey('Agency', related_name='reports')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    message = models.TextField(blank=True)
+    notes = models.TextField(blank=True, help_text='You can record basic (unformatted text) notes here.')
+    messages = TextArrayField(blank=True, null=True, default=list_default, editable=False, help_text='Stores messages generated when report was run.')
     url = models.URLField(blank=True, null=True)
-
-    objects = hstore.HStoreManager()
 
     def __repr__(self):
         return '<Report: {0}>'.format(self.url if self.url else self.id)
@@ -46,6 +51,19 @@ class Report(models.Model):
 
     def get_absolute_url(self):
         return reverse('report-detail', kwargs={'pk': str(self.pk)})
+
+    def responses_failure_count(self):
+        return self.responses.filter(status_code__gte=400).count()
+
+    def responses_404_count(self):
+        return self.responses.filter(status_code=404).count()
+
+    def responses_html_count(self):
+        return self.responses.filter(headers__contains={'content-type':'text/html'}).count()
+
+    def responses_total_count(self):
+        return self.responses.count()
+
 
 class URLResponseManager(hstore.HStoreManager):
 
@@ -107,9 +125,9 @@ class URLResponse(models.Model):
     history = hstore.ReferencesField(blank=True, null=True)
     status_code = models.IntegerField(max_length=3)
     reason = models.CharField(max_length=80, help_text='Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".')
-    headers = hstore.DictionaryField()
-    info = hstore.DictionaryField(blank=True, null=True, default={})
-    errors = TextArrayField(blank=True, null=True, default=[])
+    headers = hstore.DictionaryField(default=dictionary_default)
+    info = hstore.DictionaryField(blank=True, null=True, default=dictionary_default)
+    errors = TextArrayField(blank=True, null=True, default=list_default)
     report = models.ForeignKey('Report', related_name='responses', null=True, blank=True)
 
     objects = URLResponseManager()

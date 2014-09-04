@@ -8,16 +8,32 @@ class AgencyAdmin(admin.ModelAdmin):
 
 class ResponseInline(admin.TabularInline):
     model = URLResponse
+    max_num = 10
+    extra = 0
+    can_delete = False
     exclude = ('headers', 'content')
-    readonly_fields = ('url', 'requested_url', 'encoding', 'apparent_encoding',
-        'status_code', 'reason')
+    readonly_fields = ('url', 'requested_url', 'encoding', 'status_code', 'reason')
 
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('agency', 'report_type', 'url', 'created_at')
     list_filter = ('report_type',)
     search_fields = ('agency', 'url')
     ordering =  ('-created_at',)
-    inlines = (ResponseInline,)
+    date_hierarchy = 'created_at'
+    readonly_fields = ('responses_total_count', 'responses_failure_count', 'responses_404_count',
+                        'responses_html_count', 'created_at', 'updated_at', 'messages')
+    fieldsets = (
+        (None, {
+                'fields': (('agency', 'report_type'), ('created_at', 'updated_at'), 'notes', 'url')
+            }),
+        ('Messages', {
+                'fields': ('messages',)
+            }),
+        ('Responses', {
+                'fields': ('responses_total_count', 'responses_failure_count', 'responses_404_count', 'responses_html_count'),
+                'classes': ('wide',),
+            }),
+    )
 
     def display_name(self, obj):
         name = 'Report for {0}'.format(obj.agency.name)
