@@ -189,50 +189,65 @@ def inspect_data_catalog_item(taskarg):
         if url:
             task_dict = ResultDict(orig_task)
             task_dict['url'] = url
+            task_dict['urlType'] = field
             return task_dict
         return None
 
-    item = taskarg.get('item', None)
-    meta_fields = ('title', 'accessLevel', 'publisher', 'modified')
-    taskarg['item_info'] = { key: item.get(key, None) for key in meta_fields }
-    if item:
-        url_fields = ('accessURL', 'webService')
+    def find_tasks(item, url_fields, taskarg):
+        tasks = []
         for field in url_fields:
             if field in item:
                     task_dict = make_task(field, item, taskarg)
                     if task_dict:
-                        inspect_data_access_url.delay(task_dict)
+                        tasks.append(task_dict)
                     else:
-                        logger.error('Unable to make a task dictionary to pass to inspect_data_access_url')
+                        logger.error('Unable to make a task dictionary to pass to inspect_data_catalog_item_url')
             else:
                 logger.warn("No '{0}' in item.".format(field))
+        return tasks
+
+    item = taskarg.get('item', None)
+    report_id = taskarg.get('report_id', None)
+    meta_fields = ('title', 'accessLevel', 'publisher', 'modified')
+    taskarg['item_info'] = { key: item.get(key, None) for key in meta_fields }
+    item_title = item.get('title', 'No title provided.')
+    task_args = []
+    if item:
+        url_fields = ('accessURL', 'webService')
+        task_args.extend(find_tasks(item, url_fields, taskarg))
         if 'distribution' in item:
             distribution = item.get('distribution', None)
             if distribution:
                 for d in distribution:
-                    for field in url_fields:
-                        if field in d:
-                            task_dict = make_task(field, d, taskarg)
-                            if task_dict:
-                                inspect_data_access_url.delay(task_dict)
-                            else:
-                                logger.error('Unable to make a task dictionary to pass to inspect_data_access_url')
-                        else:
-                            logger.warn("No '{0}' in distribution item.".format(field))
+                    task_args.extend(find_tasks(item, url_fields, taskarg))
+
+        if len(task_args) > 0:
+            for t in task_args:
+                inspect_data_catalog_item_url.delay(t)
+        else:
+            if report_id:
+                with transaction.atomic():
+                    report = Report.objects.get(id=report_id)
+                    report.messages.append("No urls found for catalog item titled '{0}'".format(item_title))
+                    report.save()
+
 
     else:
         logger.warn('No item passed to inspect_data_catalog_item')
 
 
-@shared_task(ignore_result=True)
-def inspect_data_access_url(taskarg):
+@shared_task(ignore_result=True, rate_limit='10/s')
+def inspect_data_catalog_item_url(taskarg):
     """Task to check an accessURL from a data catalog, using a HEAD request. Tracks and returns errors.
 
     :param taskarg: A dictionary containing a url, and optionally a report_id
     """
     returnval = ResultDict(taskarg)
     url = taskarg.get('url', None)
+    urlType = taskarg.get('urlType', None)
     item_info = taskarg.get('item_info', {})
+    if urlType:
+        item_info['urlType'] = urlType
     logger.info(item_info)
     report_id = taskarg.get('report_id', None)
     if url:
@@ -262,7 +277,7 @@ def inspect_data_access_url(taskarg):
 def crawl_agency_datasets(agency_id):
     """Task that crawl the datasets from an agency data catalog.
     Runs create_data_crawl_report, which spawns inspect_data_catalog_item tasks which in turn spawns
-    inspect_data_access_url tasks.
+    inspect_data_catalog_item_url tasks.
 
     :param agency_id: Database id of the agency whose catalog should be crawled.
 
