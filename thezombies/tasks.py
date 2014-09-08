@@ -118,28 +118,43 @@ def request_url(url, method='GET'):
     return returnval
 
 @shared_task
-def find_data_access_urls(agency_id, catalog_url):
-    """Task to find accessURLs in a data catalog JSON. Tracks and returns errors.
+def get_or_create_inspection(url):
+    """Task to get the lastest URLInspection or create a new one if none exists.
 
-    :param agency_id: Database id of the agency whose catalog should be searched
-    :param catalog_url: The url of the catalog to search. Generally accessible on agency.data_json_url
+    :param url: The url to retrieve.
     """
     latest_dates = URLInspection.objects.datetimes('created_at', 'minute')
     recent_responses = None
     if latest_dates:
         latest_date = latest_dates.latest()
-        recent_responses = URLInspection.objects.filter(requested_url=catalog_url, created_at__day=latest_date.day)
+        recent_responses = URLInspection.objects.filter(requested_url=url, created_at__day=latest_date.day, parent_id__isnull=True)
 
     response = None
     if recent_responses and recent_responses.count() > 0:
         response = recent_responses.latest()
     else:
         logger.info('No stored response, fetch url')
-        fetch_val = request_url(catalog_url)
+        fetch_val = request_url(url)
         resp_data = fetch_val.get('response', None)
         with transaction.atomic():
             response = URLInspection.objects.create_from_response(resp_data)
-    result_dict = parse_json({'content':response.content.string(), 'encoding':response.encoding})
+            response.save()
+    return ResultDict({'response_id': getattr(response, 'id', None), 'url':url})
+
+@shared_task
+def find_data_access_urls(agency_id, catalog_url):
+    """Task to find accessURLs in a data catalog JSON. Tracks and returns errors.
+
+    :param agency_id: Database id of the agency whose catalog should be searched
+    :param catalog_url: The url of the catalog to search. Generally accessible on agency.data_json_url
+    """
+    fetcher = get_or_create_inspection(catalog_url)
+    response_id = fetcher.get('response_id')
+    response = URLInspection.objects.get(id=response_id)
+
+    parse_args = {'content':response.content.string()}
+    parse_args['encoding'] = response.encoding if response.encoding else response.apparent_encoding
+    result_dict = parse_json(parse_args)
     jsondata = result_dict.get('json', None)
     returnval = ResultDict({'agency_id': agency_id, 'catalog_url':catalog_url})
     access_urls = set()
@@ -149,10 +164,11 @@ def find_data_access_urls(agency_id, catalog_url):
             hasAccessURL = 'accessURL' in item
             hasDistribution = 'distribution' in item
             if hasDistribution:
-                distribution = item.get('distribution', [])
-                for d in distribution:
-                    if 'accessURL' in d:
-                        access_urls.add(d.get('accessURL'))
+                distribution = item.get('distribution', None)
+                if distribution is not None:
+                    for d in distribution:
+                        if 'accessURL' in d:
+                            access_urls.add(d.get('accessURL'))
             elif hasAccessURL:
                 access_urls.add(item.get('accessURL'))
     else:

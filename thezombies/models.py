@@ -88,7 +88,8 @@ class URLInspectionManager(hstore.HStoreManager):
             if save_content:
                 obj.apparent_encoding = resp.apparent_encoding
             for n, hist in enumerate(resp.history):
-                histobj = self.create(requested_url=hist.request.url, url=hist.url, status_code=hist.status_code, encoding=resp.encoding)
+                histobj = self.create(requested_url=hist.request.url, url=hist.url,
+                                      status_code=hist.status_code, encoding=resp.encoding, parent=obj)
                 histobj.headers = dict(hist.headers)
                 histobj.save()
                 obj.history[str(n)] = histobj
@@ -114,7 +115,7 @@ class ResponseContent(models.Model):
         return str(self.binary)
 
     def __repr__(self):
-        return '<ResponseContent: {0 bytes>'.format(self.length)
+        return '<ResponseContent: {0} bytes>'.format(self.length)
 
     def __str__(self):
         return self.__repr__()
@@ -127,6 +128,7 @@ class URLInspection(models.Model):
     apparent_encoding = models.CharField(max_length=40, blank=True, null=True)
     content = models.OneToOneField(ResponseContent, null=True, related_name='content_for', editable=False)
     history = hstore.ReferencesField(blank=True, null=True)
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
     status_code = models.IntegerField(max_length=3, blank=True, null=True)
     reason = models.CharField(blank=True, null=True, max_length=80, help_text='Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".')
     headers = hstore.DictionaryField(default=dictionary_default)
