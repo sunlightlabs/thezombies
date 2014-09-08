@@ -27,7 +27,7 @@
                     <td>{{ resp.status_code|httpreason:True|default:"Unknown" }}</td>
                     <td>
                     {% if resp.errors.count > 0 %}
-                    {{ resp.errors|join:", " }}
+                    {{ resp.errors|join:", "|truncatewords:200 }}
                     {% elif resp.status_code > 299 %}
                     See HTTP status
                     {% else %}

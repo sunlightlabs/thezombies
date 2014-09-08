@@ -18,7 +18,7 @@
     <tbody>
 {% for resp in responses.all %}
         <tr>
-            <td>{{ resp.requested_url }}</td>
+            <td>{{ resp.requested_url|urlizetrunc:100 }}</td>
             <td><span class="label {% spaceless %}
             {% if resp.status_code and resp.status_code < 400 %}
                 warn
