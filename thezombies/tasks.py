@@ -142,8 +142,9 @@ def get_or_create_inspection(url):
     return ResultDict({'response_id': getattr(response, 'id', None), 'url':url})
 
 @shared_task
-def find_data_access_urls(agency_id, catalog_url):
-    """Task to find accessURLs in a data catalog JSON. Tracks and returns errors.
+def create_data_crawl_report(agency_id, catalog_url):
+    """Create a report to track the crawl of a data catalog url and
+    spawns tasks to inspect individual objects in the catalog
 
     :param agency_id: Database id of the agency whose catalog should be searched
     :param catalog_url: The url of the catalog to search. Generally accessible on agency.data_json_url
@@ -157,34 +158,82 @@ def find_data_access_urls(agency_id, catalog_url):
     result_dict = parse_json(parse_args)
     jsondata = result_dict.get('json', None)
     returnval = ResultDict({'agency_id': agency_id, 'catalog_url':catalog_url})
-    access_urls = set()
+    report_id = None
+    with transaction.atomic():
+        report = Report.objects.create(agency_id=agency_id, report_type=Report.DATA_CATALOG_CRAWL, url=catalog_url)
+        report_id = report.id
+        if jsondata:
+            catalog_length = len(jsondata)
+            report.messages.append("Data catalog contains {0} items".format(catalog_length))
+            report.save()
+    returnval['report_id'] = report_id
     if jsondata:
         for item in jsondata:
-            isPublic = item.get('accessLevel', None) == 'public'
-            hasAccessURL = 'accessURL' in item
-            hasDistribution = 'distribution' in item
-            if hasDistribution:
-                distribution = item.get('distribution', None)
-                if distribution is not None:
-                    for d in distribution:
-                        if 'accessURL' in d:
-                            access_urls.add(d.get('accessURL'))
-            elif hasAccessURL:
-                access_urls.add(item.get('accessURL'))
+            taskarg = {'agency_id': agency_id, 'report_id': report_id, 'catalog_url':catalog_url, 'item': item}
+            inspect_data_catalog_item.delay(taskarg)
     else:
         # Report some error or something
-        report.messages.append("Unable to load json data from '{0}'. Cannot find accessURLs for datasets")
-    returnval['access_urls'] = access_urls
+        with transaction.atomic():
+            report.messages.append("Unable to load json data from '{0}'. Cannot find urls for datasets")
     return returnval
 
+@shared_task
+def inspect_data_catalog_item(taskarg):
+    """Inspect an item (json object) in a data catalog (json array) and check any included accessURLs, distributions or webServices
+
+    :param taskarg: Dictionary containing the json object to inspect, a report id, agency_id and catalog_url
+    """
+    # I don't think tasks work properly in an inner function...
+    def make_task(field, item, orig_task):
+        url = item.get(field, None)
+        if url:
+            task_dict = ResultDict(orig_task)
+            task_dict['url'] = url
+            return task_dict
+        return None
+
+    item = taskarg.get('item', None)
+    meta_fields = ('title', 'accessLevel', 'publisher', 'modified')
+    taskarg['item_info'] = { key: item.get(key, None) for key in meta_fields }
+    if item:
+        url_fields = ('accessURL', 'webService')
+        for field in url_fields:
+            if field in item:
+                    task_dict = make_task(field, item, taskarg)
+                    if task_dict:
+                        inspect_data_access_url.delay(task_dict)
+                    else:
+                        logger.error('Unable to make a task dictionary to pass to inspect_data_access_url')
+            else:
+                logger.warn("No '{0}' in item.".format(field))
+        if 'distribution' in item:
+            distribution = item.get('distribution', None)
+            if distribution:
+                for d in distribution:
+                    for field in url_fields:
+                        if field in d:
+                            task_dict = make_task(field, d, taskarg)
+                            if task_dict:
+                                inspect_data_access_url.delay(task_dict)
+                            else:
+                                logger.error('Unable to make a task dictionary to pass to inspect_data_access_url')
+                        else:
+                            logger.warn("No '{0}' in distribution item.".format(field))
+
+    else:
+        logger.warn('No item passed to inspect_data_catalog_item')
+
+
 @shared_task(ignore_result=True)
-def check_data_access_url(taskarg):
+def inspect_data_access_url(taskarg):
     """Task to check an accessURL from a data catalog, using a HEAD request. Tracks and returns errors.
 
     :param taskarg: A dictionary containing a url, and optionally a report_id
     """
     returnval = ResultDict(taskarg)
     url = taskarg.get('url', None)
+    item_info = taskarg.get('item_info', {})
+    logger.info(item_info)
     report_id = taskarg.get('report_id', None)
     if url:
         result = request_url(url, 'HEAD')
@@ -193,6 +242,7 @@ def check_data_access_url(taskarg):
         if response is not None:
             with transaction.atomic():
                 resp_obj = URLInspection.objects.create_from_response(response, save_content=False)
+                resp_obj.info.update(item_info)
                 resp_obj.errors = result.errors
                 if report_id:
                     resp_obj.report_id = report_id
@@ -200,7 +250,7 @@ def check_data_access_url(taskarg):
                 returnval['response_id'] = resp_obj.id
         else:
             with transaction.atomic():
-                resp_obj = URLInspection.objects.create(requested_url=url, errors=result.errors)
+                resp_obj = URLInspection.objects.create(requested_url=url, errors=result.errors, info=item_info)
                 if report_id:
                     resp_obj.report_id = report_id
                 resp_obj.save()
@@ -209,54 +259,17 @@ def check_data_access_url(taskarg):
     return returnval
 
 @shared_task
-def report_on_data_access_url_list(taskarg):
-    """Task to build a report on accessURLs from a data catalog. Spawns asynchronous report_on_data_access_url tasks
-
-    :param taskarg: A dictionary containing an agency_id, a catalog_url, and a set of access_urls
-    """
-    agency_id = taskarg.get('agency_id', None)
-    catalog_url = taskarg.get('catalog_url', None)
-    access_urls = taskarg.get('access_urls', set())
-    returnval = ResultDict(taskarg)
-    try:
-        access_urls.remove(None)
-        returnval.add_error(Exception('Found an accessURL with no associated value.'))
-    except KeyError:
-        pass
-    returnval['report_type'] = Report.DATA_CATALOG_CRAWL
-    if agency_id:
-        report = Report.objects.create(agency_id=agency_id, report_type=Report.DATA_CATALOG_CRAWL)
-        returnval['report_id'] = report.id
-        if len(access_urls) > 0:
-            for url in access_urls:
-                # Spawn asynchronous tasks to check_data_access_url.
-                # Hope that atomic transactions prevents bad things from happening.
-                check_data_access_url.delay({'url': url, 'report_id': report.id })
-        else:
-            message = "No dataset accessURLs were found for {0}".format(catalog_url)
-            report.messages.append(message)
-
-        with transaction.atomic():
-            report.save()
-        return returnval
-    else:
-        raise Exception('An agency id is required to create a report on data accessURLs.')
-
-@shared_task
 def crawl_agency_datasets(agency_id):
     """Task that crawl the datasets from an agency data catalog.
-    Chains find_data_access_urls and report_on_data_access_url_list tasks.
+    Runs create_data_crawl_report, which spawns inspect_data_catalog_item tasks which in turn spawns
+    inspect_data_access_url tasks.
 
     :param agency_id: Database id of the agency whose catalog should be crawled.
 
     """
     agency = Agency.objects.get(id=agency_id)
-    taskchain = chain(
-                    find_data_access_urls.subtask((agency.id, agency.data_json_url),
-                                                  options={'link_error':error_handler.s()}),
-                    report_on_data_access_url_list.s()
-                )
-    return taskchain()
+    return create_data_crawl_report.apply_async((agency.id, agency.data_json_url),
+                              options={'link_error':error_handler.s()})
 
 @shared_task
 def report_for_agency_url(agency_id, url, report_type=Report.GENERIC_REPORT):
@@ -287,7 +300,7 @@ def report_for_agency_url(agency_id, url, report_type=Report.GENERIC_REPORT):
             report.inspections.add(response)
             response.save()
             returnval['response_id'] = response.id
-    if not resp_data.ok:
+    if resp_data and not resp_data.ok:
         # If the response is not okay, raise an error so we can handle that as an error
         resp_data.raise_for_status()
     returnval['response_info'] = response_info
