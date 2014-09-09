@@ -16,7 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "foundation": "~5.3.3",
-    "socket.io-client": "0.9.17"
+    "foundation": "~5.3.3"
   }
 }
