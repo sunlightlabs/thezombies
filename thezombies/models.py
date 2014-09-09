@@ -162,10 +162,24 @@ class URLInspection(models.Model):
 
 class Agency(models.Model):
     """Describes an agency"""
+
+    CABINET = 'C'
+    INDEPENDENT = 'I'
+    SUBAGENCY = 'S'
+    OTHER = 'O'
+
+    AGENCY_TYPE_CHOICES = (
+        (CABINET, 'Cabinet'),
+        (INDEPENDENT, 'Independent'),
+        (SUBAGENCY, 'Sub-Agency'),
+        (OTHER, 'Other/Unknown'),
+    )
+
     name = models.CharField(max_length=100, unique=True)
-    agency_type = models.CharField(max_length=40)
+    agency_type = models.CharField(max_length=1, choices=AGENCY_TYPE_CHOICES, default=OTHER)
     slug = models.SlugField(max_length=120, unique=True)
     url = models.URLField(unique=True)
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name_plural = "agencies"
@@ -175,7 +189,7 @@ class Agency(models.Model):
     def save(self, *args, **kwargs):
         if self.slug is None or self.slug == '':
             self.slug = slugify(self.name)
-        super(Blog, self).save(*args, **kwargs) # Call the "real" save() method.
+        super(Agency, self).save(*args, **kwargs) # Call the "real" save() method.
 
     @property
     def data_json_url(self):

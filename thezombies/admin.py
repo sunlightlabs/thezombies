@@ -4,7 +4,8 @@ from thezombies.models import Agency, Report, URLInspection
 
 class AgencyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ('name', 'agency_type', 'url')
+    list_display = ('name', 'agency_type', 'url', 'parent')
+    list_filter = ('agency_type',)
 
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('agency', 'report_type', 'url', 'created_at')
