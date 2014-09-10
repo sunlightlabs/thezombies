@@ -54,6 +54,10 @@ class Probe(models.Model):
     def __str__(self):
         return self.__repr__()
 
+    class Meta:
+        get_latest_by = 'created_at'
+        ordering = ('-created_at',)
+
     def error_count(self):
         return self.errors.count()
 
@@ -89,7 +93,7 @@ class Audit(models.Model):
 
     class Meta:
         get_latest_by = 'created_at'
-        ordering = ('created_at',)
+        ordering = ('-created_at',)
 
     def get_absolute_url(self):
         return reverse('audit-detail', kwargs={'pk': str(self.pk)})
@@ -187,6 +191,7 @@ class URLInspection(models.Model):
         verbose_name = 'URL Inspection'
         verbose_name_plural = 'URL Inspections'
         get_latest_by = 'created_at'
+        ordering = ('-created_at',)
 
     def __repr__(self):
         return '<URLInspection: {0} : {1}>'.format(self.requested_url, self.status_code)
