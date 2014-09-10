@@ -8,8 +8,13 @@
         <section>
             <h5>{{ probe.get_probe_type_display }}: {{ probe.errors|length }} errors</h5>
             <ul>
+            {% for key, value in probe.result.items %}
+            {% if key != 'json' %}
+                <li>{{ key }}: <strong>{{ value|title }}</strong></li>
+            {% endif %}
+            {% endfor %}
             {% for error in probe.errors %}
-                <li>{{ error|truncatewords:80 }}</li>
+                <li>Error: {{ error|truncatewords:80 }}</li>
             {% endfor %}
             </ul>
         </section>

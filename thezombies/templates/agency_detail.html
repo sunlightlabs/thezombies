@@ -8,10 +8,10 @@
         </dl>
 
     </header>
-    {% regroup agency.reports.all by get_report_type_display as reports_by_type %}
-    {% for report_type in reports_by_type %}
+    {% regroup agency.audit_set.all by get_audit_type_display as audits_by_type %}
+    {% for audit_type in audits_by_type %}
     <section>
-        <h3>{{ report_type.grouper }}</h3>
+        <h3>{{ audit_type.grouper }}</h3>
         <table>
             <thead>
                 <tr>
@@ -26,13 +26,13 @@
                 </tr>
             </thead>
             <tbody>
-            {% for report in report_type.list %}
+            {% for report in audit_type.list %}
                 <tr>
                     <td>{{ report.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                     <td>{{ report.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
                     <td>{{ report.inspections.earliest.url|urlizetrunc:26 }}</td>
                     <td>{{ report.inspections.earliest.status_code|httpreason:True }}</td>
-                    {% if report.report_type == 'DCV' %}
+                    {% if report.audit_type == 'DCV' %}
                     <td><span class="label {{ report.inspections.earliest.info.is_json|truthy:'success,alert,secondary' }}">{{ report.inspections.earliest.info.is_json|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ report.inspections.earliest.info.json_errors|truthy:'alert,success,secondary' }}">{{ report.inspections.earliest.info.json_errors|truthy:"yes,no,unknown"|title }}</span></td>
                     <td><span class="label {{ report.inspections.earliest.info.is_valid_data_catalog|truthy:'success,alert,secondary' }}">{{ report.inspections.earliest.info.is_valid_data_catalog|truthy:"yes,no,unknown"|title }}</span></td>
