@@ -153,6 +153,8 @@ def inspect_data_catalog_item(taskarg):
         num_tasks = len(task_args)
         probe.result['tasks_generated'] = num_tasks
         if num_tasks > 0:
+            task_urls = [x.get('url') for x in task_args if x.get('url', False)]
+            probe.result['tasks'] = task_urls
             for t in task_args:
                 inspect_data_catalog_item_url.delay(t)
         else:
