@@ -1,4 +1,4 @@
-from requests import Request, Response
+from requests import Response
 
 from django.db import models
 from django_hstore import hstore
@@ -7,24 +7,27 @@ from django.utils.text import slugify
 from django.core.urlresolvers import reverse
 
 try:
-    from urllib.parse import urljoin, urlparse
+    from urllib.parse import urljoin
 except ImportError:
-    from urlparse import urljoin, urlparse
+    from urlparse import urljoin
+
 
 def list_default():
     return []
 
+
 def dictionary_default():
     return {}
+
 
 class Probe(models.Model):
     """A component of an Audit that takes some initial data and
     stores a result of some tasks performed on that data
     """
 
-    GENERIC_PROBE    = 0
-    URL_PROBE        = 1
-    JSON_PROBE       = 2
+    GENERIC_PROBE = 0
+    URL_PROBE = 1
+    JSON_PROBE = 2
     VALIDATION_PROBE = 3
 
     PROBE_TYPE_CHOICES = (
@@ -54,6 +57,7 @@ class Probe(models.Model):
     def error_count(self):
         return self.errors.count()
 
+
 class Audit(models.Model):
     """An audit on agency, made up of auditables"""
 
@@ -68,24 +72,24 @@ class Audit(models.Model):
     )
 
     audit_type = models.CharField(max_length=3,
-                                    choices=AUDIT_TYPE_CHOICES, default=GENERIC_AUDIT)
+                                  choices=AUDIT_TYPE_CHOICES, default=GENERIC_AUDIT)
     agency = models.ForeignKey('Agency')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     notes = models.TextField(blank=True, help_text='You can record basic (unformatted text) notes here.')
     messages = TextArrayField(blank=True, null=True, default=list_default, editable=False,
-        help_text='Stores messages generated when audit was run.')
+                              help_text='Stores messages generated when audit was run.')
 
     def __repr__(self):
         return '<Audit: {0}>'.format(self.id)
 
     def __str__(self):
         return '{audit_type} for {identifier}'.format(audit_type=self.get_audit_type_display(),
-                                                    identifier=self.agency)
+                                                      identifier=self.agency)
 
     class Meta:
         get_latest_by = 'created_at'
-        ordering =  ('-created_at',)
+        ordering = ('created_at',)
 
     def get_absolute_url(self):
         return reverse('audit-detail', kwargs={'pk': str(self.pk)})
@@ -104,7 +108,7 @@ class Audit(models.Model):
         return self.inspections.filter(status_code=404).count()
 
     def inspections_html_count(self):
-        return self.inspections.filter(headers__contains={'content-type':'text/html'}).count()
+        return self.inspections.filter(headers__contains={'content-type': 'text/html'}).count()
 
     def probes_count(self):
         return self.probe_set.count()
@@ -122,8 +126,8 @@ class URLInspectionManager(hstore.HStoreManager):
                 content = ResponseContent(binary=resp.content, content_type=content_type)
                 content.save()
             obj = self.create(content=content if save_content else None, url=resp.url, status_code=resp.status_code,
-                encoding=resp.encoding, reason=resp.reason)
-            obj.requested_url= resp.history[0].url if len(resp.history) > 0 else resp.request.url
+                              encoding=resp.encoding, reason=resp.reason)
+            obj.requested_url = resp.history[0].url if len(resp.history) > 0 else resp.request.url
             obj.headers = dict(resp.headers)
             # TODO: defer detection of apparent encoding. A task, perhaps
             if save_content:
@@ -138,6 +142,7 @@ class URLInspectionManager(hstore.HStoreManager):
             return obj
         else:
             raise TypeError('create_from_response expects a requests.Response object')
+
 
 class ResponseContent(models.Model):
     binary = models.BinaryField(blank=True, null=True)
@@ -161,10 +166,11 @@ class ResponseContent(models.Model):
     def __str__(self):
         return self.__repr__()
 
+
 class URLInspection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    url = models.TextField(blank=True, null=True) # We may get (and want to store) really long or invalid urls, so...
-    requested_url = models.TextField() # We may get (and want to store) really long or invalid urls, so...
+    url = models.TextField(blank=True, null=True)  # We may get (and want to store) really long or invalid urls, so...
+    requested_url = models.TextField()  # We may get (and want to store) really long or invalid urls, so...
     encoding = models.CharField(max_length=40, blank=True, null=True)
     apparent_encoding = models.CharField(max_length=40, blank=True, null=True)
     content = models.OneToOneField(ResponseContent, null=True, related_name='content_for', editable=False)
@@ -224,11 +230,10 @@ class Agency(models.Model):
         verbose_name_plural = "agencies"
         ordering = ('agency_type', 'name')
 
-
     def save(self, *args, **kwargs):
         if self.slug is None or self.slug == '':
             self.slug = slugify(self.name)
-        super(Agency, self).save(*args, **kwargs) # Call the "real" save() method.
+        super(Agency, self).save(*args, **kwargs)
 
     @property
     def data_json_url(self):
@@ -250,5 +255,3 @@ class Agency(models.Model):
 
     def get_absolute_url(self):
         return reverse('agency-detail', kwargs={'slug': self.slug})
-
-

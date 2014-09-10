@@ -4,7 +4,6 @@ from django.contrib import admin
 from thezombies.views import (AgencyList, AgencyView, AuditList, AuditView, AuditURLList)
 
 urlpatterns = patterns('',
-    # Examples:
     url(r'^$', AgencyList.as_view(), name='agency-list'),
     url(r'^agency/(?P<slug>[\w\-]+)/$', AgencyView.as_view(), name='agency-detail'),
     url(r'^audits/$', AuditList.as_view(), name='audits-list'),

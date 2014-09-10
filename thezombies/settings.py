@@ -121,4 +121,3 @@ CELERY_ACCEPT_CONTENT = ['pickle', 'json']
 
 DATA_CATALOG_SCHEMA_PATH = os.path.join(BASE_DIR, 'schema/1_0_final/catalog.json')
 
-

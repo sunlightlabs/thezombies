@@ -9,8 +9,10 @@ databases = settings.DATABASES
 default_db = databases.get('default')
 DEFAULT_DB_NAME = default_db.get('NAME', None)
 
+
 def name():
     print(DEFAULT_DB_NAME)
+
 
 def bigbang():
     if DEFAULT_DB_NAME:
@@ -24,4 +26,3 @@ def bigbang():
         print(green('Migrated data and loaded agencies fixtures'))
     else:
         print(yellow('No default database to destroy'))
-
