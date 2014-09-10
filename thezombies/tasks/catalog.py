@@ -27,32 +27,37 @@ def inspect_data_catalog_item_url(taskarg):
     """
     returnval = ResultDict(taskarg)
     url = taskarg.get('url', None)
-    urlType = taskarg.get('urlType', None)
-    item_info = taskarg.get('item_info', {})
-    if urlType:
-        item_info['urlType'] = urlType
-    logger.info(item_info)
+    url_type = taskarg.get('url_type', None)
     audit_id = taskarg.get('audit_id', None)
+    prev_probe_id = taskarg.get('prev_probe_id', None)
+    probe = None
+    with transaction.atomic():
+        probe = Probe.objects.create(probe_type=Probe.URL_PROBE,
+                                     initial={'url': url, 'url_type': url_type},
+                                     previous_id=prev_probe_id, audit_id=audit_id)
     if url:
         result = request_url(url, 'HEAD')
         response = result.get('response', None)
         returnval.errors.extend(result.errors)
+        probe.errors.extend(result.errors)
         if response is not None:
             with transaction.atomic():
-                resp_obj = URLInspection.objects.create_from_response(response, save_content=False)
-                resp_obj.info.update(item_info)
-                resp_obj.errors = result.errors
+                inspection = URLInspection.objects.create_from_response(response, save_content=False)
                 if audit_id:
-                    resp_obj.audit_id = audit_id
-                resp_obj.save()
-                returnval['inspection_id'] = resp_obj.id
+                    inspection.audit_id = audit_id
+                inspection.probe = probe
+                inspection.save()
+                probe.save()
+                returnval['inspection_id'] = inspection.id
         else:
             with transaction.atomic():
-                resp_obj = URLInspection.objects.create(requested_url=url, errors=result.errors, info=item_info)
+                inspection = URLInspection.objects.create(requested_url=url)
+                inspection.probe = probe
                 if audit_id:
-                    resp_obj.audit_id = audit_id
-                resp_obj.save()
-                returnval['inspection_id'] = resp_obj.id
+                    inspection.audit_id = audit_id
+                inspection.save()
+                probe.save()
+                returnval['inspection_id'] = inspection.id
 
     return returnval
 
@@ -107,7 +112,7 @@ def inspect_data_catalog_item(taskarg):
         if url:
             task_dict = ResultDict(orig_task)
             task_dict['url'] = url
-            task_dict['urlType'] = field
+            task_dict['url_type'] = field
             return task_dict
         return None
 
@@ -126,8 +131,12 @@ def inspect_data_catalog_item(taskarg):
 
     item = taskarg.get('item', None)
     audit_id = taskarg.get('audit_id', None)
-    meta_fields = ('title', 'accessLevel', 'publisher', 'modified')
-    taskarg['item_info'] = {key: item.get(key, None) for key in meta_fields}
+    prev_probe_id = taskarg.get('prev_probe_id', None)
+    probe = None
+    with transaction.atomic():
+        probe = Probe.objects.create(probe_type=Probe.JSON_PROBE, initial=item,
+                                     previous_id=prev_probe_id, audit_id=audit_id)
+    taskarg['prev_probe_id'] = probe.id
     item_title = item.get('title', 'No title provided.')
     task_args = []
     if item:
@@ -141,23 +150,29 @@ def inspect_data_catalog_item(taskarg):
                     task_args.extend(find_tasks(d, url_fields, taskarg))
             else:
                 logger.warn('No distribution in item')
-
-        if len(task_args) > 0:
+        num_tasks = len(task_args)
+        probe.result['tasks_generated'] = num_tasks
+        if num_tasks > 0:
             for t in task_args:
                 inspect_data_catalog_item_url.delay(t)
         else:
-            if audit_id:
-                with transaction.atomic():
+            with transaction.atomic():
+                error_message = "No urls found for catalog item titled '{0}'".format(item_title)
+                if audit_id:
                     audit = Audit.objects.get(id=audit_id)
-                    audit.messages.append("No urls found for catalog item titled '{0}'".format(item_title))
+                    audit.messages.append(error_message)
                     audit.save()
+                probe.errors.append(error_message)
+        with transaction.atomic():
+            probe.save()
+
     else:
         logger.warn('No item passed to inspect_data_catalog_item')
 
 
 @shared_task
 def create_data_crawl_audit(agency_id, catalog_url):
-    """Create a audit to track the crawl of a data catalog url and
+    """Create an audit to track the crawl of a data catalog url and
     spawns tasks to inspect individual objects in the catalog
 
     :param agency_id: Database id of the agency whose catalog should be searched
@@ -166,24 +181,35 @@ def create_data_crawl_audit(agency_id, catalog_url):
     fetcher = get_or_create_inspection(catalog_url)
     inspection_id = fetcher.get('inspection_id')
     inspection = URLInspection.objects.get(id=inspection_id)
-
     parse_args = {'content': inspection.content.string()}
     parse_args['encoding'] = inspection.encoding if inspection.encoding else inspection.apparent_encoding
+    probe = None
+    with transaction.atomic():
+        probe = Probe.objects.create(probe_type=Probe.GENERIC_PROBE,
+                                     initial={'agency_id': agency_id,
+                                              'catalog_url': catalog_url,
+                                              'inspection_id': inspection_id})
+    prev_probe_id = probe.id
     result_dict = parse_json(parse_args)
     jsondata = result_dict.get('json', None)
-    returnval = ResultDict({'agency_id': agency_id, 'catalog_url': catalog_url})
+    returnval = ResultDict({'agency_id': agency_id, 'catalog_url': catalog_url, 'prev_probe_id': prev_probe_id})
     audit_id = None
     with transaction.atomic():
         audit = Audit.objects.create(agency_id=agency_id, audit_type=Audit.DATA_CATALOG_CRAWL)
         audit_id = audit.id
+        probe.audit = audit
         if jsondata:
             catalog_length = len(jsondata)
             audit.messages.append("Data catalog contains {0} items".format(catalog_length))
             audit.save()
+            probe.result['catalog_length'] = catalog_length
+            probe.save()
     returnval['audit_id'] = audit_id
     if jsondata:
         for item in jsondata:
-            taskarg = {'agency_id': agency_id, 'audit_id': audit_id, 'catalog_url': catalog_url, 'item': item}
+            taskarg = {'agency_id': agency_id, 'audit_id': audit_id,
+                       'catalog_url': catalog_url, 'item': item,
+                       'prev_probe_id': prev_probe_id}
             inspect_data_catalog_item.delay(taskarg)
     else:
         # Audit some error or something
