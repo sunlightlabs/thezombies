@@ -9,14 +9,14 @@
             <tr>
                 <th>Agency</th>
                 <th>Type</th>
-                <th>Last Report</th>
+                <th>Last Audit</th>
             </tr>
         </thead>
-        <tbody>{% for item in agencies %}
+        <tbody>{% for item in object_list %}
             <tr id="{{ item.slug }}">
                 <td><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></td>
-                <td>{{ item.agency_type }}</td>
-                <td>{{ item.reports.last.created_at }}</td>
+                <td>{{ item.get_agency_type_display }}</td>
+                <td>{{ item.audit_set.last.created_at }}</td>
             </tr>{% endfor %}
         </tbody>
     </table>

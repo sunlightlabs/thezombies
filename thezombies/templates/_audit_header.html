@@ -1,0 +1,5 @@
+<header>
+    <h2>{{ object.get_audit_type_display }}</h2>
+    <h3><small>Agency:</small> <a href="{{ object.agency.get_absolute_url }}">{{ object.agency }}</a></h3>
+    <p><strong>Created:</strong> {{ object.created_at }}</p>
+</header>

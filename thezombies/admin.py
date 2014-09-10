@@ -1,5 +1,5 @@
 from django.contrib import admin
-from thezombies.models import Agency, Report, URLInspection
+from thezombies.models import (Agency, Audit, URLInspection, Probe)
 
 
 class AgencyAdmin(admin.ModelAdmin):
@@ -7,42 +7,47 @@ class AgencyAdmin(admin.ModelAdmin):
     list_display = ('name', 'agency_type', 'url', 'parent')
     list_filter = ('agency_type',)
 
-class ReportAdmin(admin.ModelAdmin):
-    list_display = ('agency', 'report_type', 'url', 'created_at')
-    list_filter = ('report_type',)
-    search_fields = ('agency', 'url')
+class ProbeAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'probe_type', 'previous', 'created_at')
+    list_filter = ('probe_type',)
+
+class AuditAdmin(admin.ModelAdmin):
+    list_display = ('agency', 'audit_type', 'created_at')
+    list_filter = ('audit_type',)
+    search_fields = ('agency',)
     ordering =  ('-created_at',)
     date_hierarchy = 'created_at'
-    readonly_fields = ('inspections_total_count', 'inspections_failure_count', 'inspections_404_count',
+    readonly_fields = ('probes_count', 'inspections_count', 'inspections_failure_count', 'inspections_404_count',
                         'inspections_html_count', 'created_at', 'updated_at', 'messages')
     fieldsets = (
         (None, {
-                'fields': (('agency', 'report_type'), ('created_at', 'updated_at'), 'notes', 'url')
+                'fields': (('agency', 'audit_type'), ('created_at', 'updated_at'), 'notes')
             }),
         ('Messages', {
                 'fields': ('messages',)
             }),
         ('URL Inspections', {
-                'fields': ('inspections_total_count', 'inspections_failure_count', 'inspections_404_count', 'inspections_html_count'),
+                'fields': ('probes_count', 'inspections_count', 'inspections_failure_count', 'inspections_404_count', 'inspections_html_count'),
                 'classes': ('wide',),
             }),
     )
 
     def display_name(self, obj):
-        name = 'Report for {0}'.format(obj.agency.name)
+        name = 'Audit for {0}'.format(obj.agency.name)
         if obj.url:
             name = '{0} on {1}'.format(name, obj.url)
         return name
 
 class URLInspectionAdmin(admin.ModelAdmin):
-    list_display = ('requested_url', 'url', 'status_code', 'report', 'created_at')
+    list_display = ('requested_url', 'url', 'status_code', 'created_at')
     list_filter = ('status_code',)
     search_fields = ('requested_url', 'url')
     exclude = ('content',)
     ordering =  ('-created_at',)
-    readonly_fields = ('requested_url', 'url', 'info', 'errors')
+    readonly_fields = ('requested_url', 'url')
 
 admin.site.register(Agency, AgencyAdmin)
-admin.site.register(Report, ReportAdmin)
+admin.site.register(Audit, AuditAdmin)
+admin.site.register(Probe, ProbeAdmin)
 admin.site.register(URLInspection, URLInspectionAdmin)
 

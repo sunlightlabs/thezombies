@@ -1,7 +1,7 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
 {% block content %}
-{% include "_report_header.html" %}
-<h5><a href="{{ report.get_absolute_url }}">Return to summary page</a></h5>
+{% include "_audit_header.html" %}
+<h5><a href="{{ object.get_absolute_url }}">Return to summary page</a></h5>
 {% if is_paginated %}
 <p>URLs: <strong>{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of {{ paginator.count }}</p>
 {% endif %}
@@ -13,10 +13,12 @@
             <th>Status code</th>
             <th>Content type</th>
             <th>Number of non-HTTP Errors</th>
+            <th>Access level</th>
+            <th>Type</th>
         </tr>
     </thead>
     <tbody>
-{% for resp in responses.all %}
+{% for resp in object.inspections %}
         <tr>
             <td>{{ resp.requested_url|urlizetrunc:100 }}</td>
             <td><span class="label {% spaceless %}
@@ -28,6 +30,8 @@
             {% endspaceless %}">{{ resp.status_code|httpreason:True|default:"Unknown" }}</span></td>
             <td>{{ resp.content_type }}</td>
             <td>{{ resp.errors|length }}</td>
+            <td>{{ resp.info.accessLevel|title }}</td>
+            <td>{{ resp.info.urlType|default:"None" }}</td>
         </tr>
 {% endfor %}
     </tbody>

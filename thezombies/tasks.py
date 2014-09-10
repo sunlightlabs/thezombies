@@ -20,7 +20,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import requests
 from requests.exceptions import (MissingSchema, InvalidSchema, InvalidURL)
 
-from thezombies.models import (Report, URLInspection, Agency)
+from thezombies.models import (Probe, Audit, URLInspection, Agency)
 
 session = CacheControl(requests.Session(), cache_etags=False)
 logger = get_task_logger(__name__)
@@ -124,64 +124,64 @@ def get_or_create_inspection(url):
     :param url: The url to retrieve.
     """
     latest_dates = URLInspection.objects.datetimes('created_at', 'minute')
-    recent_responses = None
+    recent_inspections = None
     if latest_dates:
         latest_date = latest_dates.latest()
-        recent_responses = URLInspection.objects.filter(requested_url=url, created_at__day=latest_date.day, parent_id__isnull=True)
+        recent_inspections = URLInspection.objects.filter(requested_url=url, created_at__day=latest_date.day, parent_id__isnull=True)
 
-    response = None
-    if recent_responses and recent_responses.count() > 0:
-        response = recent_responses.latest()
+    inspection = None
+    if recent_inspections and recent_inspections.count() > 0:
+        inspection = recent_inspections.latest()
     else:
-        logger.info('No stored response, fetch url')
+        logger.info('No stored inspection, fetch url')
         fetch_val = request_url(url)
-        resp_data = fetch_val.get('response', None)
+        response = fetch_val.get('response', None)
         with transaction.atomic():
-            response = URLInspection.objects.create_from_response(resp_data)
-            response.save()
-    return ResultDict({'response_id': getattr(response, 'id', None), 'url':url})
+            inspection = URLInspection.objects.create_from_response(response)
+            inspection.save()
+    return ResultDict({'inspection_id': getattr(inspection, 'id', None), 'url':url})
 
 @shared_task
-def create_data_crawl_report(agency_id, catalog_url):
-    """Create a report to track the crawl of a data catalog url and
+def create_data_crawl_audit(agency_id, catalog_url):
+    """Create a audit to track the crawl of a data catalog url and
     spawns tasks to inspect individual objects in the catalog
 
     :param agency_id: Database id of the agency whose catalog should be searched
     :param catalog_url: The url of the catalog to search. Generally accessible on agency.data_json_url
     """
     fetcher = get_or_create_inspection(catalog_url)
-    response_id = fetcher.get('response_id')
-    response = URLInspection.objects.get(id=response_id)
+    inspection_id = fetcher.get('inspection_id')
+    inspection = URLInspection.objects.get(id=inspection_id)
 
-    parse_args = {'content':response.content.string()}
-    parse_args['encoding'] = response.encoding if response.encoding else response.apparent_encoding
+    parse_args = {'content':inspection.content.string()}
+    parse_args['encoding'] = inspection.encoding if inspection.encoding else inspection.apparent_encoding
     result_dict = parse_json(parse_args)
     jsondata = result_dict.get('json', None)
     returnval = ResultDict({'agency_id': agency_id, 'catalog_url':catalog_url})
-    report_id = None
+    audit_id = None
     with transaction.atomic():
-        report = Report.objects.create(agency_id=agency_id, report_type=Report.DATA_CATALOG_CRAWL, url=catalog_url)
-        report_id = report.id
+        audit = Audit.objects.create(agency_id=agency_id, audit_type=Audit.DATA_CATALOG_CRAWL, url=catalog_url)
+        audit_id = audit.id
         if jsondata:
             catalog_length = len(jsondata)
-            report.messages.append("Data catalog contains {0} items".format(catalog_length))
-            report.save()
-    returnval['report_id'] = report_id
+            audit.messages.append("Data catalog contains {0} items".format(catalog_length))
+            audit.save()
+    returnval['audit_id'] = audit_id
     if jsondata:
         for item in jsondata:
-            taskarg = {'agency_id': agency_id, 'report_id': report_id, 'catalog_url':catalog_url, 'item': item}
+            taskarg = {'agency_id': agency_id, 'audit_id': audit_id, 'catalog_url':catalog_url, 'item': item}
             inspect_data_catalog_item.delay(taskarg)
     else:
-        # Report some error or something
+        # Audit some error or something
         with transaction.atomic():
-            report.messages.append("Unable to load json data from '{0}'. Cannot find urls for datasets")
+            audit.messages.append("Unable to load json data from '{0}'. Cannot find urls for datasets")
     return returnval
 
 @shared_task
 def inspect_data_catalog_item(taskarg):
     """Inspect an item (json object) in a data catalog (json array) and check any included accessURLs, distributions or webServices
 
-    :param taskarg: Dictionary containing the json object to inspect, a report id, agency_id and catalog_url
+    :param taskarg: Dictionary containing the json object to inspect, a audit id, agency_id and catalog_url
     """
     # I don't think tasks work properly in an inner function...
     def make_task(field, item, orig_task):
@@ -207,7 +207,7 @@ def inspect_data_catalog_item(taskarg):
         return tasks
 
     item = taskarg.get('item', None)
-    report_id = taskarg.get('report_id', None)
+    audit_id = taskarg.get('audit_id', None)
     meta_fields = ('title', 'accessLevel', 'publisher', 'modified')
     taskarg['item_info'] = { key: item.get(key, None) for key in meta_fields }
     item_title = item.get('title', 'No title provided.')
@@ -219,17 +219,20 @@ def inspect_data_catalog_item(taskarg):
             distribution = item.get('distribution', None)
             if distribution:
                 for d in distribution:
-                    task_args.extend(find_tasks(item, url_fields, taskarg))
+                    logger.info('Checking distribution list')
+                    task_args.extend(find_tasks(d, url_fields, taskarg))
+            else:
+                logger.warn('No distribution in item')
 
         if len(task_args) > 0:
             for t in task_args:
                 inspect_data_catalog_item_url.delay(t)
         else:
-            if report_id:
+            if audit_id:
                 with transaction.atomic():
-                    report = Report.objects.get(id=report_id)
-                    report.messages.append("No urls found for catalog item titled '{0}'".format(item_title))
-                    report.save()
+                    audit = Audit.objects.get(id=audit_id)
+                    audit.messages.append("No urls found for catalog item titled '{0}'".format(item_title))
+                    audit.save()
 
 
     else:
@@ -240,7 +243,7 @@ def inspect_data_catalog_item(taskarg):
 def inspect_data_catalog_item_url(taskarg):
     """Task to check an accessURL from a data catalog, using a HEAD request. Tracks and returns errors.
 
-    :param taskarg: A dictionary containing a url, and optionally a report_id
+    :param taskarg: A dictionary containing a url, and optionally a audit_id
     """
     returnval = ResultDict(taskarg)
     url = taskarg.get('url', None)
@@ -249,7 +252,7 @@ def inspect_data_catalog_item_url(taskarg):
     if urlType:
         item_info['urlType'] = urlType
     logger.info(item_info)
-    report_id = taskarg.get('report_id', None)
+    audit_id = taskarg.get('audit_id', None)
     if url:
         result = request_url(url, 'HEAD')
         response = result.get('response', None)
@@ -259,66 +262,71 @@ def inspect_data_catalog_item_url(taskarg):
                 resp_obj = URLInspection.objects.create_from_response(response, save_content=False)
                 resp_obj.info.update(item_info)
                 resp_obj.errors = result.errors
-                if report_id:
-                    resp_obj.report_id = report_id
+                if audit_id:
+                    resp_obj.audit_id = audit_id
                 resp_obj.save()
-                returnval['response_id'] = resp_obj.id
+                returnval['inspection_id'] = resp_obj.id
         else:
             with transaction.atomic():
                 resp_obj = URLInspection.objects.create(requested_url=url, errors=result.errors, info=item_info)
-                if report_id:
-                    resp_obj.report_id = report_id
+                if audit_id:
+                    resp_obj.audit_id = audit_id
                 resp_obj.save()
-                returnval['response_id'] = resp_obj.id
+                returnval['inspection_id'] = resp_obj.id
 
     return returnval
 
 @shared_task
 def crawl_agency_datasets(agency_id):
     """Task that crawl the datasets from an agency data catalog.
-    Runs create_data_crawl_report, which spawns inspect_data_catalog_item tasks which in turn spawns
+    Runs create_data_crawl_audit, which spawns inspect_data_catalog_item tasks which in turn spawns
     inspect_data_catalog_item_url tasks.
 
     :param agency_id: Database id of the agency whose catalog should be crawled.
 
     """
     agency = Agency.objects.get(id=agency_id)
-    return create_data_crawl_report.apply_async((agency.id, agency.data_json_url),
+    return create_data_crawl_audit.apply_async((agency.id, agency.data_json_url),
                               options={'link_error':error_handler.s()})
 
 @shared_task
-def report_for_agency_url(agency_id, url, report_type=Report.GENERIC_REPORT):
-    """Task to save a basic report given an agency_id and a url.
+def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
+    """Task to save a basic audit given an agency_id and a url.
 
-    :param agency_id: Database id of the agency to create a report for.
-    :param url: URL to report on.
-    :param report_type: Optional report type (as provided by Report model)
+    :param agency_id: Database id of the agency to create a audit for.
+    :param url: URL to audit on.
+    :param audit_type: Optional audit type (as provided by Audit model)
 
     """
+    probe = None
+    with transaction.atomic():
+        probe = Probe.objects.create(initial={'agency_id': agency_id, 'url': url}, probe_type=Probe.URL_PROBE)
     result = request_url((url))
     returnval = ResultDict(result)
-    resp_data = result.get('response', None)
-    report_id = response_id = None
-    response_info = {}
-    response = None
+    if probe:
+        returnval['probe_id'] = probe.id
+    response = result.get('response', None)
+    audit_id = inspection_id = None
+    inspection = None
     with transaction.atomic():
-        if resp_data is not None:
-            response = URLInspection.objects.create_from_response(resp_data)
-            report = Report.objects.create(agency_id=agency_id, url=response.requested_url)
-        else:
-            report = Report.objects.create(agency_id=agency_id)
-        report.report_type = report_type
-        report.save()
-        returnval['report_id'] = report.id
-        if response:
-            response.errors.extend(returnval.errors)
-            report.inspections.add(response)
-            response.save()
-            returnval['response_id'] = response.id
-    if resp_data and not resp_data.ok:
-        # If the response is not okay, raise an error so we can handle that as an error
-        resp_data.raise_for_status()
-    returnval['response_info'] = response_info
+        if response is not None:
+            inspection = URLInspection.objects.create_from_response(response)
+            inspection.probe = probe
+            probe.result['status_code'] = response.status_code
+            inspection.save()
+        audit = Audit.objects.create(agency_id=agency_id)
+        audit.audit_type = audit_type
+        audit.probe_set.add(probe)
+        audit.save()
+        if inspection:
+            returnval['inspection_id'] = inspection.id
+            probe.result['inspection_id'] = inspection.id
+        probe.errors.extend(returnval.errors)
+        probe.save()
+        returnval['audit_id'] = audit.id
+    if response and not response.ok:
+        # If the inspection is not okay, raise an error so we can handle that as an error
+        response.raise_for_status()
     return returnval
 
 @shared_task
@@ -353,29 +361,39 @@ def parse_json(taskarg):
     return returnval
 
 @shared_task
-def parse_json_from_response(taskarg):
+def parse_json_from_inspection(taskarg):
     """
-    Task to parse json from a response.
+    Task to parse json from a inspection.
     """
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
-    response_id = taskarg.get('response_id', None)
-    response_info = taskarg.get('response_info', {})
+    inspection_id = taskarg.get('inspection_id', None)
+    audit_id = taskarg.get('audit_id', None)
+    prev_probe_id = taskarg.get('probe_id', None)
+    probe = None
+    with transaction.atomic():
+        probe = Probe.objects.create(probe_type=Probe.JSON_PROBE,
+                                    initial={'inspection_id': inspection_id},
+                                    previous_id=prev_probe_id, audit_id=audit_id)
     returnval = ResultDict(taskarg)
-    response = URLInspection.objects.get(id=response_id)
-    response_content = response.content.string()
-    encoding = response.encoding if response.encoding else response.apparent_encoding
-    result_dict = parse_json({'content':response_content, 'encoding':encoding})
+    if probe:
+        returnval['probe_id'] = probe.id
+    inspection = URLInspection.objects.get(id=inspection_id)
+    inspection_content = inspection.content.string()
+    encoding = inspection.encoding if inspection.encoding else inspection.apparent_encoding
+    result_dict = parse_json({'content':inspection_content, 'encoding':encoding})
     jsondata = result_dict.get('json', None)
     parse_errors = result_dict.get('parse_errors', False)
     if jsondata:
-         returnval['json'] = jsondata
-    response_info['json_errors'] = True if parse_errors else False
-    response_info['is_json'] = True if jsondata else False
+         probe.result['json'] = jsondata
+    probe.result['json_errors'] = True if parse_errors else False
+    probe.result['is_json'] = True if jsondata else False
     errors = result_dict.get('errors', None)
-    if errors:
-        returnval.errors.extend(errors)
-    returnval.get('response_info', {}).update(response_info)
+    with transaction.atomic():
+        if errors:
+            probe.errors.extend(errors)
+        probe.save()
+
     return returnval
 
 @shared_task
@@ -385,10 +403,20 @@ def validate_json_catalog(taskarg):
     """
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
-    jsondata = taskarg.get('json', None)
-    response_info = taskarg.get('response_info', {})
+    audit_id = taskarg.get('audit_id', None)
+    prev_probe_id = taskarg.get('probe_id', None)
+    inspection_id = taskarg.get('inspection_id', None)
+    prev_probe = Probe.objects.get(id=prev_probe_id)
+    probe = None
+    with transaction.atomic():
+        probe = Probe.objects.create(probe_type=Probe.VALIDATION_PROBE,
+                                    initial={'inspection_id': inspection_id},
+                                    previous_id=prev_probe_id, audit_id=audit_id)
     returnval = ResultDict(taskarg)
+    if probe:
+        returnval['probe_id'] = probe.id
     is_valid = False
+    jsondata = prev_probe.result.get('json', None)
     if jsondata and catalog_schema:
         is_valid = validator.is_valid(jsondata)
         if not is_valid:
@@ -396,48 +424,38 @@ def validate_json_catalog(taskarg):
             error_iter = islice(validator.iter_errors(jsondata), SCHEMA_ERROR_LIMIT)
             for e in error_iter:
                 returnval.add_error(e)
-    response_info['is_valid_data_catalog'] = is_valid
-    returnval.get('response_info', {}).update(response_info)
-    returnval['report_type'] = Report.DATA_CATALOG_VALIDATION
+    probe.result['is_valid_data_catalog'] = is_valid
+    with transaction.atomic():
+        probe.errors.extend(returnval.errors)
+        probe.save()
+    returnval['audit_type'] = Audit.DATA_CATALOG_VALIDATION
     return returnval
 
 @shared_task
-def save_response_info(taskarg):
-    report_id = taskarg.get('report_id', None)
-    report_type = taskarg.get('report_type', Report.GENERIC_REPORT)
-    response_id = taskarg.get('response_id', None)
-    response_info = taskarg.get('response_info', {})
+def finalize_audit(taskarg):
+    audit_id = taskarg.get('audit_id', None)
+    audit_type = taskarg.get('audit_type', Audit.GENERIC_AUDIT)
     returnval = ResultDict(taskarg)
-    response_info.pop('content', None) # Let's not save content in our report
-    response_info.pop('json', None) # Let's not save json in our report
-    logger.info("Saving report info {0}".format(repr(response_info)))
     returnval['saved'] = False
-    if response_info:
-        if report_id:
-            try:
-                with transaction.atomic():
-                    report = Report.objects.get(id=report_id)
-                    report.report_type = report_type
-                    report.save()
-                    if response_id:
-                        response = URLInspection.objects.get(id=response_id)
-                        response.info.update(response_info)
-                        if len(returnval.errors):
-                            response.errors.extend(returnval.errors)
-                        response.save()
-                    returnval['saved'] = True
-            except DatabaseError as e:
-                raise e
+    if audit_id:
+        try:
+            with transaction.atomic():
+                audit = Audit.objects.get(id=audit_id)
+                audit.audit_type = audit_type
+                audit.save()
+                returnval['saved'] = True
+        except DatabaseError as e:
+            raise e
 
 @shared_task
 def validate_data_catalogs():
     agencies = Agency.objects.all()
     groupchain = group([chain(
-                    report_for_agency_url.subtask((agency.id, agency.data_json_url, Report.DATA_CATALOG_VALIDATION),
+                    audit_for_agency_url.subtask((agency.id, agency.data_json_url, Audit.DATA_CATALOG_VALIDATION),
                                                   options={'link_error':error_handler.s()}),
-                    parse_json_from_response.s(),
+                    parse_json_from_inspection.s(),
                     validate_json_catalog.s(),
-                    save_response_info.s()
+                    finalize_audit.s()
                 ) for agency in agencies])
     return groupchain()
 

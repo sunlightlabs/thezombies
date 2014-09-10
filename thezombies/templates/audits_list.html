@@ -2,25 +2,25 @@
 
 {% block content %}
     <header>
-        <h2>Reports</h2>
+        <h2>Audits</h2>
         <h4 class="subheader">
         {% if is_paginated %}
-        {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ paginator.count }} reports
+        {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ paginator.count }} audits
         {% else %}
-        {{ reports|length }} reports
+        {{ object_list|length }} audits
         {% endif %}
         </h4>
     </header>
     <table>
         <thead>
             <tr>
-                <th>Report</th>
+                <th>Audit</th>
                 <th>Agency</th>
                 <th>Created</th>
                 <th>Updated</th>
             </tr>
         </thead>
-        <tbody>{% for item in reports %}
+        <tbody>{% for item in object_list %}
             <tr>
                 <td><a href="{{ item.get_absolute_url }}">{{ item|truncatechars:40 }}</a></td>
                 <td>{{ item.agency.name }}</td>

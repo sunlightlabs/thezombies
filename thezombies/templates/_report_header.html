@@ -1,8 +1,0 @@
-<header>
-    <h2>{{ report.get_report_type_display }}</h2>
-    {% if report.url %}
-    <h3 class="subheader">Catalog URL: {{ report.url|urlizetrunc:60 }}</h3>
-    {% endif %}
-    <h3><small>Agency:</small> <a href="{{ report.agency.get_absolute_url }}">{{ report.agency }}</a></h3>
-    <p><strong>Created:</strong> {{ report.created_at }}</p>
-</header>

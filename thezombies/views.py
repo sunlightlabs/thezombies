@@ -1,40 +1,35 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 
-from thezombies.models import (Agency, Report, URLInspection)
+from thezombies.models import (Agency, Audit, Probe, URLInspection)
 
 
 class AgencyList(ListView):
     model = Agency
-    context_object_name = 'agencies'
     template_name = 'agency_list.html'
 
 class AgencyView(DetailView):
     model = Agency
-    context_object_name = 'agency'
     template_name = 'agency_detail.html'
 
-class ReportList(ListView):
-    model = Report
-    context_object_name = 'reports'
+class AuditList(ListView):
+    model = Audit
     paginate_by = 50
-    template_name = 'reports_list.html'
+    template_name = 'audits_list.html'
 
-class ReportView(DetailView):
-    model = Report
-    context_object_name = 'report'
-    template_name = 'report_detail.html'
+class AuditView(DetailView):
+    model = Audit
+    template_name = 'audit_detail.html'
 
-class ReportURLList(ListView):
-    context_object_name = 'responses'
+class AuditURLList(ListView):
     paginate_by = 50
-    template_name = 'report_url_list.html'
+    template_name = 'audit_url_list.html'
 
     def get_queryset(self):
-        self.report = get_object_or_404(Report, pk=self.kwargs.get('pk'))
-        return URLInspection.objects.filter(report=self.report)
+        self.audit = get_object_or_404(Audit, pk=self.kwargs.get('pk'))
+        return self.audit.inspections
 
     def get_context_data(self, **kwargs):
-        context = super(ReportURLList, self).get_context_data(**kwargs)
-        context['report'] = self.report
+        context = super(AuditURLList, self).get_context_data(**kwargs)
+        context['audit'] = self.audit
         return context

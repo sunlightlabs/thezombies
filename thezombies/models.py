@@ -17,44 +17,85 @@ def list_default():
 def dictionary_default():
     return {}
 
-class Report(models.Model):
-    """A Report on agency, usually concerning data at a url"""
+class Probe(models.Model):
+    """A component of an Audit that takes some initial data and
+    stores a result of some tasks performed on that data
+    """
 
-    GENERIC_REPORT = 'RPT'
+    GENERIC_PROBE    = 0
+    URL_PROBE        = 1
+    JSON_PROBE       = 2
+    VALIDATION_PROBE = 3
+
+    PROBE_TYPE_CHOICES = (
+        (GENERIC_PROBE, 'Generic Probe'),
+        (URL_PROBE, 'URL Probe'),
+        (JSON_PROBE, 'JSON Probe'),
+        (VALIDATION_PROBE, 'Validation Probe'),
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    probe_type = models.PositiveSmallIntegerField(choices=PROBE_TYPE_CHOICES, default=GENERIC_PROBE)
+    previous = models.ForeignKey('self', related_name='next', blank=True, null=True, on_delete=models.SET_NULL)
+    initial = hstore.ReferencesField(blank=True, null=True, default=dictionary_default)
+    result = hstore.DictionaryField(blank=True, null=True, default=dictionary_default)
+    errors = TextArrayField(blank=True, null=True, default=list_default)
+    audit = models.ForeignKey('Audit', null=True, blank=True)
+
+    objects = hstore.HStoreManager()
+
+    def __repr__(self):
+        return '<{0}: {1}>'.format(self.get_probe_type_display(), self.id)
+
+    def __str__(self):
+        return self.__repr__()
+
+    def error_count(self):
+        return self.errors.count()
+
+class Audit(models.Model):
+    """An audit on agency, made up of auditables"""
+
+    GENERIC_AUDIT = 'ADT'
     DATA_CATALOG_VALIDATION = 'DCV'
     DATA_CATALOG_CRAWL = 'DCC'
 
-    REPORT_TYPE_CHOICES = (
-        (GENERIC_REPORT, 'Generic Report'),
+    AUDIT_TYPE_CHOICES = (
+        (GENERIC_AUDIT, 'Generic Audit'),
         (DATA_CATALOG_VALIDATION, 'Data Catalog Validation'),
         (DATA_CATALOG_CRAWL, 'Data Catalog Crawl'),
     )
 
-    report_type = models.CharField(max_length=3,
-                                    choices=REPORT_TYPE_CHOICES, default=GENERIC_REPORT)
-    agency = models.ForeignKey('Agency', related_name='reports')
+    audit_type = models.CharField(max_length=3,
+                                    choices=AUDIT_TYPE_CHOICES, default=GENERIC_AUDIT)
+    agency = models.ForeignKey('Agency')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     notes = models.TextField(blank=True, help_text='You can record basic (unformatted text) notes here.')
     messages = TextArrayField(blank=True, null=True, default=list_default, editable=False,
-        help_text='Stores messages generated when report was run.')
-    errors = TextArrayField(blank=True, null=True, default=list_default,
-        help_text='Stores errors that occurred during the tasks that triggered the report. May overlap with errors on responses')
-    url = models.URLField(blank=True, null=True)
+        help_text='Stores messages generated when audit was run.')
 
     def __repr__(self):
-        return '<Report: {0}>'.format(self.url if self.url else self.id)
+        return '<Audit: {0}>'.format(self.id)
 
     def __str__(self):
-        return '{report_type} for {identifier}'.format(report_type=self.get_report_type_display(),
-                                                    identifier=self.url if self.url else self.agency)
+        return '{audit_type} for {identifier}'.format(audit_type=self.get_audit_type_display(),
+                                                    identifier=self.agency)
 
     class Meta:
         get_latest_by = 'created_at'
         ordering =  ('-created_at',)
 
     def get_absolute_url(self):
-        return reverse('report-detail', kwargs={'pk': str(self.pk)})
+        return reverse('audit-detail', kwargs={'pk': str(self.pk)})
+
+    @property
+    def inspections(self):
+        return URLInspection.objects.filter(probe__in=self.probe_set.all())
+
+    def inspections_count(self):
+        return self.inspections.count()
 
     def inspections_failure_count(self):
         return self.inspections.filter(status_code__gte=400).count()
@@ -65,8 +106,8 @@ class Report(models.Model):
     def inspections_html_count(self):
         return self.inspections.filter(headers__contains={'content-type':'text/html'}).count()
 
-    def inspections_total_count(self):
-        return self.inspections.count()
+    def probes_count(self):
+        return self.probe_set.count()
 
 
 class URLInspectionManager(hstore.HStoreManager):
@@ -132,9 +173,7 @@ class URLInspection(models.Model):
     status_code = models.IntegerField(max_length=3, blank=True, null=True)
     reason = models.CharField(blank=True, null=True, max_length=80, help_text='Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".')
     headers = hstore.DictionaryField(default=dictionary_default)
-    info = hstore.DictionaryField(blank=True, null=True, default=dictionary_default)
-    errors = TextArrayField(blank=True, null=True, default=list_default)
-    report = models.ForeignKey('Report', related_name='inspections', null=True, blank=True)
+    probe = models.ForeignKey('Probe', null=True, blank=True, related_name='url_inspections')
 
     objects = URLInspectionManager()
 
