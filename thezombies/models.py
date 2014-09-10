@@ -38,7 +38,7 @@ class Probe(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     probe_type = models.PositiveSmallIntegerField(choices=PROBE_TYPE_CHOICES, default=GENERIC_PROBE)
     previous = models.ForeignKey('self', related_name='next', blank=True, null=True, on_delete=models.SET_NULL)
-    initial = hstore.ReferencesField(blank=True, null=True, default=dictionary_default)
+    initial = hstore.DictionaryField(blank=True, null=True, default=dictionary_default)
     result = hstore.DictionaryField(blank=True, null=True, default=dictionary_default)
     errors = TextArrayField(blank=True, null=True, default=list_default)
     audit = models.ForeignKey('Audit', null=True, blank=True)
