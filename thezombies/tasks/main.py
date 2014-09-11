@@ -32,9 +32,8 @@ def parse_json_from_inspection(taskarg):
     encoding = inspection.encoding if inspection.encoding else inspection.apparent_encoding
     result_dict = parse_json({'content': inspection_content, 'encoding': encoding})
     jsondata = result_dict.get('json', None)
+    returnval['json'] = jsondata
     parse_errors = result_dict.get('parse_errors', False)
-    if jsondata:
-        probe.result['json'] = jsondata
     probe.result['json_errors'] = True if parse_errors else False
     probe.result['is_json'] = True if jsondata else False
     errors = result_dict.get('errors', None)
@@ -113,7 +112,7 @@ def validate_data_catalogs():
         validate_json_catalog.s(),
         finalize_audit.s()
     ) for agency in agencies])
-    return groupchain()
+    return groupchain.skew(start=1, stop=20)()
 
 
 @shared_task

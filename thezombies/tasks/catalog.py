@@ -7,7 +7,7 @@ import ujson
 from jsonschema import Draft4Validator
 
 from .urls import request_url, get_or_create_inspection
-from .json import parse_json
+from .json import parse_json, json
 from .utils import logger, ResultDict
 from thezombies.models import (Probe, Audit, URLInspection)
 
@@ -72,7 +72,6 @@ def validate_json_catalog(taskarg):
     audit_id = taskarg.get('audit_id', None)
     prev_probe_id = taskarg.get('probe_id', None)
     inspection_id = taskarg.get('inspection_id', None)
-    prev_probe = Probe.objects.get(id=prev_probe_id)
     probe = None
     with transaction.atomic():
         probe = Probe.objects.create(probe_type=Probe.VALIDATION_PROBE,
@@ -82,7 +81,7 @@ def validate_json_catalog(taskarg):
     if probe:
         returnval['probe_id'] = probe.id
     is_valid = False
-    jsondata = prev_probe.result.get('json', None)
+    jsondata = taskarg.get('json', None)
     if jsondata and CATALOG_SCHEMA:
         is_valid = catalog_validator.is_valid(jsondata)
         if not is_valid:
@@ -116,17 +115,17 @@ def inspect_data_catalog_item(taskarg):
             return task_dict
         return None
 
-    def find_tasks(item, url_fields, taskarg):
+    def find_tasks(item, url_fields, taskarg, item_name='item'):
         tasks = []
         for field in url_fields:
             if field in item:
-                    task_dict = make_task(field, item, taskarg)
-                    if task_dict:
-                        tasks.append(task_dict)
-                    else:
-                        logger.error('Unable to make a task dictionary to pass to inspect_data_catalog_item_url')
+                task_dict = make_task(field, item, taskarg)
+                if task_dict:
+                    tasks.append(task_dict)
+                else:
+                    logger.error('Unable to make a task dictionary to pass to inspect_data_catalog_item_url')
             else:
-                logger.warn("No '{0}' in item.".format(field))
+                logger.info("No '{0}' in {1}.".format(field, item_name))
         return tasks
 
     item = taskarg.get('item', None)
@@ -138,25 +137,33 @@ def inspect_data_catalog_item(taskarg):
                                      previous_id=prev_probe_id, audit_id=audit_id)
     taskarg['prev_probe_id'] = probe.id
     item_title = item.get('title', 'No title provided.')
-    task_args = []
-    if item:
+    tasks_args = []
+    if item and isinstance(item, dict):
         url_fields = ('accessURL', 'webService')
-        task_args.extend(find_tasks(item, url_fields, taskarg))
+        tasks_args.extend(find_tasks(item, url_fields, taskarg))
         if 'distribution' in item:
             distribution = item.get('distribution', None)
             if distribution:
+                if not isinstance(distribution, list):
+                    distribution = json.loads(distribution)
                 for d in distribution:
                     logger.info('Checking distribution list')
-                    task_args.extend(find_tasks(d, url_fields, taskarg))
+                    if isinstance(d, dict):
+                        tasks_args.extend(find_tasks(d, url_fields, taskarg, 'd'))
+                    else:
+                        logger.warn('distribution item is a "{0}", not a dictionary'.format(type(d)))
             else:
                 logger.warn('No distribution in item')
-        num_tasks = len(task_args)
+        num_tasks = len(tasks_args)
         probe.result['tasks_generated'] = num_tasks
         if num_tasks > 0:
-            task_urls = [x.get('url') for x in task_args if x.get('url', False)]
-            probe.result['tasks'] = task_urls
-            for t in task_args:
-                inspect_data_catalog_item_url.delay(t)
+            tasks_urls = [x.get('url') for x in tasks_args if x and x.get('url', False)]
+            probe.result['tasks'] = tasks_urls
+            wrapped_args_tasks = [(t,) for t in tasks_args]
+            item_url_grp = inspect_data_catalog_item_url.chunks(wrapped_args_tasks, 4).group()
+            item_url_grp.skew(start=1, stop=10)()
+            # for t in tasks_args:
+            #     inspect_data_catalog_item_url.delay(t, {'countdown': 1})
         else:
             with transaction.atomic():
                 error_message = "No urls found for catalog item titled '{0}'".format(item_title)
@@ -169,7 +176,7 @@ def inspect_data_catalog_item(taskarg):
             probe.save()
 
     else:
-        logger.warn('No item passed to inspect_data_catalog_item')
+        logger.warn('No valid item passed to inspect_data_catalog_item')
 
 
 @shared_task
@@ -208,11 +215,14 @@ def create_data_crawl_audit(agency_id, catalog_url):
             probe.save()
     returnval['audit_id'] = audit_id
     if jsondata:
+        wrapped_args_tasks = []
         for item in jsondata:
             taskarg = {'agency_id': agency_id, 'audit_id': audit_id,
                        'catalog_url': catalog_url, 'item': item,
                        'prev_probe_id': prev_probe_id}
-            inspect_data_catalog_item.delay(taskarg)
+            wrapped_args_tasks.append((taskarg,))
+        taskgroup = inspect_data_catalog_item.chunks(wrapped_args_tasks, 4).group()
+        taskgroup.skew(start=1, stop=10)()
     else:
         # Audit some error or something
         with transaction.atomic():
