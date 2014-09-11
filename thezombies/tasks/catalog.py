@@ -106,7 +106,7 @@ def inspect_data_catalog_item(taskarg):
     :param taskarg: Dictionary containing the json object to inspect,
                     an audit id, agency_id and catalog_url
     """
-    # I don't think tasks work properly in an inner function...
+
     def make_task(field, item, orig_task):
         url = item.get(field, None)
         if url:
@@ -116,13 +116,17 @@ def inspect_data_catalog_item(taskarg):
             return task_dict
         return None
 
-    def find_tasks(item, url_fields, taskarg, item_name='item'):
+    def taskargs_from_item(item, url_fields, taskarg, item_name='item'):
         tasks = []
+        collected_urls = set()
         for field in url_fields:
             if field in item:
                 task_dict = make_task(field, item, taskarg)
                 if task_dict:
-                    tasks.append(task_dict)
+                    url = task_dict.get('url', None)
+                    if url not in collected_urls:
+                        collected_urls.add(url)
+                        tasks.append(task_dict)
                 else:
                     logger.error('Unable to make a task dictionary to pass to inspect_data_catalog_item_url')
             else:
@@ -138,10 +142,10 @@ def inspect_data_catalog_item(taskarg):
                                      previous_id=prev_probe_id, audit_id=audit_id)
     taskarg['prev_probe_id'] = probe.id
     item_title = item.get('title', 'No title provided.')
-    tasks_args = []
+    all_task_args = []
     if item and isinstance(item, dict):
         url_fields = ('accessURL', 'webService')
-        tasks_args.extend(find_tasks(item, url_fields, taskarg))
+        all_task_args.extend(taskargs_from_item(item, url_fields, taskarg))
         if 'distribution' in item:
             distribution = item.get('distribution', None)
             if distribution:
@@ -150,21 +154,27 @@ def inspect_data_catalog_item(taskarg):
                 for d in distribution:
                     logger.info('Checking distribution list')
                     if isinstance(d, dict):
-                        tasks_args.extend(find_tasks(d, url_fields, taskarg, 'd'))
+                        all_task_args.extend(taskargs_from_item(d, url_fields, taskarg, 'd'))
                     else:
                         logger.warn('distribution item is a "{0}", not a dictionary'.format(type(d)))
             else:
                 logger.warn('No distribution in item')
-        num_tasks = len(tasks_args)
-        probe.result['tasks_generated'] = num_tasks
-        if num_tasks > 0:
-            tasks_urls = [x.get('url') for x in tasks_args if x and x.get('url', False)]
-            probe.result['tasks'] = tasks_urls
-            wrapped_args_tasks = [(t,) for t in tasks_args]
+        if len(all_task_args) > 0:
+            unique_urls = set([x.get('url') for x in all_task_args if x and x.get('url', False)])
+            probe.result['urls'] = unique_urls.copy()
+            unique_tasks = []
+            for taskarg in all_task_args:
+                urlarg = taskarg.get('url', None)
+                if urlarg in unique_urls:
+                    unique_tasks.append(taskarg)
+                    unique_urls.discard(urlarg)
+                if len(unique_urls) == 0:
+                    break
+            probe.result['total_url_count'] = len(all_task_args)
+            probe.result['unique_url_count'] = len(unique_urls)
+            wrapped_args_tasks = [(t,) for t in unique_tasks]
             item_url_grp = inspect_data_catalog_item_url.chunks(wrapped_args_tasks, 4).group()
             item_url_grp.skew(start=1, stop=10)()
-            # for t in tasks_args:
-            #     inspect_data_catalog_item_url.delay(t, {'countdown': 1})
         else:
             with transaction.atomic():
                 error_message = "No urls found for catalog item titled '{0}'".format(item_title)
@@ -172,7 +182,7 @@ def inspect_data_catalog_item(taskarg):
                     audit = Audit.objects.get(id=audit_id)
                     audit.messages.append(error_message)
                     audit.save()
-                probe.errors.append(error_message)
+            probe.errors.append(error_message)
         with transaction.atomic():
             probe.save()
 
