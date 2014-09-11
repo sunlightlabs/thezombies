@@ -4,13 +4,14 @@
     <section>
         <h3>Summary</h3>
         <h4 class="subheader">Ran {{ object.probe_set.count }} probes for audit.</h4>
+        {% comment "Retrieing all probes takes some time" %}
         {% for probe in object.probe_set.all %}
         <section>
             <h5>{{ probe.get_probe_type_display }}: {{ probe.errors|length }} errors</h5>
             <ul>
             {% for key, value in probe.result.items %}
             {% if key != 'json' %}
-                <li>{{ key }}: <strong>{{ value|title }}</strong></li>
+                <li>{{ key }}: <strong>{{ value }}</strong></li>
             {% endif %}
             {% endfor %}
             {% for error in probe.errors %}
@@ -19,6 +20,7 @@
             </ul>
         </section>
         {% endfor %}
+        {% endcomment %}
         <h4 class="subheader">{{ object.inspections_count|default:0 }} URLs were inspected.</h4>
         {% if object.inspections %}
         <table>
