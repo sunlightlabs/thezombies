@@ -161,7 +161,7 @@ def inspect_data_catalog_item(taskarg):
                 logger.warn('No distribution in item')
         if len(all_task_args) > 0:
             unique_urls = set([x.get('url') for x in all_task_args if x and x.get('url', False)])
-            probe.result['urls'] = unique_urls.copy()
+            probe.result['urls'] = list(unique_urls)
             unique_tasks = []
             for taskarg in all_task_args:
                 urlarg = taskarg.get('url', None)
