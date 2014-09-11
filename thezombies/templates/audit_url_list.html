@@ -1,7 +1,7 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
 {% block content %}
-{% include "_audit_header.html" %}
-<h5><a href="{{ object.get_absolute_url }}">Return to summary page</a></h5>
+{% include "_audit_header.html" with object=audit %}
+<h5><a href="{{ audit.get_absolute_url }}">Return to summary page</a></h5>
 {% if is_paginated %}
 <p>URLs: <strong>{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of {{ paginator.count }}</p>
 {% endif %}
@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-{% for resp in object.inspections %}
+{% for resp in page_obj %}
         <tr>
             <td>{{ resp.requested_url|urlizetrunc:100 }}</td>
             <td><span class="label {% spaceless %}
@@ -29,7 +29,7 @@
             {% endif %}
             {% endspaceless %}">{{ resp.status_code|httpreason:True|default:"Unknown" }}</span></td>
             <td>{{ resp.content_type }}</td>
-            <td>{{ resp.errors|length }}</td>
+            <td>{{ resp.probe.errors|length }}</td>
             <td>{{ resp.info.accessLevel|title }}</td>
             <td>{{ resp.info.urlType|default:"None" }}</td>
         </tr>

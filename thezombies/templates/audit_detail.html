@@ -29,6 +29,7 @@
                 <tr>
                     <th>Requested url</th>
                     <th>Status Code</th>
+                    <th>Content Type</th>
                     <th>Encoding</th>
                 </tr>
             </thead>
@@ -36,6 +37,7 @@
             {% for inspection in object.inspections|slice:":10" %}
                 <tr>
                     <td>{{ inspection.requested_url|urlizetrunc:60 }}</td>
+                    <td>{{ inspection.content_type }}</td>
                     <td>{{ inspection.status_code }}</td>
                     <td>{{ inspection.encoding|default:"Not specified" }}</td>
                 </tr>
