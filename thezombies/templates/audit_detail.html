@@ -22,29 +22,6 @@
         {% endfor %}
         {% endcomment %}
         <h4 class="subheader">{{ object.inspections_count|default:0 }} URLs were inspected.</h4>
-        {% if object.inspections %}
-        <table>
-            <caption>Here are the last few URLs inspected:</caption>
-            <thead>
-                <tr>
-                    <th>Requested url</th>
-                    <th>Status Code</th>
-                    <th>Content Type</th>
-                    <th>Encoding</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for inspection in object.inspections|slice:":10" %}
-                <tr>
-                    <td>{{ inspection.requested_url|urlizetrunc:60 }}</td>
-                    <td>{{ inspection.content_type }}</td>
-                    <td>{{ inspection.status_code }}</td>
-                    <td>{{ inspection.encoding|default:"Not specified" }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <p><a href="{% url 'audit-url-list' pk=object.pk %}">View all results</a></p>
-        {% endif %}
+        <p><a href="{% url 'audit-url-list' pk=object.pk %}">View the results</a></p>
     </section>
 {% endblock %}
