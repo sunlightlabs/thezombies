@@ -40,8 +40,8 @@ def inspect_data_catalog_item_url(taskarg):
         response = result.get('response', None)
         returnval.errors.extend(result.errors)
         probe.errors.extend(result.errors)
-        if response is not None:
-            with transaction.atomic():
+        with transaction.atomic():
+            if response is not None:
                 inspection = URLInspection.objects.create_from_response(response, save_content=False)
                 if audit_id:
                     inspection.audit_id = audit_id
@@ -49,9 +49,10 @@ def inspect_data_catalog_item_url(taskarg):
                 inspection.save()
                 probe.save()
                 returnval['inspection_id'] = inspection.id
-        else:
-            with transaction.atomic():
-                inspection = URLInspection.objects.create(requested_url=url)
+            else:
+                timeout = result.get('timeout', False)
+                probe.result['timeout'] = timeout
+                inspection = URLInspection.objects.create(requested_url=url, timeout=timeout)
                 inspection.probe = probe
                 if audit_id:
                     inspection.audit_id = audit_id
@@ -201,18 +202,25 @@ def create_data_crawl_audit(agency_id, catalog_url):
     prev_probe_id = probe.id
     result_dict = parse_json(parse_args)
     jsondata = result_dict.get('json', None)
+    parse_errors = result_dict.get('parse_errors', False)
+    errors = result_dict.get('errors', [])
     returnval = ResultDict({'agency_id': agency_id, 'catalog_url': catalog_url, 'prev_probe_id': prev_probe_id})
     audit_id = None
     with transaction.atomic():
         audit = Audit.objects.create(agency_id=agency_id, audit_type=Audit.DATA_CATALOG_CRAWL)
         audit_id = audit.id
         probe.audit = audit
+        probe.errors.extend(errors)
+        probe.result['json_errors'] = True if parse_errors else False
+        probe.result['is_json'] = True if jsondata else False
         if jsondata:
             catalog_length = len(jsondata)
             audit.messages.append("Data catalog contains {0} items".format(catalog_length))
-            audit.save()
             probe.result['catalog_length'] = catalog_length
-            probe.save()
+        else:
+            probe.errors.append("No valid json at '{0}'".format(catalog_url))
+        audit.save()
+        probe.save()
     returnval['audit_id'] = audit_id
     if jsondata:
         wrapped_args_tasks = []
