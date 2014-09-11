@@ -183,6 +183,7 @@ class URLInspection(models.Model):
     status_code = models.IntegerField(max_length=3, blank=True, null=True)
     reason = models.CharField(blank=True, null=True, max_length=80, help_text='Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".')
     headers = hstore.DictionaryField(default=dictionary_default)
+    timeout = models.BooleanField(default=False)
     probe = models.ForeignKey('Probe', null=True, blank=True, related_name='url_inspections')
 
     objects = URLInspectionManager()
