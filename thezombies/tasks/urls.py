@@ -70,7 +70,7 @@ def request_url(url, method='GET'):
 
 
 @shared_task
-def get_or_create_inspection(url):
+def get_or_create_inspection(url, with_content=False):
     """Task to get the lastest URLInspection or create a new one if none exists.
 
     :param url: The url to retrieve.
@@ -79,7 +79,10 @@ def get_or_create_inspection(url):
     recent_inspections = None
     if latest_dates:
         latest_date = latest_dates.latest()
-        recent_inspections = URLInspection.objects.filter(requested_url=url, created_at__day=latest_date.day, parent_id__isnull=True)
+        recent_inspections = URLInspection.objects.filter(requested_url=url,
+                                                          created_at__day=latest_date.day,
+                                                          parent_id__isnull=True,
+                                                          content__isnull=(not with_content))
 
     inspection = None
     if recent_inspections and recent_inspections.count() > 0:
