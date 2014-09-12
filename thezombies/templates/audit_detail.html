@@ -1,27 +1,12 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
+{% block pagetitle %}{{ object.agency }} | {{ block.super }}{% endblock pagetitle %}
 {% block content %}
     {% include "_audit_header.html" %}
     <section>
         <h3>Summary</h3>
         <h4 class="subheader">Ran {{ object.probe_set.count }} probes for audit.</h4>
-        {% comment "Retrieing all probes takes some time" %}
-        {% for probe in object.probe_set.all %}
-        <section>
-            <h5>{{ probe.get_probe_type_display }}: {{ probe.errors|length }} errors</h5>
-            <ul>
-            {% for key, value in probe.result.items %}
-            {% if key != 'json' %}
-                <li>{{ key }}: <strong>{{ value }}</strong></li>
-            {% endif %}
-            {% endfor %}
-            {% for error in probe.errors %}
-                <li>Error: {{ error|truncatewords:80 }}</li>
-            {% endfor %}
-            </ul>
-        </section>
-        {% endfor %}
-        {% endcomment %}
-        <h4 class="subheader">{{ object.inspections_count|default:0 }} URLs were inspected.</h4>
+        <h4 class="subheader">{{ object.url_inspections_count|default:0 }} URLs were inspected.</h4>
+        <h4 class="subheader">{{ object.error_count }} Errors were recorded.</h4>
         <p><a href="{% url 'audit-url-list' pk=object.pk %}">View the results</a></p>
     </section>
 {% endblock %}

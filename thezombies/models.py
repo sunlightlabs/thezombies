@@ -59,7 +59,7 @@ class Probe(models.Model):
         ordering = ('-created_at',)
 
     def error_count(self):
-        return self.errors.count()
+        return len(self.errors)
 
 
 class Audit(models.Model):
@@ -99,23 +99,32 @@ class Audit(models.Model):
         return reverse('audit-detail', kwargs={'pk': str(self.pk)})
 
     @property
-    def inspections(self):
+    def url_inspections(self):
         return URLInspection.objects.filter(probe__in=self.probe_set.all())
 
-    def inspections_count(self):
-        return self.inspections.count()
+    def url_inspections_count(self):
+        return self.url_inspections.count()
 
-    def inspections_failure_count(self):
-        return self.inspections.filter(status_code__gte=400).count()
+    def url_inspections_failure_count(self):
+        return self.url_inspections.filter(status_code__gte=400).count()
 
-    def inspections_404_count(self):
-        return self.inspections.filter(status_code=404).count()
+    def url_inspections_404_count(self):
+        return self.url_inspections.filter(status_code=404).count()
 
-    def inspections_html_count(self):
-        return self.inspections.filter(headers__contains={'content-type': 'text/html'}).count()
+    def url_inspections_html_count(self):
+        return self.url_inspections.filter(headers__contains={'content-type': 'text/html'}).count()
 
-    def probes_count(self):
-        return self.probe_set.count()
+    def url_inspections_ftp_count(self):
+        return self.url_inspections.filter(requested_url__startswith='ftp').count()
+
+    def error_list(self):
+        error_list = []
+        for probe in self.probe_set.filter(errors__len__gt=0).only('errors'):
+            error_list.extend(probe.errors)
+        return error_list
+
+    def error_count(self):
+        return len(self.error_list())
 
 
 class URLInspectionManager(hstore.HStoreManager):

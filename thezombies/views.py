@@ -31,7 +31,7 @@ class AuditURLList(ListView):
 
     def get_queryset(self):
         self.audit = get_object_or_404(Audit, pk=self.kwargs.get('pk'))
-        return self.audit.inspections
+        return self.audit.url_inspections
 
     def get_context_data(self, **kwargs):
         context = super(AuditURLList, self).get_context_data(**kwargs)

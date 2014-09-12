@@ -19,8 +19,8 @@ class AuditAdmin(admin.ModelAdmin):
     search_fields = ('agency',)
     ordering = ('-created_at',)
     date_hierarchy = 'created_at'
-    readonly_fields = ('probes_count', 'inspections_count', 'inspections_failure_count', 'inspections_404_count',
-                       'inspections_html_count', 'created_at', 'updated_at', 'messages')
+    readonly_fields = ('url_inspections_count', 'url_inspections_failure_count', 'url_inspections_404_count',
+                       'url_inspections_html_count', 'created_at', 'updated_at', 'messages')
     fieldsets = (
         (None, {
             'fields': (('agency', 'audit_type'), ('created_at', 'updated_at'), 'notes')
@@ -29,7 +29,7 @@ class AuditAdmin(admin.ModelAdmin):
             'fields': ('messages',)
         }),
         ('URL Inspections', {
-            'fields': ('probes_count', 'inspections_count', 'inspections_failure_count', 'inspections_404_count', 'inspections_html_count'),
+            'fields': ('url_inspections_count', 'url_inspections_failure_count', 'url_inspections_404_count', 'url_inspections_html_count'),
             'classes': ('wide',),
         }),
     )
