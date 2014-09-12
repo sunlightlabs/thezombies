@@ -28,10 +28,10 @@ class ResultDict(dict):
             if error.message and error.message != '':
                 error_message = error.message
             else:
-                error_message = ', '.join([str(a) for a in error.args])
+                error_message = u', '.join([unicode(str(a), errors='replace') for a in error.args])
             if isinstance(error, ValidationError):
-                error_message = '{} >>\n {}'.format(error.message, error.schema)
-            error_str = '{0}: {1}'.format(error_name, error_message)
+                error_message = u'{} >>\n {}'.format(error.message, error.schema)
+            error_str = u'{0}: {1}'.format(error_name, error_message)
             self._errors.append(error_str)
             self['errors'] = self._errors
 
@@ -44,4 +44,4 @@ class ResultDict(dict):
 def error_handler(uuid):
     result = AsyncResult(uuid)
     exc = result.get(propagate=False)
-    logger.warn('Task {0} raised exception: {1!r}\n{2!r}'.format(uuid, exc, result.traceback))
+    logger.warn(u'Task {0} raised exception: {1!r}\n{2!r}'.format(uuid, exc, result.traceback))

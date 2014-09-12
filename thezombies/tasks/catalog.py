@@ -198,7 +198,7 @@ def create_data_crawl_audit(agency_id, catalog_url):
     :param agency_id: Database id of the agency whose catalog should be searched
     :param catalog_url: The url of the catalog to search. Generally accessible on agency.data_json_url
     """
-    fetcher = get_or_create_inspection(catalog_url)
+    fetcher = get_or_create_inspection(catalog_url, with_content=True)
     inspection_id = fetcher.get('inspection_id')
     inspection = URLInspection.objects.get(id=inspection_id)
     parse_args = {'content': inspection.content.string()}
