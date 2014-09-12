@@ -14,3 +14,4 @@ djorm-pgarray
 django-compressor
 whitenoise
 django-extensions
+fabric
