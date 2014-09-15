@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from django.views.generic import ListView, DetailView
 
 from thezombies.models import (Agency, Audit)
@@ -18,6 +18,30 @@ class AuditList(ListView):
     model = Audit
     paginate_by = 50
     template_name = 'audits_list.html'
+
+
+class AuditOfTypeList(ListView):
+    model = Audit
+    paginate_by = 50
+    template_name = 'audits_list.html'
+
+    def get_queryset(self, **kwargs):
+        audit_type_str = self.kwargs.get('audit_type', None)
+        audit_type = None
+        if audit_type_str == 'generic':
+            audit_type = Audit.GENERIC_AUDIT
+        elif audit_type_str == 'validation':
+            audit_type = Audit.DATA_CATALOG_VALIDATION
+        elif audit_type_str == 'crawl':
+            audit_type = Audit.DATA_CATALOG_CRAWL
+        self.audit_list = get_list_or_404(Audit, audit_type=audit_type)
+        self.audit_type_string = audit_type_str
+        return self.audit_list
+
+    def get_context_data(self, **kwargs):
+        context = super(AuditOfTypeList, self).get_context_data(**kwargs)
+        context['audit_type'] = self.audit_type_string
+        return context
 
 
 class AuditView(DetailView):

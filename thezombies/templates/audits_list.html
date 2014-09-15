@@ -2,7 +2,7 @@
 
 {% block content %}
     <header>
-        <h2>Audits</h2>
+        <h2>Audits{% if audit_type %} <small>Type: {{ audit_type|title }}</small>{% endif %}</h2>
         <h4 class="subheader">
         {% if is_paginated %}
         {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ paginator.count }} audits
