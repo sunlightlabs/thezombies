@@ -144,7 +144,7 @@ def inspect_data_catalog_item(taskarg):
     item_title = item.get('title', 'No title provided.')
     all_task_args = []
     if item and isinstance(item, dict):
-        url_fields = ('accessURL', 'webService')
+        url_fields = ('accessURL', 'webService', 'accessUrl')
         all_task_args.extend(taskargs_from_item(item, url_fields, taskarg))
         if 'distribution' in item:
             distribution = item.get('distribution', None)
