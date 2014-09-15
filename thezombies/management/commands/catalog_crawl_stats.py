@@ -1,7 +1,11 @@
+from __future__ import division
 from django.db.models import Q
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 from thezombies.models import (Audit, Agency, Probe)
 from optparse import make_option
+
+REPORT_DATE_FORMATTER = u"{:%Y-%m-%d %I:%M%p %Z}\n"
 
 
 class Command(BaseCommand):
@@ -27,11 +31,15 @@ class Command(BaseCommand):
         for agency in agency_list:
             try:
                 audit = Audit.objects.filter(agency=agency, audit_type=Audit.DATA_CATALOG_CRAWL).latest()
+                self.stdout.write(u"# Data Catalog Crawl Report\n")
+                report_date = REPORT_DATE_FORMATTER.format(timezone.localtime(timezone.now()))
+                self.stdout.write(u"Report generated: {0}\n\n".format(report_date))
                 self.stdout.write(u"## {0}".format(audit.agency.name))
-                date_str = u"{:%Y-%m-%d %H:%M%p}\n".format(audit.updated_at)
+                date_str = REPORT_DATE_FORMATTER.format(timezone.localtime(audit.updated_at))
                 num_urls_visited = audit.url_inspections.filter(parent__isnull=True).count()
                 insp_list = audit.url_inspections.filter(content__isnull=False)
-                typeless_inspections = audit.url_inspections.filter(content__content_type__isnull=True)
+                errored_inspections = insp_list.filter(status_code__gte=400)
+                typeless_inspections = audit.url_inspections.filter(content__content_type__isnull=True, status_code__lt=400)
                 ftp_inspections = typeless_inspections.filter(requested_url__startswith='ftp')
                 typeless_http_inspections = typeless_inspections.filter(requested_url__startswith='http')
                 other_typeless_inspections = typeless_inspections.exclude(id__in=ftp_inspections).exclude(id__in=typeless_http_inspections)
@@ -43,27 +51,35 @@ class Command(BaseCommand):
                 has_webservice_q = Q(initial__contains=['webService'])
                 sans_data_urls = json_probes_public.exclude(has_distribution_q | has_accessURL_q | has_accessURL_badkey_q | has_webservice_q)
                 self.stdout.write(u"\nUpdated: {0}\n".format(date_str))
-                self.stdout.write(u"| Errors | Entries sans urls | URLs inspected | URLs no content-type | FTP URLs | Possibly Invalid URLs |")
-                self.stdout.write(u"| ------ | ----------------- | -------------- | -------------------- | -------- | --------------------- |")
-                stats_row = u"| {errors:6,d} | {sans_urls: >14,d} | {inspected: >14,d} | {typeless:20,d} | {ftp:8,d} | {invalid:21,d} |".format(
+                self.stdout.write(u"| Errors | Entries without URLs | URLs inspected | HTTP Errors | URLs no content-type | FTP URLs | Possibly Invalid URLs |")
+                self.stdout.write(u"| ------ | -------------------- | -------------- | ----------- | -------------------- | -------- | --------------------- |")
+                stats_row = u"| {errors:6,d} | {sans_urls: >14,d} | {inspected: >14,d} | {errored_inspections: >14,d} | {typeless:20,d} | {ftp:8,d} | {invalid:21,d} |".format(
                             errors=audit.error_count(), inspected=num_urls_visited, typeless=typeless_http_inspections.count(),
-                            ftp=ftp_inspections.count(), invalid=other_typeless_inspections.count(), sans_urls=sans_data_urls.count())
+                            ftp=ftp_inspections.count(), invalid=other_typeless_inspections.count(), sans_urls=sans_data_urls.count(),
+                            errored_inspections=errored_inspections.count())
                 self.stdout.write(stats_row)
                 selector = u'content__content_type'
                 insp_content_types = insp_list.select_related(selector).order_by(selector).distinct(selector).only(selector)
                 content_types = list(set([x.content.content_type.split(';')[0] for x in insp_content_types if x.content.content_type]))
                 if len(content_types) > 0:
                     self.stdout.write(u"\n### Content Types\n\n")
-                    self.stdout.write(u"| Number | Type |\n| ------ | ---- |")
-                for atype in sorted(content_types):
-                    type_count = insp_list.filter(content__content_type__startswith=atype).count()
-                    type_report = u"| {0:6,d} | {1} |".format(type_count, atype)
+                    self.stdout.write(u"| Number | Pct | Type |\n| ------ | ---- | ---- |")
+                    for atype in sorted(content_types):
+                        type_count = insp_list.filter(content__content_type__startswith=atype).count()
+                        type_pct = type_count/insp_list.count()
+                        type_report = u"| {count:6,d} | {pct:.2%} | {atype} |".format(count=type_count, atype=atype, pct=type_pct)
+                        self.stdout.write(type_report)
+                    type_count = typeless_inspections.count()
+                    type_pct = typeless_inspections.count()/insp_list.count() if insp_list.count() > 0 else 0
+                    type_report = u"| {count:6,d} | {pct:.2%} | {atype} |".format(count=type_count, atype=u"None/Unknown", pct=type_pct)
                     self.stdout.write(type_report)
                 if options['bad-urls'] and other_typeless_inspections.count() > 0:
                     self.stdout.write(u"### Invalid URLs?")
                     for insp in other_typeless_inspections.only('requested_url'):
                         self.stdout.write(u"     '{0}'".format(insp.requested_url))
-                self.stdout.write(u"\n\n")
+                self.stdout.write(u"\n")
+                self.stdout.write(u"*"*80)
+                self.stdout.write(u"\n")
             except Audit.DoesNotExist:
                 if options['show-missing']:
                     self.stderr.write(u"No recent audit exists for {0}\n\n".format(agency.name))
