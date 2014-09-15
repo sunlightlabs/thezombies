@@ -65,14 +65,14 @@ class Probe(models.Model):
 class Audit(models.Model):
     """An audit on agency, made up of auditables"""
 
-    GENERIC_AUDIT = 'ADT'
-    DATA_CATALOG_VALIDATION = 'DCV'
-    DATA_CATALOG_CRAWL = 'DCC'
+    GENERIC_AUDIT = u'ADT'
+    DATA_CATALOG_VALIDATION = u'DCV'
+    DATA_CATALOG_CRAWL = u'DCC'
 
     AUDIT_TYPE_CHOICES = (
-        (GENERIC_AUDIT, 'Generic Audit'),
-        (DATA_CATALOG_VALIDATION, 'Data Catalog Validation'),
-        (DATA_CATALOG_CRAWL, 'Data Catalog Crawl'),
+        (GENERIC_AUDIT, u'Generic Audit'),
+        (DATA_CATALOG_VALIDATION, u'Data Catalog Validation'),
+        (DATA_CATALOG_CRAWL, u'Data Catalog Crawl'),
     )
 
     audit_type = models.CharField(max_length=3,
@@ -112,7 +112,7 @@ class Audit(models.Model):
         return self.url_inspections.filter(status_code=404).count()
 
     def url_inspections_html_count(self):
-        return self.url_inspections.filter(headers__contains={'content-type': 'text/html'}).count()
+        return self.url_inspections.filter(content__content_type__contains='text/html').count()
 
     def url_inspections_ftp_count(self):
         return self.url_inspections.filter(requested_url__startswith='ftp').count()
@@ -135,10 +135,11 @@ class URLInspectionManager(hstore.HStoreManager):
         """
         if isinstance(resp, Response):
             content_type = resp.headers.get('content-type', None)
+            content = ResponseContent.objects.create(content_type=content_type)
             if save_content:
-                content = ResponseContent(binary=resp.content, content_type=content_type)
+                content.binary = resp.content
                 content.save()
-            obj = self.create(content=content if save_content else None, url=resp.url, status_code=resp.status_code,
+            obj = self.create(content=content, url=resp.url, status_code=resp.status_code,
                               encoding=resp.encoding, reason=resp.reason)
             obj.requested_url = resp.history[0].url if len(resp.history) > 0 else resp.request.url
             obj.headers = dict(resp.headers)
@@ -160,14 +161,14 @@ class URLInspectionManager(hstore.HStoreManager):
 class ResponseContent(models.Model):
     binary = models.BinaryField(blank=True, null=True)
     content_type = models.CharField(max_length=40, blank=True, null=True)
-    length = models.IntegerField(blank=True, editable=False)
+    length = models.IntegerField(blank=True, null=True, editable=False)
 
     class Meta:
         verbose_name = 'ResponseContent'
         verbose_name_plural = 'ResponsesContents'
 
     def save(self, *args, **kwargs):
-        self.length = len(self.binary) if self.binary else 0
+        self.length = len(self.binary) if self.binary else None
         super(ResponseContent, self).save(*args, **kwargs)
 
     def string(self):
