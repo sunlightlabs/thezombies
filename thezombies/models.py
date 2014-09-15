@@ -160,7 +160,7 @@ class URLInspectionManager(hstore.HStoreManager):
 
 class ResponseContent(models.Model):
     binary = models.BinaryField(blank=True, null=True)
-    content_type = models.CharField(max_length=40, blank=True, null=True)
+    content_type = models.CharField(max_length=120, blank=True, null=True)
     length = models.IntegerField(blank=True, null=True, editable=False)
 
     class Meta:
@@ -185,8 +185,8 @@ class URLInspection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     url = models.TextField(blank=True, null=True)  # We may get (and want to store) really long or invalid urls, so...
     requested_url = models.TextField()  # We may get (and want to store) really long or invalid urls, so...
-    encoding = models.CharField(max_length=40, blank=True, null=True)
-    apparent_encoding = models.CharField(max_length=40, blank=True, null=True)
+    encoding = models.CharField(max_length=120, blank=True, null=True)
+    apparent_encoding = models.CharField(max_length=120, blank=True, null=True)
     content = models.OneToOneField(ResponseContent, null=True, related_name='content_for', editable=False)
     history = hstore.ReferencesField(blank=True, null=True)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
