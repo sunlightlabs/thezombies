@@ -4,11 +4,17 @@ from django.conf import settings
 from celery import shared_task
 
 import requests
-from requests.exceptions import (MissingSchema)
+from requests.exceptions import InvalidURL
 from cachecontrol import CacheControl
 
 from .utils import ResultDict, logger
 from thezombies.models import URLInspection
+
+try:
+    from urllib.parse import urlparse, urlunparse
+except ImportError:
+    from urlparse import urlparse, urlunparse
+
 
 REQUEST_TIMEOUT = getattr(settings, 'REQUEST_TIMEOUT', 60)
 session = CacheControl(requests.Session(), cache_etags=False)
@@ -22,20 +28,25 @@ def check_and_correct_url(url, method='GET'):
     :param method: http method to use, as a string. Default is 'GET'
     """
     returnval = ResultDict({'initial_url': url})
-    req = requests.Request(method.upper(), url)
     try:
-        preq = req.prepare()
-    except MissingSchema as e:
-        returnval.add_error(e)
-        new_url = 'http://{}'.format(req.url)
-        req.url = new_url
-        try:
-            preq = req.prepare()
-            returnval['corrected_url'] = preq.url
-        except Exception as e:
-            returnval.add_error(e)
+        scheme, netloc, path, params, query, fragments = urlparse(str(url))
+        if scheme is '':
+            # Maybe it is an http url without the scheme?
+            scheme = 'http'
+        elif not (scheme.startswith('http') or scheme.startswith('sftp') or scheme.startswith('ftp')):
+            # Not a typical 'web' scheme
+            raise InvalidURL('Invalid scheme (not http(s) or (s)ftp)')
+
+        if netloc is '':
+            raise InvalidURL('Invalid network location')
+
+        corrected_url = urlunparse((scheme, netloc, path, params, query, fragments))
+        returnval['valid_url'] = True
+        returnval['corrected_url'] = corrected_url
     except Exception as e:
+        logger.info("Error validating url '{url}'".format(url=url))
         returnval.add_error(e)
+        returnval['valid_url'] = False
 
     return returnval
 
@@ -50,22 +61,25 @@ def request_url(url, method='GET'):
     """
     resp = None
     checker_result = check_and_correct_url(url)
-    valid_url = checker_result.get('corrected_url', url)
+    corrected_url = checker_result.get('corrected_url', None)
     returnval = ResultDict(checker_result)
-    try:
-        resp = session.request(method.upper(), valid_url, allow_redirects=True, timeout=REQUEST_TIMEOUT)
-    except requests.exceptions.Timeout as e:
-        returnval.add_error(e)
-        returnval['timeout'] = True
-    except Exception as e:
-        returnval.add_error(e)
-    # a non-None requests.Response will evaluate to False if it carries an HTTPError value
-    if resp is not None:
+    returnval['url_request_attempted'] = False
+    if corrected_url:
         try:
-            resp.raise_for_status()
+            resp = session.request(method.upper(), corrected_url, allow_redirects=True, timeout=REQUEST_TIMEOUT)
+        except requests.exceptions.Timeout as e:
+            returnval.add_error(e)
+            returnval['timeout'] = True
         except Exception as e:
             returnval.add_error(e)
-    returnval['response'] = resp
+        returnval['url_request_attempted'] = True
+        # a non-None requests.Response will evaluate to False if it carries an HTTPError value
+        if resp is not None:
+            try:
+                resp.raise_for_status()
+            except Exception as e:
+                returnval.add_error(e)
+        returnval['response'] = resp
     return returnval
 
 
@@ -77,6 +91,7 @@ def get_or_create_inspection(url, with_content=False):
     """
     latest_dates = URLInspection.objects.datetimes('created_at', 'minute')
     recent_inspections = None
+    fetch_val = None
     if latest_dates:
         latest_date = latest_dates.latest()
         recent_inspections = URLInspection.objects.filter(requested_url=url,
@@ -99,4 +114,6 @@ def get_or_create_inspection(url, with_content=False):
                 timeout = fetch_val.get('timeout', False)
                 inspection = URLInspection.objects.create(requested_url=url, timeout=timeout)
                 inspection.save()
-    return ResultDict({'inspection_id': getattr(inspection, 'id', None), 'url': url})
+    returnval = ResultDict(fetch_val or {})
+    returnval['inspection_id'] = getattr(inspection, 'id', None)
+    return returnval

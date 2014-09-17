@@ -37,7 +37,7 @@ def inspect_data_catalog_item_url(taskarg):
                                      previous_id=prev_probe_id, audit_id=audit_id)
     if url:
         result = request_url(url, 'HEAD')
-        response = result.get('response', None)
+        response = result.pop('response', None)
         returnval.errors.extend(result.errors)
         probe.errors.extend(result.errors)
         with transaction.atomic():
@@ -47,7 +47,6 @@ def inspect_data_catalog_item_url(taskarg):
                     inspection.audit_id = audit_id
                 inspection.probe = probe
                 inspection.save()
-                probe.save()
                 returnval['inspection_id'] = inspection.id
             else:
                 timeout = result.get('timeout', False)
@@ -57,8 +56,11 @@ def inspect_data_catalog_item_url(taskarg):
                 if audit_id:
                     inspection.audit_id = audit_id
                 inspection.save()
-                probe.save()
                 returnval['inspection_id'] = inspection.id
+            probe.result.update(result)
+            probe.result['initial_url'] = url
+            probe.result['inspection_id'] = returnval['inspection_id']
+            probe.save()
 
     return returnval
 
