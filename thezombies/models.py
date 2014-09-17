@@ -85,11 +85,12 @@ class Audit(models.Model):
                               help_text='Stores messages generated when audit was run.')
 
     def __repr__(self):
-        return '<Audit: {0}>'.format(self.id)
+        return u'<Audit({audit_type}): {identifier}>'.format(identifier=self.id,
+                                                             audit_type=self.get_audit_type_display())
 
     def __str__(self):
-        return '{audit_type} for {identifier}'.format(audit_type=self.get_audit_type_display(),
-                                                      identifier=self.agency)
+        return u'{audit_type} for {identifier}'.format(audit_type=self.get_audit_type_display(),
+                                                       identifier=self.agency)
 
     class Meta:
         get_latest_by = 'created_at'
@@ -155,7 +156,7 @@ class URLInspectionManager(hstore.HStoreManager):
 
             return obj
         else:
-            raise TypeError('create_from_response expects a requests.Response object')
+            raise TypeError(u'create_from_response expects a requests.Response object')
 
 
 class ResponseContent(models.Model):
@@ -175,7 +176,7 @@ class ResponseContent(models.Model):
         return str(self.binary)
 
     def __repr__(self):
-        return '<ResponseContent: {0} bytes>'.format(self.length)
+        return u'<ResponseContent: {0} bytes>'.format(self.length)
 
     def __str__(self):
         return self.__repr__()
@@ -264,7 +265,7 @@ class Agency(models.Model):
         return urljoin(self.url, 'digitalstrategy.json')
 
     def __repr__(self):
-        return '<Agency: {0}>'.format(self.name)
+        return u'<Agency: {0}>'.format(self.name)
 
     def __str__(self):
         return self.name
