@@ -1,4 +1,5 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
+{% block pagetitle %}{{ audit.agency }}: {{ audit.get_audit_type_display }} | {{ block.super }}{% endblock pagetitle %}
 {% block content %}
 {% include "_audit_header.html" with object=audit %}
 <h5><a href="{{ audit.get_absolute_url }}">Return to summary page</a></h5>

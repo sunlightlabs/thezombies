@@ -1,5 +1,5 @@
 {% extends "base.html" %}{% load staticfiles %}{% load compress %}{% load tz %}{% load brains %}
-{% block pagetitle %}{{ object.agency }} | {{ block.super }}{% endblock pagetitle %}
+{% block pagetitle %}{{ audit.agency }}: {{ audit.get_audit_type_display }} | {{ block.super }}{% endblock pagetitle %}
 {% block content %}
     {% include "_audit_header.html" %}
     <section>

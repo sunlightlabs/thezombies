@@ -1,5 +1,5 @@
 {% extends "base.html" %}{% load staticfiles %}
-
+{% block pagetitle %}Audits | {{ block.super }}{% endblock pagetitle %}
 {% block content %}
     <header>
         <h2>Audits{% if audit_type %} <small>Type: {{ audit_type|title }}</small>{% endif %}</h2>
