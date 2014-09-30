@@ -1,5 +1,5 @@
 # Invalid URL Report
-Report generated: 2014-09-30 11:51AM EDT
+Report generated: 2014-09-30 12:00PM EDT
 
 
 ## Agency: Department of Agriculture
@@ -40,8 +40,65 @@ None!
 
 ## Agency: Department of Labor
 
-URL Count: 57
+URL Count: 114
 
+* TBD
+* [Available upon request]
+* deprecated
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* 
+* www.msha.gov/OpenGovernmentData/107a/107aOrders.asp
+* TBD
+* [Available upon request]
+* deprecated
+* TBD
+* www.msha.gov/OpenGovernmentData/DataSets/PersonalHealthSamples.zip
+* www.msha.gov/OpenGovernmentData/DataSets/Conferences.zip
+* [Available upon request]
+* TBD
+* www.msha.gov/OpenGovernmentData/DataSets/Accidents.zip
+* TBD
+* [Available upon request]
+* [Available upon request]
+* TBD
+* [Available upon request]
+* not available (or relevant) for historical versions
+* 
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* deprecated
+* TBD
+* www.msha.gov/OpenGovernmentData/DataSets/NoiseSamples.zip
+* [Available upon request]
+* www.msha.gov/OpenGovernmentData/DataSets/MinesProdYearly.zip
+* www.msha.gov/OpenGovernmentData/DataSets/QuartzSamples.zip
+* www.msha.gov/OpenGovernmentData/DataSets/Mines.zip
+* www.msha.gov/OpenGovernmentData/DataSets/CoalDustSamples.zip
+* TBD
+* [Available upon request]
+* deprecated
+* www.msha.gov/OpenGovernmentData/DataSets/ContestedViolations.zip
+* TBD
+* [Available upon request]
+* N/A
+* www.msha.gov/OpenGovernmentData/DataSets/Inspections.zip
+* www.msha.gov/OpenGovernmentData/DataSets/Violations.zip
+* www.msha.gov/OpenGovernmentData/DataSets/AddressofRecord.zip
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
 * 
 * www.msha.gov/OpenGovernmentData/DataSets/NoiseSamples.zip
 * deprecated
