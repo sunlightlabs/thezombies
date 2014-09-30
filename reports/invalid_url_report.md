@@ -1,5 +1,5 @@
 # Invalid URL Report
-Report generated: 2014-09-17 05:05PM EDT
+Report generated: 2014-09-30 11:51AM EDT
 
 
 ## Agency: Department of Agriculture
@@ -40,7 +40,65 @@ None!
 
 ## Agency: Department of Labor
 
-None!
+URL Count: 57
+
+* 
+* www.msha.gov/OpenGovernmentData/DataSets/NoiseSamples.zip
+* deprecated
+* TBD
+* [Available upon request]
+* not available (or relevant) for historical versions
+* TBD
+* [Available upon request]
+* www.msha.gov/OpenGovernmentData/DataSets/Violations.zip
+* TBD
+* www.msha.gov/OpenGovernmentData/DataSets/PersonalHealthSamples.zip
+* [Available upon request]
+* deprecated
+* TBD
+* [Available upon request]
+* www.msha.gov/OpenGovernmentData/DataSets/Inspections.zip
+* TBD
+* [Available upon request]
+* TBD
+* www.msha.gov/OpenGovernmentData/DataSets/ContestedViolations.zip
+* [Available upon request]
+* www.msha.gov/OpenGovernmentData/DataSets/Mines.zip
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* www.msha.gov/OpenGovernmentData/DataSets/Accidents.zip
+* deprecated
+* deprecated
+* www.msha.gov/OpenGovernmentData/107a/107aOrders.asp
+* www.msha.gov/OpenGovernmentData/DataSets/Conferences.zip
+* 
+* TBD
+* www.msha.gov/OpenGovernmentData/DataSets/QuartzSamples.zip
+* [Available upon request]
+* TBD
+* TBD
+* [Available upon request]
+* [Available upon request]
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* www.msha.gov/OpenGovernmentData/DataSets/CoalDustSamples.zip
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* TBD
+* [Available upon request]
+* www.msha.gov/OpenGovernmentData/DataSets/AddressofRecord.zip
+* N/A
+* www.msha.gov/OpenGovernmentData/DataSets/MinesProdYearly.zip
+* TBD
+* [Available upon request]
 
 ## Agency: Department of State
 
@@ -55,6 +113,8 @@ None!
 None!
 
 ## Agency: Department of the Interior
+
+URL Count: 81
 
 * http:/water.usgs.gov/nawqa/studies/mrb/mrb_factsheet.pdf
 * http:/water.usgs.gov/nawqa/studies/mrb/mrb_factsheet.pdf
