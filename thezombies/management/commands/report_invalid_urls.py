@@ -19,9 +19,9 @@ class Command(BaseCommand):
             probe_list = Probe.objects.filter(audit__agency=agency, result__contains={'valid_url': 'false'})
             if probe_list.count() == 0:
                 self.stdout.write('None!\n\n')
+            else:
+                self.stdout.write('URL Count: {0}\n\n'.format(probe_list.count()))
             for probe in probe_list:
                 self.stdout.write('* {0}'.format(probe.result.get('initial_url', '???')))
             if probe_list.count() > 0:
                 self.stdout.write('\n')
-
-
