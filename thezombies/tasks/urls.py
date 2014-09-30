@@ -32,7 +32,7 @@ def check_and_correct_url(url, method='GET'):
         scheme, netloc, path, params, query, fragments = urlparse(str(url))
         if scheme is '':
             # Maybe it is an http url without the scheme?
-            scheme = 'http'
+            scheme, netloc, path, params, query, fragments = urlparse("http://{0}".format(str(url)))
         elif not (scheme.startswith('http') or scheme.startswith('sftp') or scheme.startswith('ftp')):
             # Not a typical 'web' scheme
             raise InvalidURL('Invalid scheme (not http(s) or (s)ftp)')
