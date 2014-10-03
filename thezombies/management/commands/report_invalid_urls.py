@@ -1,9 +1,7 @@
 from __future__ import division
 from django.core.management.base import BaseCommand
-from django.utils import timezone
 from thezombies.models import (Agency, Probe)
-
-REPORT_DATE_FORMATTER = u"{:%Y-%m-%d %I:%M%p %Z}\n"
+from thezombies.utils import datetime_string
 
 
 class Command(BaseCommand):
@@ -12,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         agency_list = Agency.objects.all()
         self.stdout.write(u"# Invalid URL Report\n")
-        report_date = REPORT_DATE_FORMATTER.format(timezone.localtime(timezone.now()))
+        report_date = datetime_string()
         self.stdout.write(u"Report generated: {0}\n\n".format(report_date))
         for agency in agency_list:
             self.stdout.write('## Agency: {0}\n\n'.format(agency.name))

@@ -1,7 +1,7 @@
 from __future__ import division
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from thezombies.models import (Audit, Agency, Probe)
+from thezombies.models import (Audit, Agency)
 from optparse import make_option
 
 REPORT_DATE_FORMATTER = u"{:%Y-%m-%d %I:%M%p %Z}\n"
