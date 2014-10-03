@@ -33,11 +33,26 @@ class Command(BaseCommand):
             else:
                 error_counts = Counter([e.partition(':')[0] for e in validation_audit.error_list()])
                 for el, count in error_counts.items():
-                    self.stdout.write('- {0:,} of type *{1}*\n'.format(count, el))
+                    self.stdout.write('- {0:,d} of type *{1}*\n'.format(count, el))
             self.stdout.write('\n')
             crawl_audit = Audit.objects.filter(agency=agency, audit_type=Audit.DATA_CATALOG_CRAWL).latest()
             self.stdout.write('## URL Inspections\n\n')
             self.stdout.write('Ran on {0}\n'.format(REPORT_DATE_FORMATTER.format(crawl_audit.created_at)))
-            num_urls_visited = crawl_audit.url_inspections.filter(parent__isnull=True).count()
-            self.stdout.write('Visited **{0:,}** URLS'.format(num_urls_visited))
-
+            num_urls_found = crawl_audit.url_inspections.initial_urls_distinct().count()
+            self.stdout.write('Inspected **{0:,d}** URLS\n\n'.format(num_urls_found))
+            http_urls_distinct = crawl_audit.url_inspections.http_urls_distinct().count()
+            self.stdout.write('- **{0:,}** distinct HTTP URLS\n'.format(http_urls_distinct))
+            ftp_urls_distinct = crawl_audit.url_inspections.ftp_urls_distinct().count()
+            self.stdout.write('- **{0:,}** distinct FTP URLS\n'.format(ftp_urls_distinct))
+            suspicious_urls_distinct = crawl_audit.url_inspections.suspicious_urls_distinct()
+            self.stdout.write('- **{0:,}** suspicious (not http or ftp) URLS\n'.format(suspicious_urls_distinct.count()))
+            self.stdout.write('\n### Suspicious (not http or ftp) URLS\n\n'.format(suspicious_urls_distinct.count()))
+            for insp in suspicious_urls_distinct:
+                self.stdout.write('- {0}\n'.format(insp.requested_url))
+            self.stdout.write('\n')
+            not_found_urls = crawl_audit.url_inspections.not_found()
+            self.stdout.write('### 404 (Not Found) responses\n\n')
+            self.stdout.write('{0:,d} URLs returned an error of "404 Not found"\n'.format(not_found_urls.count()))
+            for insp in not_found_urls:
+                self.stdout.write('- {0}\n'.format(insp.requested_url))
+            self.stdout.write('\n')

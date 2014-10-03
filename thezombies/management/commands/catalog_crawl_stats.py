@@ -37,19 +37,20 @@ class Command(BaseCommand):
                 date_str = REPORT_DATE_FORMATTER.format(timezone.localtime(audit.updated_at))
                 num_urls_visited = audit.url_inspections.filter(parent__isnull=True).count()
                 insp_list = audit.url_inspections.filter(content__isnull=False)
-                errored_inspections = insp_list.filter(status_code__gte=400)
-                typeless_inspections = audit.url_inspections.filter(content__content_type__isnull=True, status_code__lt=400)
-                ftp_inspections = typeless_inspections.filter(requested_url__startswith='ftp')
-                typeless_http_inspections = typeless_inspections.filter(requested_url__startswith='http')
+                errored_inspections = insp_list.server_errors()
+                not_found = insp_list.not_found().count()
+                typeless_inspections = audit.url_inspections.responses_sans_content_type()
+                ftp_inspections = typeless_inspections.ftp_urls_distinct()
+                typeless_http_inspections = typeless_inspections.http_urls_distinct()
                 other_typeless_inspections = typeless_inspections.exclude(id__in=ftp_inspections).exclude(id__in=typeless_http_inspections)
                 sans_data_urls = audit.probe_set.json_probes_sans_urls().filter(initial__contains={u'accessLevel': u'public'})
                 self.stdout.write(u"\nUpdated: {0}\n".format(date_str))
-                self.stdout.write(u"| Errors | Entries without URLs | URLs inspected | HTTP Errors | URLs no content-type | FTP URLs | Possibly Invalid URLs |")
-                self.stdout.write(u"| ------ | -------------------- | -------------- | ----------- | -------------------- | -------- | --------------------- |")
-                stats_row = u"| {errors:6,d} | {sans_urls: >14,d} | {inspected: >14,d} | {errored_inspections: >14,d} | {typeless:20,d} | {ftp:8,d} | {invalid:21,d} |".format(
+                self.stdout.write(u"| Errors | Entries without URLs | URLs inspected | Not Found | Server Errors | URLs no content-type | FTP URLs | Possibly Invalid URLs |")
+                self.stdout.write(u"| ------ | -------------------- | -------------- | --------- | ----------- | -------------------- | -------- | --------------------- |")
+                stats_row = u"| {errors:6,d} | {sans_urls: >14,d} | {inspected: >14,d} | {not_found: >14,d} | {errored_inspections: >14,d} | {typeless:20,d} | {ftp:8,d} | {invalid:21,d} |".format(
                             errors=audit.error_count(), inspected=num_urls_visited, typeless=typeless_http_inspections.count(),
                             ftp=ftp_inspections.count(), invalid=other_typeless_inspections.count(), sans_urls=sans_data_urls.count(),
-                            errored_inspections=errored_inspections.count())
+                            errored_inspections=errored_inspections.count(), not_found=not_found)
                 self.stdout.write(stats_row)
                 selector = u'content__content_type'
                 insp_content_types = insp_list.select_related(selector).order_by(selector).distinct(selector).only(selector)
