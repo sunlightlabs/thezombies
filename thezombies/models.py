@@ -22,7 +22,63 @@ def dictionary_default():
     return {}
 
 
+http_urls_q = Q(requested_url__startswith='http')
+ftp_urls_q = Q(requested_url__startswith='ftp')
+
+
+class URLInspectionQuerySet(HStoreQuerySet):
+
+    def requested_urls_distinct(self):
+        return self.order_by('requested_url').distinct('requested_url')
+
+    def server_errors(self):
+        """Status codes in the 500 range"""
+        return self.filter(status_code__gte=500)
+
+    def client_errors(self):
+        """Status codes in the 400 range"""
+        return self.filter(status_code__gte=400, status_code_lt=500)
+
+    def not_found(self):
+        return self.filter(status_code=404)
+
+    def html_content(self):
+        return self.filter(content__content_type__contains='text/html')
+
+    def initial_urls(self):
+        """Return URLs that aren't part of a redirect of some sort"""
+        return self.filter(parent__isnull=True)
+
+    def initial_urls_distinct(self):
+        """Return URLs that aren't part of a redirect of some sort"""
+        return self.filter(parent__isnull=True).requested_urls_distinct()
+
+    def ftp_urls(self):
+        return self.filter(ftp_urls_q).order_by('requested_url')
+
+    def ftp_urls_distinct(self):
+        return self.ftp_urls().requested_urls_distinct()
+
+    def http_urls(self):
+        return self.filter(http_urls_q).order_by('requested_url')
+
+    def http_urls_distinct(self):
+        return self.http_urls().requested_urls_distinct()
+
+    def suspicious_urls(self):
+        return self.exclude(http_urls_q | ftp_urls_q).order_by('requested_url')
+
+    def suspicious_urls_distinct(self):
+        return self.suspicious_urls().requested_urls_distinct()
+
+    def responses_sans_content_type(self):
+        return self.filter(parent__isnull=True, status_code__isnull=False).filter(content__content_type__isnull=True, status_code__lt=300)
+
+
 class URLInspectionManager(hstore.HStoreManager):
+
+    def get_queryset(self):
+        return URLInspectionQuerySet(self.model, using=self._db)
 
     def create_from_response(self, resp, save_content=True):
         """
@@ -167,16 +223,16 @@ class Audit(models.Model):
         return self.url_inspections.count()
 
     def url_inspections_failure_count(self):
-        return self.url_inspections.filter(status_code__gte=400).count()
+        return self.url_inspections.status_code_errors().count()
 
     def url_inspections_404_count(self):
-        return self.url_inspections.filter(status_code=404).count()
+        return self.url_inspections.status_code_404s().count()
 
     def url_inspections_html_count(self):
-        return self.url_inspections.filter(content__content_type__contains='text/html').count()
+        return self.url_inspections.html_content().count()
 
     def url_inspections_ftp_count(self):
-        return self.url_inspections.filter(requested_url__startswith='ftp').count()
+        return self.url_inspections.ftp_urls().count()
 
     def error_list(self):
         error_list = []
@@ -226,7 +282,7 @@ class URLInspection(models.Model):
     timeout = models.BooleanField(default=False)
     probe = models.ForeignKey('Probe', null=True, blank=True, related_name='url_inspections')
 
-    objects = URLInspectionManager()
+    objects = URLInspectionManager.from_queryset(URLInspectionQuerySet)()
 
     class Meta:
         verbose_name = 'URL Inspection'
