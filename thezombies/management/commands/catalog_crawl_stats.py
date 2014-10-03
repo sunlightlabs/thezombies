@@ -1,5 +1,4 @@
 from __future__ import division
-from django.db.models import Q
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from thezombies.models import (Audit, Agency, Probe)
@@ -43,13 +42,7 @@ class Command(BaseCommand):
                 ftp_inspections = typeless_inspections.filter(requested_url__startswith='ftp')
                 typeless_http_inspections = typeless_inspections.filter(requested_url__startswith='http')
                 other_typeless_inspections = typeless_inspections.exclude(id__in=ftp_inspections).exclude(id__in=typeless_http_inspections)
-                json_probes = audit.probe_set.filter(probe_type=Probe.JSON_PROBE, previous__isnull=False)
-                json_probes_public = json_probes.filter(initial__contains={u'accessLevel': u'public'})
-                has_distribution_q = Q(initial__contains=['distribution'])
-                has_accessURL_q = Q(initial__contains=['accessURL'])
-                has_accessURL_badkey_q = Q(initial__contains=['accessUrl'])
-                has_webservice_q = Q(initial__contains=['webService'])
-                sans_data_urls = json_probes_public.exclude(has_distribution_q | has_accessURL_q | has_accessURL_badkey_q | has_webservice_q)
+                sans_data_urls = audit.probe_set.json_probes_sans_urls().filter(initial__contains={u'accessLevel': u'public'})
                 self.stdout.write(u"\nUpdated: {0}\n".format(date_str))
                 self.stdout.write(u"| Errors | Entries without URLs | URLs inspected | HTTP Errors | URLs no content-type | FTP URLs | Possibly Invalid URLs |")
                 self.stdout.write(u"| ------ | -------------------- | -------------- | ----------- | -------------------- | -------- | --------------------- |")

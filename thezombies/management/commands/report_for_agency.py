@@ -33,11 +33,11 @@ class Command(BaseCommand):
             else:
                 error_counts = Counter([e.partition(':')[0] for e in validation_audit.error_list()])
                 for el, count in error_counts.items():
-                    self.stdout.write('- {0} of type *{1}*\n'.format(count, el))
+                    self.stdout.write('- {0:,} of type *{1}*\n'.format(count, el))
             self.stdout.write('\n')
             crawl_audit = Audit.objects.filter(agency=agency, audit_type=Audit.DATA_CATALOG_CRAWL).latest()
             self.stdout.write('## URL Inspections\n\n')
             self.stdout.write('Ran on {0}\n'.format(REPORT_DATE_FORMATTER.format(crawl_audit.created_at)))
             num_urls_visited = crawl_audit.url_inspections.filter(parent__isnull=True).count()
-            self.stdout.write('Visited **{}** URLS'.format(num_urls_visited))
+            self.stdout.write('Visited **{0:,}** URLS'.format(num_urls_visited))
 

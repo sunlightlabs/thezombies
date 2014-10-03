@@ -1,7 +1,9 @@
 from requests import Response
 
 from django.db import models
+from django.db.models import Q
 from django_hstore import hstore
+from django_hstore.query import HStoreQuerySet
 from djorm_pgarray.fields import TextArrayField
 from django.utils.text import slugify
 from django.core.urlresolvers import reverse
@@ -18,6 +20,64 @@ def list_default():
 
 def dictionary_default():
     return {}
+
+
+class URLInspectionManager(hstore.HStoreManager):
+
+    def create_from_response(self, resp, save_content=True):
+        """
+        Create a URLInspection object from a requests.Response
+        """
+        if isinstance(resp, Response):
+            content_type = resp.headers.get('content-type', None)
+            content = ResponseContent.objects.create(content_type=content_type)
+            if save_content:
+                content.binary = resp.content
+                content.save()
+            obj = self.create(content=content, url=resp.url, status_code=resp.status_code,
+                              encoding=resp.encoding, reason=resp.reason)
+            obj.requested_url = resp.history[0].url if len(resp.history) > 0 else resp.request.url
+            obj.headers = dict(resp.headers)
+            # TODO: defer detection of apparent encoding. A task, perhaps
+            if save_content:
+                obj.apparent_encoding = resp.apparent_encoding
+            for n, hist in enumerate(resp.history):
+                histobj = self.create(requested_url=hist.request.url, url=hist.url,
+                                      status_code=hist.status_code, encoding=resp.encoding, parent=obj)
+                histobj.headers = dict(hist.headers)
+                histobj.save()
+                obj.history[str(n)] = histobj
+
+            return obj
+        else:
+            raise TypeError(u'create_from_response expects a requests.Response object')
+
+
+class ProbeQuerySet(HStoreQuerySet):
+
+    def json_probes(self):
+        return self.filter(probe_type=Probe.JSON_PROBE)
+
+    def principal_json_probes(self):
+        """Provides JSON probes that aren't linked to any previous json probes"""
+        return self.json_probes().filter(previous__isnull=False)
+
+    def json_probes_sans_urls(self):
+        json_probes_public = self.principal_json_probes().filter(initial__contains={u'accessLevel': u'public'})
+        has_distribution_q = Q(initial__contains=['distribution'])
+        has_accessURL_q = Q(initial__contains=['accessURL'])
+        has_accessURL_badkey_q = Q(initial__contains=['accessUrl'])
+        has_webservice_q = Q(initial__contains=['webService'])
+        return json_probes_public.exclude(has_distribution_q | has_accessURL_q | has_accessURL_badkey_q | has_webservice_q)
+
+    def url_probes(self):
+        return self.filter(probe_type=Probe.URL_PROBE)
+
+    def url_probes_invalid_url(self):
+        return self.url_probes().filter(result__contains={'valid_url': 'false'})
+
+    def validation_probes(self):
+        return self.filter(probe_type=Probe.VALIDATION_PROBE)
 
 
 class Probe(models.Model):
@@ -46,7 +106,7 @@ class Probe(models.Model):
     errors = TextArrayField(blank=True, null=True, default=list_default)
     audit = models.ForeignKey('Audit', null=True, blank=True)
 
-    objects = hstore.HStoreManager()
+    objects = ProbeQuerySet.as_manager()
 
     def __repr__(self):
         return '<{0}: {1}>'.format(self.get_probe_type_display(), self.id)
@@ -126,37 +186,6 @@ class Audit(models.Model):
 
     def error_count(self):
         return len(self.error_list())
-
-
-class URLInspectionManager(hstore.HStoreManager):
-
-    def create_from_response(self, resp, save_content=True):
-        """
-        Create a URLInspection object from a requests.Response
-        """
-        if isinstance(resp, Response):
-            content_type = resp.headers.get('content-type', None)
-            content = ResponseContent.objects.create(content_type=content_type)
-            if save_content:
-                content.binary = resp.content
-                content.save()
-            obj = self.create(content=content, url=resp.url, status_code=resp.status_code,
-                              encoding=resp.encoding, reason=resp.reason)
-            obj.requested_url = resp.history[0].url if len(resp.history) > 0 else resp.request.url
-            obj.headers = dict(resp.headers)
-            # TODO: defer detection of apparent encoding. A task, perhaps
-            if save_content:
-                obj.apparent_encoding = resp.apparent_encoding
-            for n, hist in enumerate(resp.history):
-                histobj = self.create(requested_url=hist.request.url, url=hist.url,
-                                      status_code=hist.status_code, encoding=resp.encoding, parent=obj)
-                histobj.headers = dict(hist.headers)
-                histobj.save()
-                obj.history[str(n)] = histobj
-
-            return obj
-        else:
-            raise TypeError(u'create_from_response expects a requests.Response object')
 
 
 class ResponseContent(models.Model):
