@@ -1,6 +1,6 @@
 # Report for Department of the Interior
 
-Report generated: 2014-10-06 12:19PM EDT
+Report generated: 2014-10-06 01:01PM EDT
 
 ## Catalog Validation
 
@@ -23,8 +23,9 @@ Ran on 2014-09-17 10:27AM EDT
 Inspected **43,940** URLS
 
 - **43,873** distinct HTTP URLS
-- **39** distinct FTP URLS
-- **28** suspicious (not http or ftp) URLS
+- **39** distinct FTP URLS (0.09%)
+- **28** suspicious (not http or ftp) URLS (0.06%)
+- **2,650** 404 "Not Found" responses (6.03%)
 
 ### Suspicious (not http or ftp) URLS
 
@@ -57,7 +58,7 @@ Inspected **43,940** URLS
 - htpp://pubs.usgs.gov/of/2010/1035/gis_catalog/seisimage/bm_seisimage.zip
 - htpp://pubs.usgs.gov/of/2010/1035/gis_catalog/seisimage/ch_seisimage.zip
 
-### 404 (Not Found) responses
+### 404 "Not Found" responses
 
 **2,650** URLs returned an error of "404 Not found"
 
@@ -8022,7 +8023,7 @@ Inspected **43,940** URLS
 
 ### URLs that did not respond
 
-**430** URLs where there was no response (or another error occurred)
+**430** URLs where there was no response (or another error occurred
 
 - *1949 Imagery of the Washington, DC Metro Area*
 <G:\arc_info\data\Imagery\USGS\>

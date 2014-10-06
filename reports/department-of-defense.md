@@ -1,6 +1,6 @@
 # Report for Department of Defense
 
-Report generated: 2014-10-06 12:19PM EDT
+Report generated: 2014-10-06 01:01PM EDT
 
 ## Catalog Validation
 
@@ -23,14 +23,15 @@ Ran on 2014-09-29 03:15PM EDT
 Inspected **375** URLS
 
 - **375** distinct HTTP URLS
-- **0** distinct FTP URLS
-- **0** suspicious (not http or ftp) URLS
+- **0** distinct FTP URLS (0.00%)
+- **0** suspicious (not http or ftp) URLS (0.00%)
+- **59** 404 "Not Found" responses (15.73%)
 
 ### Suspicious (not http or ftp) URLS
 
 No suspicious urls discovered.
 
-### 404 (Not Found) responses
+### 404 "Not Found" responses
 
 **59** URLs returned an error of "404 Not found"
 
@@ -214,7 +215,7 @@ No suspicious urls discovered.
 
 ### URLs that did not respond
 
-**42** URLs where there was no response (or another error occurred)
+**42** URLs where there was no response (or another error occurred
 
 - *United States Army Affirmative Claims Annual Recoveries*
 <http://armyobt.army.mil/opengov/aff_claims.xlsx>
