@@ -1,7 +1,7 @@
 from __future__ import division
 from collections import Counter
 from django.core.management.base import BaseCommand, CommandError
-from thezombies.models import (Agency, Audit, Probe)
+from thezombies.models import (Agency, Audit, Probe, ftp_urls_q)
 from thezombies.utils import datetime_string
 
 
@@ -63,9 +63,9 @@ class Command(BaseCommand):
                     dataset_title = insp.probe.previous.initial.get(u'title', 'No title for dataset')
                     report_lines.append(u'- *{title}*\n<{url}>\n\n'.format(title=dataset_title, url=insp.requested_url))
                 report_lines.append(u'\n')
-                sans_responses_urls = crawl_audit.url_inspections.sans_responses_distinct()
+                sans_responses_urls = crawl_audit.url_inspections.exclude(ftp_urls_q).sans_responses_distinct()
                 report_lines.append(u'### URLs that did not respond\n\n')
-                report_lines.append(u'**{0:,d}** URLs returned an error of "404 Not found"\n\n'.format(sans_responses_urls.count()))
+                report_lines.append(u'**{0:,d}** URLs where there was no response (or another error occurred)\n\n'.format(sans_responses_urls.count()))
                 for insp in sans_responses_urls:
                     dataset_title = insp.probe.previous.initial.get(u'title', 'No title for dataset')
                     errors = u"\n".join(insp.probe.errors)[:280]

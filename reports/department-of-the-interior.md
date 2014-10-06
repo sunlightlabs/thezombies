@@ -1,6 +1,6 @@
 # Report for Department of the Interior
 
-Report generated: 2014-10-06 11:40AM EDT
+Report generated: 2014-10-06 12:19PM EDT
 
 ## Catalog Validation
 
@@ -8022,7 +8022,7 @@ Inspected **43,940** URLS
 
 ### URLs that did not respond
 
-**469** URLs returned an error of "404 Not found"
+**430** URLs where there was no response (or another error occurred)
 
 - *1949 Imagery of the Washington, DC Metro Area*
 <G:\arc_info\data\Imagery\USGS\>
@@ -8040,7 +8040,7 @@ Inspected **43,940** URLS
 <I:\alaska\design\statewide_portfolio\state_portfolio>
 **InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
 
-- *LARO_Soils_NAD83_Z11N*
+- *MIIN_Soils_NAD83_Z11N*
 <URL:http://SoilDataMart.nrcs.usda.gov/>
 **InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
 
@@ -8088,7 +8088,7 @@ Inspected **43,940** URLS
 <Z:\Monitoring\Water Quality\2011 BLRI High Elevation Waters Project\BLRI High Elevation Stream Sampling - Results>
 **InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
 
-- *2005-004-FA_CHIRPSHT.SHP: Unique shot point navigation for Edgetech SB-424 chirp subbottom profiler data collected by the U.S. Geological Survey in Moultonborough Bay, Lake Winnipesaukee, New Hampshire in 2005 (Geographic, WGS 84, Esri point shapefile)*
+- *CHIRP_TRK.SHP: Survey tracklines of chirp subbottom data collected by the U.S. Geological Survey in Moultonborough Bay, Lake Winnipesaukee, New Hampshire in 2005 (Geographic, WGS 84, Esri polyline shapefile)*
 <doi:10.5066/F71N7Z4H>
 **InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
 
@@ -8107,162 +8107,6 @@ Inspected **43,940** URLS
 - *Proposed Critical Habitat (pCH) for Rabbitsfoot*
 <file://\\ifw4fo-arcon3\afo_shared\gis_data\Projects\Chris\Critical_Habitat\PCH_QUADRULA_CYLINDRICA_SSP_CYLINDRICA_20121016.shp>
 **InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
-
-- *Generalized thermal maturity map of Alaska*
-<ftp://agdc.usgs.gov/pub/usgs/geology/maturity.tar.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://agdc.usgs.gov/pub/usgs/geology/maturity.tar.gz'**
-
-- *Digital Data Sets of Depth-Duration Frequency of Precipitation for Oklahoma, USGS OFR 99-463.*
-<ftp://edcftp.cr.usgs.gov/pub/data/DLG/100K/>
-**InvalidSchema: No connection adapters were found for 'ftp://edcftp.cr.usgs.gov/pub/data/DLG/100K/'**
-
-- *City locations for all places in the TIGER files*
-<ftp://ftp.census.gov/pub/tiger/pts/geoex.zip>
-**InvalidSchema: No connection adapters were found for 'ftp://ftp.census.gov/pub/tiger/pts/geoex.zip'**
-
-- *U.S. Geological Survey Gap Analysis Program Species Distribution Models*
-<ftp://ftp.gap.uidaho.edu/outgoing/ModelingStatus/GAPModelingStatus.csv>
-**InvalidSchema: No connection adapters were found for 'ftp://ftp.gap.uidaho.edu/outgoing/ModelingStatus/GAPModelingStatus.csv'**
-
-- *Bouguer gravity anomaly data grid for the conterminous US*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/GEOPHYSICAL_DATA/cdrom_DDS-9/GRIDS/ARC_INFO/bouguer_sdd.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/GEOPHYSICAL_DATA/cdrom_DDS-9/GRIDS/ARC_INFO/bouguer_sdd.e00.gz'**
-
-- *Isostatic residual gravity anomaly data grid for the conterminous US*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/GEOPHYSICAL_DATA/cdrom_DDS-9/GRIDS/ARC_INFO/isograv_sdd.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/GEOPHYSICAL_DATA/cdrom_DDS-9/GRIDS/ARC_INFO/isograv_sdd.e00.gz'**
-
-- *Aeromagnetic data for Raub, North Dakota*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/NA_MAGNETICS/digital_data/>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/NA_MAGNETICS/digital_data/'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_CM.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_CM.grd'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_CM.grd.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_CM.grd.gi'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd.gi'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd.gi'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz050.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz050.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz100.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz100.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz250.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz250.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz050.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz050.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz100.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz100.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz250.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz250.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz050.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz050.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz100.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz100.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz250.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz250.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga050.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga050.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga100.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga100.e00.gz'**
-
-- *Hazard maps of the U.S.*
-<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga250.e00.gz>
-**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga250.e00.gz'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_CM.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_CM.gi'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_CM.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_CM.grd'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_hp500.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_hp500.gi'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_hp500.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_hp500.grd'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_origmrg.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_origmrg.gi'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_origmrg.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_origmrg.grd'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_CM.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_CM.gi'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_CM.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_CM.grd'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_hp500.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_hp500.gi'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_origmrg.gi>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_origmrg.gi'**
-
-- *Digital data grids for the magnetic anomaly map of North America*
-<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd>
-**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd'**
-
-- *National Hydrography Dataset (NHD)*
-<ftp://nhdftp.usgs.gov/DataSets/National>
-**InvalidSchema: No connection adapters were found for 'ftp://nhdftp.usgs.gov/DataSets/National'**
 
 - *Oil Shale Core Holes Containing Nahcolite in the State of Colorado*
 <hhttp://certmapper.cr.usgs.gov/data/oil_shale/spatial/CO/Spatial/SHP/NAHCOLITE/Piceance_Nahcolite_Holes.zip>
@@ -8316,7 +8160,7 @@ Inspected **43,940** URLS
 <http://<http://pubs.usgs.gov/of/2005/1070/>>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *bh_2mmbbath: Multibeam Bathymetry 2 meter/pixel of Boston Harbor and Approaches*
+- *BH_30MBATH - ArcInfo Grid of the 30 meter pixel Composite Bathymetry of Boston Harbor and Approaches (UTM 19, WGS84)*
 <http://<http://pubs.usgs.gov/of/2006/1008/gis/OFR_2006_1008/grids/>>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8324,7 +8168,7 @@ Inspected **43,940** URLS
 <http://<http://pubs.usgs.gov/of/2006/1008/gis/OFR_2006_1008/images/backscatter/>>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *BH_1MBS.TIF - 1 meter resolution GeoTIFF image of the sidescan sonar backscatter imagery of Boston Harbor and Approaches (UTM 19, WGS84)*
+- *bh_1mBS.tif: Backscatter Imagery from Sidescan Sonar 1 meter/pixel of Boston Harbor and Approaches*
 <http://<http://pubs.usgs.gov/of/2006/1008/gis/datazipped/bh_1mbs.zip>>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8392,11 +8236,11 @@ Inspected **43,940** URLS
 <http://Contact the Vegetation Characterization Program or Canyon De Chelly National Monument.>
 **InvalidURL: URL has an invalid label.**
 
-- *Areas Surveyed for Wetlands in Park Developed Areas (2001)*
+- *Wetlands Delineation in Park Developed Areas (2001)*
 <http://Data\GIS\GLAC\Data\NRdata\Wetlands\wetland_devarea.shp>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *Exotic Treatment Polygons*
+- *Exotic Treatment Points*
 <http://Database Connections\GRSM.sde\GRSM.DBO.Elevation\GRSM.DBO.Bryson_City_40_ft_Contours>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8404,7 +8248,7 @@ Inspected **43,940** URLS
 <http://Database Connections\GRSM.sde\GRSM.DBO.EnvironmentalBoundaries\GRSM.DBO.GeneralSoils>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *Trails, National Mall and Memorial Parks 2010 (NAMA_Trails.shp)*
+- *Buildings, National Mall and Memorial Parks*
 <http://Default value.>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8412,7 +8256,7 @@ Inspected **43,940** URLS
 <http://N/A>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *Accuracy Assessment Plots for Stones River National Battlefield Vegetation Mapping Project*
+- *Field Plot Points for Guilford Courthouse National Military Park Vegetation Mapping Project*
 <http://None>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8420,7 +8264,7 @@ Inspected **43,940** URLS
 <http://Not at this time>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *APPA_HUC10_HUC10_Shell_AEA*
+- *Appalachian National Scenic Trail, APPA_HUC12_HUC10_Shell_AEA*
 <http://Not currently available>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8444,7 +8288,7 @@ Inspected **43,940** URLS
 <http://URL <http://pubs.usgs.gov/of/2004/1049/>>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *CACO GPS Shorelines through Fall 2010*
+- *GATE, Staten Island Unit GPS Shorelines through Fall 2010*
 <http://\\>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8512,7 +8356,7 @@ Inspected **43,940** URLS
 <http://\\AkHeritage\Shared\AKEPIC\AKEPIC Spatial Format\AKEPIC_dataset.shp>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *REA SNK Aquatic Coarse Filter: Hot Spring*
+- *REA SNK NGDC thermal springs*
 <http://\\BECKY-HP\C$\Alaska\Alaska_data\NGDC\NGDC_thermal_springs.shp>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8556,7 +8400,7 @@ Inspected **43,940** URLS
 <http://\\IFW4FO-MVARGAS\C$\documents and settings\mvargas.ifw4fo-pr-esbqd.000\my documents\guajon\guajon_2007\guajon final shapefiles\Calabazas Unit.shp>
 **InvalidURL: URL has an invalid label.**
 
-- *REA SNK Grazing Allotments on the Seward Peninsula*
+- *REA SNK SEABIRD USFWS generated from Beringian Seabird Colony Catalog*
 <http://\\IFW7JUN-NB003\E\REA_SewPen_BirdMammal.mdb>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8960,7 +8804,7 @@ Inspected **43,940** URLS
 <http://http//pubs.usgs.gov/of/2010/1006/>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *2008 CIR Air Photo Cocke County, TN.*
+- *2007 Air Photo,TN*
 <http://http//www.apfo.usda.gov>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -8976,7 +8820,7 @@ Inspected **43,940** URLS
 <http://http;//pubs.er.usgs.gov/usgspubs/ofr/ofr97742>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *Continuous Fixed Station Water Quality Measurements in Canaveral National Seashore, August 2006 (Certified)*
+- *Continuous Fixed Station Water Quality Measurements in Canaveral National Seashore, March 2008 (Certified)*
 <http://inp2300fcsmaca1/Reference.mvc/Reference>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -9760,7 +9604,7 @@ Inspected **43,940** URLS
 <http://ngmsvr.wr.usgs.gov/Prodesc/proddesc_9745.htm>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *Potentiometric surface contours for the Madison aquifer , Black Hills area, South Dakota*
+- *NIBATHG - ArcInfo GRID format of the 2001 multibeam echo-sounder data collected in the Nisqually Delta, Puget Sound, Washington from Field Activity: R-1-01-WA*
 <http://none>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -9816,7 +9660,7 @@ Inspected **43,940** URLS
 <http://surveys.ngdc.noaa.gov/mgg/NOS/coast/H10001-H12000/H10993/DR/H10993.pdf>
 **ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
 
-- *Vegetation Disturbance Database (Polygon)*
+- *Vegetation Disturbance Database (Point)*
 <http://to be determined>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -9868,11 +9712,11 @@ Inspected **43,940** URLS
 <http://www.oil-gas.state.co.us/downloads/production/co%202004%20Annual%20Production%20Summary-xp.zip>
 **ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
 
-- *Hydrographic and Impairment Statistics Database: KNRI*
+- *Hydrographic and Impairment Statistics Database: SAJH*
 <http://www1.nrintra.nps.gov/wrd/HIS/index.cfm>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
-- *Digital data sets that describe aquifer characteristics of the Vamoosa-Ada aquifer in east-central Oklahoma*
+- *Digital data sets that describe aquifer characteristics of the alluvial and terrace deposits along the Beaver-North Canadian River from the panhandle to Canton Lake in northwestern Oklahoma*
 <http://wwwok.cr.usgs.gov/gis/geology/index.html>
 **ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
@@ -9888,11 +9732,11 @@ Inspected **43,940** URLS
 <http:/pubs.usgs.gov/of/2009/1151/data/seismics/segy_meta.zip>
 **InvalidURL: Invalid network location**
 
-- *Attributes for MRB_E2RF1 Catchments by Major River Basins in the Conterminous United States: NLCD 2001 Land Use and Land Cover*
+- *Attributes for NHDPlus Catchments (Version 1.1) for the Conterminous United States: Surficial Geology*
 <http:/water.usgs.gov/nawqa/studies/mrb/mrb_factsheet.pdf>
 **InvalidURL: Invalid network location**
 
-- *Digital Orthophoto Mosaic for Fort Vancouver National Historic Site*
+- *Digital Orthophoto Park Mosaic for Fort Clatsop, Oregon*
 <http:\\science.nature.nps.gov\nrdata>
 **InvalidURL: Invalid network location**
 
