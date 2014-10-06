@@ -1,6 +1,6 @@
 # Report for Department of Defense
 
-Report generated: 2014-10-03 05:59PM EDT
+Report generated: 2014-10-06 11:40AM EDT
 
 ## Catalog Validation
 
@@ -210,5 +210,178 @@ No suspicious urls discovered.
 
 - *U.S. Army Medical Command (MEDCOM)*
 <http://www.army.mil/rss/feeds/medcom.xml>
+
+
+### URLs that did not respond
+
+**42** URLs returned an error of "404 Not found"
+
+- *United States Army Affirmative Claims Annual Recoveries*
+<http://armyobt.army.mil/opengov/aff_claims.xlsx>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *US Army Renewable Energy Projects for FY 2009*
+<http://armyobt.army.mil/opengov/army_energy_projects_fy2009.xlsx>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *US Army LEED Data*
+<http://armyobt.army.mil/opengov/army_leed_fy2009.xlsx>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Authorized and funded Army construction in Afghanistan*
+<http://armyobt.army.mil/opengov/fy2010_c1_Army_Only.csv>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *DoD Vclips - Around the Services In Brief*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=00b78e419309aa3eb054166d7f0678138bbfe9d7>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - 2009 U.S. Air Force Academy Graduation Ceremonies*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=0e878dac09fb6ba057f931dc52884433024a0016>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Secretary of Defense*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=1fad0b3f138499b2c9fa71b88968752d1d62011b>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Frontlines*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=250bbc2e3088cea0c168aca447e82c1f961cb3e7>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Top Stories*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=296a5e24b0a4a29fedcd5b97e280099c4490e542>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Presidential Inauguration*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=49a7d627dc2a706b41493af8ef656658f5500bb8>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Pentagon Memorial*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=617ec6898e90187b9ee22aaf7cc7ddd7acbf2b93>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Armed with Science*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=8049c3494cd1672d0107fe7ee4700910e70d1395>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - U.S. Coast Guard*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=849d7068c7b9a8a6375fdb0fefbb113bb7a6705d>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Defense Safety*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=90042a0ae9f6c3321f140ae8fac9c63e192aa4d8>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - National Guard*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=97707495e1b5e8dcf8cc1040b0277b8437ec5344>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Chairman of the Joint Chiefs of Staff Viewpoint*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=af49331ddedaac85c979eddf9af1bdf9f1880070>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - DoD Media Vlog*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=b57097a951d9db0b2cb65ebc8937f5701b0165c8>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - AFRICOM*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=c1ccf7e046de000075f23f7fc9875e4e0205b2c7>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Interviews*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=d156d98eed31f1cbdd72e69d85aa342a699a4c23>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Warrior Care*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=d533677fda465bed42fd2daa6042e2a33c9348ae>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Military Health*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=d7f732ca3a7e59033ff44134dc8e63fb7f3ebf07>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Bloggers Roundtable*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=ecab86bca41228ea4f9285bf8af841aa9f79c6db>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - Command Performance*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=ef655ae386e57666d5370e45eb31b46542feaaa5>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *DoD Vclips - H1N1 Flu News*
+<http://dod.xml.feedroom.com/rss.xml?channel_id=faca3e43979383ac32203915868ad547e5a5f08f>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps News from Iwakuni, Japan*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=007715581a6b215563910d7d2461534fe09da328&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps West Coast News*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=02b50b26254f7ab2bfa7d19b2382b7fe50087f65&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps - In the Fight*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=05ca81cb268e12ed5d2c7295e286c0d6cb0e80fb&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps Most Recent News*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=13d95b19c1c0284a8b77fb88ea9a3139036fe1e6&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps Training Video*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=4b710ecd90b93ee002e3595a4020dcaddfb02036&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps Marine Week Chicago*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=68f97e20cdbbbd8573dffbe44acbede826160909&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps Special Productions*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=a5c51e73a9dc4b8eecc31aa6220375bcd6d28935&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps In the Community*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=a99481718e7e8b6da3b692f10d34541d798aa607&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps News from Okinawa, Japan*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=b43b822c4b2f790360e379c2b7a852b76bb3e6ac&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps Headlines*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=da1fa71bfc88980dd61e24a7c53e2d7e60d0d75e&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps Documentaries*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=dc177c62a7e489e5da28799285adf9514444108d&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps Top Stories*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=e057eb308688d49272a51c54311fd347d289ad31&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Marine Corps East Coast News*
+<http://marines.xml.feedroom.com/rss.xml?channel_id=e072e4715d243924a3b53df1c71a471dbeab3263&hvar=http://www.marines.mil/news/Pages/marinestv.aspx>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *U.S. Army-related Podcasts: Fort Belvoir Information Hotline*
+<http://www.belvoir.army.mil/podcast/belvoirpodcast.xml>
+**SSLError: [Errno 1] _ssl.c:510: error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed**
+
+- *Active Duty Marital Status*
+<http://www.dmdc.osd.mil/ActiveDuty_MaritalStatus.xls>
+**SSLError: [Errno 1] _ssl.c:510: error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed**
+
+- *Personnel Trends by Gender/Race*
+<http://www.dmdc.osd.mil/Rank_Gender_Race.xls>
+**SSLError: [Errno 1] _ssl.c:510: error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed**
+
+- *Reserve Personnel Trends by State*
+<http://www.dmdc.osd.mil/Res_State.xls>
+**SSLError: [Errno 1] _ssl.c:510: error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed**
+
+- *Quality Database (QDB)*
+<https://www.logisticsinformationservice.dla.mil/qdb/Search.aspx>
+**SSLError: [Errno 1] _ssl.c:510: error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed**
 
 

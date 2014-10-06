@@ -74,6 +74,12 @@ class URLInspectionQuerySet(HStoreQuerySet):
     def responses_sans_content_type(self):
         return self.filter(parent__isnull=True, status_code__isnull=False).filter(content__content_type__isnull=True, status_code__lt=300)
 
+    def sans_responses(self):
+        return self.filter(status_code__isnull=True).order_by('requested_url')
+
+    def sans_responses_distinct(self):
+        return self.sans_responses().requested_urls_distinct()
+
 
 class URLInspectionManager(hstore.HStoreManager):
 
@@ -288,7 +294,7 @@ class URLInspection(models.Model):
         verbose_name = 'URL Inspection'
         verbose_name_plural = 'URL Inspections'
         get_latest_by = 'created_at'
-        ordering = ('-created_at',)
+        ordering = ('-created_at', 'requested_url')
 
     def __repr__(self):
         return '<URLInspection: {0} : {1}>'.format(self.requested_url, self.status_code)

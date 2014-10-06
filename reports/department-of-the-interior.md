@@ -1,6 +1,6 @@
 # Report for Department of the Interior
 
-Report generated: 2014-10-03 05:59PM EDT
+Report generated: 2014-10-06 11:40AM EDT
 
 ## Catalog Validation
 
@@ -8018,5 +8018,1886 @@ Inspected **43,940** URLS
 
 - *REA MIR Spruce Beetle Forest Mortality Index*
 <http://www.landscape.blm.gov/MIR_2011_layerpackages/MIR_DIS_H_114921_SpruceBeetle_spbtle_index_ForestMortalityIndex.lpk>
+
+
+### URLs that did not respond
+
+**469** URLs returned an error of "404 Not found"
+
+- *1949 Imagery of the Washington, DC Metro Area*
+<G:\arc_info\data\Imagery\USGS\>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Defenses of Washington. (Maps 2 through 12 accompanying General Barnard's report.), 1865 [barn_1865.sid)*
+<G:\arc_info\maps\historic\barn_1865.sid>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Environs of Washington Prepared from original Surveys in the Engineer Department. ca. 1864 - ca. 1866 [civialwar1864.sid]*
+<G:\arc_info\maps\historic\civialwar1864.sid>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *REA SNK A Conservation Blueprint for Alaska*
+<I:\alaska\design\statewide_portfolio\state_portfolio>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *LARO_Soils_NAD83_Z11N*
+<URL:http://SoilDataMart.nrcs.usda.gov/>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Districts for 104th Congress*
+<URL:http://ftp.census.gov/pub/tiger/boundary>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Geologic Map and Digital Database of the Apache Canyon 7.5' Quadrangle, Ventura and Kern Counties, California*
+<URL:http://greenwood.er.usgs.gov/pub/open-file-reports/ofr-99-0032/>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *10-m Lidar Aspect Model*
+<X:\GIS_final\data\basedata\aspect\GRSM_10M_ASPECT>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *10-m Lidar Aspect Model*
+<X:\GIS_final\data\basedata\aspect\GRSM_10M_ASPECT\ASCII_Format>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *10-m Lidar Aspect Model*
+<X:\GIS_final\data\basedata\aspect\GRSM_10M_ASPECT\SAGA_Format>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *3-m Lidar Aspect Model*
+<X:\GIS_final\data\basedata\aspect\GRSM_3M_ASPECT>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *3-m Lidar Aspect Model*
+<X:\GIS_final\data\basedata\aspect\GRSM_3M_ASPECT\ASCII_Format>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *3-m Lidar Aspect Model*
+<X:\GIS_final\data\basedata\aspect\GRSM_3M_ASPECT\SAGA_Format>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *1992 Image Mosaic Badlands National Park*
+<Y:\DOQQs_1990s\BADL\doqq\compressed\BADL_1992_BW_mosaic.sid>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Jewel Cave NM DOQQs (MrSID format)*
+<Y:\jeca\jecadoqq.sid>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *WQ_HighElevation_FieldPoints*
+<Z:\Monitoring\Water Quality\2011 BLRI High Elevation Waters Project\BLRI High Elevation Stream Sampling - Results>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *2005-004-FA_CHIRPSHT.SHP: Unique shot point navigation for Edgetech SB-424 chirp subbottom profiler data collected by the U.S. Geological Survey in Moultonborough Bay, Lake Winnipesaukee, New Hampshire in 2005 (Geographic, WGS 84, Esri point shapefile)*
+<doi:10.5066/F71N7Z4H>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *2010 Mid-Atlantic Network Breeding Bird Monitoring Stations*
+<file://\\10.145.83.106\Bob\Monitoring\Birds\2010\03_Data\03_SpatialData\GIS\MIDN\MIDN_BBM_Plots_2010_Sampled>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *REA SNK PADUS1 2*
+<file://\\LISA-PC\C$\Users\Lisa\Documents\Working Folder\backup_master1_2\PADUS1_2_23Feb2011.gdb>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Proposed Critical Habitat (pCH) for Neosho Mucket (mussel)*
+<file://\\ifw4fo-arcon3\afo_shared\gis_data\Projects\Chris\Critical_Habitat\PCH_Lampsilis_rafinesqueana_20121016_R.shp>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Proposed Critical Habitat (pCH) for Rabbitsfoot*
+<file://\\ifw4fo-arcon3\afo_shared\gis_data\Projects\Chris\Critical_Habitat\PCH_QUADRULA_CYLINDRICA_SSP_CYLINDRICA_20121016.shp>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Generalized thermal maturity map of Alaska*
+<ftp://agdc.usgs.gov/pub/usgs/geology/maturity.tar.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://agdc.usgs.gov/pub/usgs/geology/maturity.tar.gz'**
+
+- *Digital Data Sets of Depth-Duration Frequency of Precipitation for Oklahoma, USGS OFR 99-463.*
+<ftp://edcftp.cr.usgs.gov/pub/data/DLG/100K/>
+**InvalidSchema: No connection adapters were found for 'ftp://edcftp.cr.usgs.gov/pub/data/DLG/100K/'**
+
+- *City locations for all places in the TIGER files*
+<ftp://ftp.census.gov/pub/tiger/pts/geoex.zip>
+**InvalidSchema: No connection adapters were found for 'ftp://ftp.census.gov/pub/tiger/pts/geoex.zip'**
+
+- *U.S. Geological Survey Gap Analysis Program Species Distribution Models*
+<ftp://ftp.gap.uidaho.edu/outgoing/ModelingStatus/GAPModelingStatus.csv>
+**InvalidSchema: No connection adapters were found for 'ftp://ftp.gap.uidaho.edu/outgoing/ModelingStatus/GAPModelingStatus.csv'**
+
+- *Bouguer gravity anomaly data grid for the conterminous US*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/GEOPHYSICAL_DATA/cdrom_DDS-9/GRIDS/ARC_INFO/bouguer_sdd.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/GEOPHYSICAL_DATA/cdrom_DDS-9/GRIDS/ARC_INFO/bouguer_sdd.e00.gz'**
+
+- *Isostatic residual gravity anomaly data grid for the conterminous US*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/GEOPHYSICAL_DATA/cdrom_DDS-9/GRIDS/ARC_INFO/isograv_sdd.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/GEOPHYSICAL_DATA/cdrom_DDS-9/GRIDS/ARC_INFO/isograv_sdd.e00.gz'**
+
+- *Aeromagnetic data for Raub, North Dakota*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/NA_MAGNETICS/digital_data/>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/NA_MAGNETICS/digital_data/'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_CM.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_CM.grd'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_CM.grd.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_CM.grd.gi'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd.gi'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://ftpext.usgs.gov/pub/cr/co/denver/musette/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd.gi'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz050.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz050.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz100.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz100.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz250.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us1hz250.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz050.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz050.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz100.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz100.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz250.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us3hz250.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz050.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz050.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz100.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz100.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz250.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/us5hz250.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga050.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga050.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga100.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga100.e00.gz'**
+
+- *Hazard maps of the U.S.*
+<ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga250.e00.gz>
+**InvalidSchema: No connection adapters were found for 'ftp://hazards.cr.usgs.gov/hazmaps/gis/export/uspga250.e00.gz'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_CM.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_CM.gi'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_CM.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_CM.grd'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_hp500.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_hp500.gi'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_hp500.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_hp500.grd'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_origmrg.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_origmrg.gi'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_origmrg.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/NAmag_origmrg.grd'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_CM.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_CM.gi'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_CM.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_CM.grd'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_hp500.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_hp500.gi'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_hp500.grd'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_origmrg.gi>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_origmrg.gi'**
+
+- *Digital data grids for the magnetic anomaly map of North America*
+<ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd>
+**InvalidSchema: No connection adapters were found for 'ftp://musette.cr.usgs.gov/pub/open-file-reports/ofr-02-0414/USmag_origmrg.grd'**
+
+- *National Hydrography Dataset (NHD)*
+<ftp://nhdftp.usgs.gov/DataSets/National>
+**InvalidSchema: No connection adapters were found for 'ftp://nhdftp.usgs.gov/DataSets/National'**
+
+- *Oil Shale Core Holes Containing Nahcolite in the State of Colorado*
+<hhttp://certmapper.cr.usgs.gov/data/oil_shale/spatial/CO/Spatial/SHP/NAHCOLITE/Piceance_Nahcolite_Holes.zip>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *BATHY_05M: Bathymetric data, stored as elevations relative to IGLD85, collected by the U.S. Geological Survey within the St. Clair River between Michigan and Ontario, Canada, 2008 (ESRI GRID)*
+<htp://pubs.usgs.gov/of/2010/1035/gis_catalog/bathymetry/bathy_05m.zip>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *MOSAIC_05M.TIF: GeoTIFF image of acoustic backscatter collected by the U.S. Geological Survey within the Upper St. Clair River between Michigan and Ontario, Canada, 2008 (GeoTIFF).*
+<htp://pubs.usgs.gov/of/2010/1035/gis_catalog/mosaic/mosaic_05m.zip>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *JPEG images of Boomer seismic data collected by the U.S. Geological Survey within the St. Clair River between Michigan and Ontario, Canada, 2008 (JPEG IMAGES)*
+<htp://pubs.usgs.gov/of/2010/1035/gis_catalog/seisimage/bm_seisimage.zip>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *JPEG images of Chirp seismic data collected by the U.S. Geological Survey within the St. Clair River between Michigan and Ontario, Canada, 2008 (JPEG IMAGES)*
+<htp://pubs.usgs.gov/of/2010/1035/gis_catalog/seisimage/ch_seisimage.zip>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *JPEG images of Boomer seismic data collected by the U.S. Geological Survey within the St. Clair River between Michigan and Ontario, Canada, 2008 (JPEG IMAGES)*
+<htpp://pubs.usgs.gov/of/2010/1035/gis_catalog/seisimage/bm_seisimage.zip>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *JPEG images of Chirp seismic data collected by the U.S. Geological Survey within the St. Clair River between Michigan and Ontario, Canada, 2008 (JPEG IMAGES)*
+<htpp://pubs.usgs.gov/of/2010/1035/gis_catalog/seisimage/ch_seisimage.zip>
+**InvalidURL: Invalid scheme (not http(s) or (s)ftp)**
+
+- *Lithogeochemical Character of Near-Surface Bedrock in the Connecticut, Housatonic and Thames River Basins*
+<http://***To be determined>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *TNC Ecoregions inside the Appalachian National Scenic Trail HUC10 Shell*
+<http://<ftp://gis.tnc.org/pub/data/national/usa>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Color Infrared Aerial Photographs for Petrified Forest National Park Vegetation Mapping Project*
+<http://<http://biology.usgs.gov/npsveg/pefo/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Landslides in Alameda County, California, A Digital Database Extracted from Preliminary Photointerpretation Maps of Surficial Deposits by T.H. Nilsen in USGS Open-File Report 75-277*
+<http://<http://geopubs.wr.usgs.gov/open-file/of99-504/of99-504_4.e00.gz>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *National Park Service Lands in the vicinity of the Appalachian National Scenic Trail*
+<http://<http://nationalatlas.gov/atlasftp.html>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *mkk_benthic_habitats - Benthic habitat of the coral reef ecosystem on the south shore of Molokai Hawaii.*
+<http://<http://pubs.usgs.gov/of/2005/1070/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *bh_2mmbbath: Multibeam Bathymetry 2 meter/pixel of Boston Harbor and Approaches*
+<http://<http://pubs.usgs.gov/of/2006/1008/gis/OFR_2006_1008/grids/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *BH_1MBS.TIF - 1 meter resolution GeoTIFF image of the sidescan sonar backscatter imagery of Boston Harbor and Approaches (UTM 19, WGS84)*
+<http://<http://pubs.usgs.gov/of/2006/1008/gis/OFR_2006_1008/images/backscatter/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *BH_1MBS.TIF - 1 meter resolution GeoTIFF image of the sidescan sonar backscatter imagery of Boston Harbor and Approaches (UTM 19, WGS84)*
+<http://<http://pubs.usgs.gov/of/2006/1008/gis/datazipped/bh_1mbs.zip>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *BOTTOMTYPE: Defined Map Units of the seafloor of Boston Harbor and Approaches (UTM 19, WGS84)*
+<http://<http://pubs.usgs.gov/of/2006/1008/gis/datazipped/bottomtype.zip>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *BH_30MBATH - ArcInfo Grid of the 30 meter pixel Composite Bathymetry of Boston Harbor and Approaches (UTM 19, WGS84)*
+<http://<http://pubs.usgs.gov/of/2006/1008/gis/datazipped/cbath.zip>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *bh_2mmbbath: Multibeam Bathymetry 2 meter/pixel of Boston Harbor and Approaches*
+<http://<http://pubs.usgs.gov/of/2006/1008/gis/datazipped/mbbath.zip>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *bh_2mmbbath: Multibeam Bathymetry 2 meter/pixel of Boston Harbor and Approaches*
+<http://<http://pubs.usgs.gov/of/2006/1008/html/appendix1.html>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Digital single-channel seismic-reflection data from Western Santa Monica Basin*
+<http://<http://pubs.usgs.gov/of/2006/1180/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *KAHO_BenthicHabitats - Benthic habitat of the coral reef ecosystem within and adjacent to Kaloko-Honokohau National Historical Park (KAHO) on the Kona Coast of Hawaii.*
+<http://<http://pubs.usgs.gov/of/2006/5256/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *PUHE_BenthicHabitats - Benthic habitat of the coral reef ecosystem off the coast of Puukohola Heiau (PUHE) National Historic Site on the Kona Coast of Hawaii.*
+<http://<http://pubs.usgs.gov/sir/2006/5254/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *PUHO_BenthicHabitats - Benthic habitat of the coral reef ecosystem off the coast of Puuhonua O Honaunau (PUHO) National Historical Park on the Kona Coast of Hawaii.*
+<http://<http://pubs.usgs.gov/sir/2006/5258/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Digital Geologic Map of Oregon*
+<http://<http://pubs.usgs.gov/sm/oregon/orfault.e00.Z>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Digital Geologic Map of Oregon*
+<http://<http://pubs.usgs.gov/sm/oregon/orlegend.e00.Z>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Point coverage J498MBPT for Ano Nuevo to Santa Cruz, California - A Photographic Tour of the Coastline*
+<http://<http://walrus.wr.usgs.gov/mbms>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK monthly total precipitation - AK CRU historical*
+<http://<insert link>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *H12007_GEO: 1-m Bathymetric Grid Generated from National Oceanic and Atmospheric Administration (NOAA) Survey H12007 in the Vicinity of Cross Rip Channel, Nantucket Sound (Geographic, WGS84)*
+<http://Also available at http://pubs.usgs.gov/of/2011/1004/>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *H11922_2M_GEO: 2-m Bathymetric Grid of National Oceanic and Atmospheric Administration (NOAA) Survey H11922 in Rhode Island Sound West of Gay Head, Massachusetts (Geographic, WGS84)*
+<http://Also available at http://pubs.usgs.gov/of/2011/1005/>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK Audobon Alaska Atlas - Marine Mammal Haul-Outs*
+<http://Arctic Marine Synthesis: Atlas of the Chukchi and Beaufort Seas>
+**LocationParseError: Failed to parse: Arctic Marine Synthesis: Atlas of the Chukchi and Beaufort Seas**
+
+- *Aerial Photography Mosaiced for Canyon De Chelly National Monument Vegetation Mapping Project*
+<http://Contact the Vegetation Characterization Program or Canyon De Chelly National Monument.>
+**InvalidURL: URL has an invalid label.**
+
+- *Areas Surveyed for Wetlands in Park Developed Areas (2001)*
+<http://Data\GIS\GLAC\Data\NRdata\Wetlands\wetland_devarea.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Exotic Treatment Polygons*
+<http://Database Connections\GRSM.sde\GRSM.DBO.Elevation\GRSM.DBO.Bryson_City_40_ft_Contours>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Digital General Soil Map of U.S.*
+<http://Database Connections\GRSM.sde\GRSM.DBO.EnvironmentalBoundaries\GRSM.DBO.GeneralSoils>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Trails, National Mall and Memorial Parks 2010 (NAMA_Trails.shp)*
+<http://Default value.>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *npsClassI*
+<http://N/A>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Accuracy Assessment Plots for Stones River National Battlefield Vegetation Mapping Project*
+<http://None>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *APPA_HUC10_Shell_AEA*
+<http://Not at this time>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *APPA_HUC10_HUC10_Shell_AEA*
+<http://Not currently available>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Locations of hydraulic-head observations (HOBS) for the Central Valley Hydrologic Model (CVHM)*
+<http://Online_Linkage: http://pubs.usgs.gov/pp/1766/PP_1766.pdf>
+**LocationParseError: Failed to parse: Online_Linkage: http:**
+
+- *Canada Lynx Critical Habitat (Unit 1)*
+<http://See distribution information>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrogeology of the Lake Tahoe Basin Study Area Boundary*
+<http://SoilDataMart.nrcs.usda.gov/>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Climate envelope modeling for evaluating anticipated effects of climate change on threatened and endangered species in the Greater Everglades*
+<http://The full article is available via journal subscription or single article purchase. The abstract may be viewed at the website below.>
+**InvalidURL: URL has an invalid label.**
+
+- *Geologic and bathymetric reconnaissance overview of the San Pedro shelf region, southern California*
+<http://URL <http://pubs.usgs.gov/of/2004/1049/>>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *CACO GPS Shorelines through Fall 2010*
+<http://\\>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Final Critical Habitat for the Shivwits milk-vetch (Astragalus ampullarioides)*
+<http://\\10.0.0.100\GISData\GISData\Species\CriticalHabitat\shivmlkvet_final.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *WQ_HighElevation_FieldPoints*
+<http://\\10.146.143.133\public\Monitoring\Water Quality\2011 BLRI High Elevation Waters Project\BLRI High Elevation Stream Sampling - Results\WQ_HighElevation_FieldPoints.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Point Survey Sites for Booker T. Washington National Monument Avian Inventory (bowa_pointcount_birds_2009.shp)*
+<http://\\165.83.124.11\Bob\Inventory\Archive\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\bowa_pointcount_birds_2009.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Point Survey Sites for Fredericksburg and Spotsylvania National Military Park Avian Inventory (frsp_pointcount_birds_2009.shp)*
+<http://\\165.83.124.11\Bob\Inventory\Archive\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\frsp_pointcount_birds_2009.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Area-Search Survey Sites for Petersburg National Battlefield Avian Inventory (pete_areas_birds_2008.shp)*
+<http://\\165.83.124.11\Bob\Inventory\Archive\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\pete_areas_birds_2008.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Point Survey Sites for Petersburg National Battlefield Avian Inventory (pete_pointcount_birds_2008.shp)*
+<http://\\165.83.124.11\Bob\Inventory\Archive\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\pete_pointcount_birds_2008.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Transect Survey Sites for Petersburg National Battlefield Avian Inventory (pete_transects_birds_2008.shp)*
+<http://\\165.83.124.11\Bob\Inventory\Archive\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\pete_transects_birds_2008.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Area-Search Sites for Richmond National Battlefield Park Avian Inventory (rich_areas_birds_2007.shp)*
+<http://\\165.83.124.11\Bob\Inventory\Archive\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\rich_areas_birds_2007.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Point Survey Sites for Richmond National Battlefield Park Avian Inventory (rich_pointcount_birds_2007.shp)*
+<http://\\165.83.124.11\Bob\Inventory\Archive\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\rich_pointcount_birds_2007.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Transect Survey Sites for Richmond National Battlefield Park Avian Inventory (rich_transects_birds_2007.shp)*
+<http://\\165.83.124.11\Bob\Inventory\Archive\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\rich_transects_birds_2007.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Trails, National Capital Region 2010 (Trail_ln)*
+<http://\\165.83.235.7\e$\IRMA_Uploads\Trails\NCR_Trails_v1.mdb>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Catoctin Mountain Park Color Infrared (CIR) Digital Image Mosaic - 2004*
+<http://\\165.83.235.7\e$\arc_info\data\cato\imagery\NatureServe\CATO_MOSAIC_1.sid>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK Ecological Land Survey and Landcover Map of the Arctic Network Alaska*
+<http://\\165.83.60.60\GisData\Albers\parks\arcn\base\biologic\ARCN_ELS.gdb>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Nez Perce National Historical Parks*
+<http://\\192.168.3.2\UCBN_Root\GIS_Network_Parks\GIS_Data\NEPE_2009\All_Areas\SoilGeo\NEPE.gdb>
+**InvalidURL: URL has an invalid label.**
+
+- *REA MIR ned10m13*
+<http://\\A019\GISData\Spatial\Elevation\ned\NED10m\ned10m13>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK CA Distribution Data: Non-Native Plants*
+<http://\\AkHeritage\Shared\AKEPIC\AKEPIC Spatial Format\AKEPIC_dataset.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK Aquatic Coarse Filter: Hot Spring*
+<http://\\BECKY-HP\C$\Alaska\Alaska_data\NGDC\NGDC_thermal_springs.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Eulachon Final Critical Habitat*
+<http://\\CD0001765691\C\Documents and Settings\BarbaraS.NWRPDX\My Documents\Projects\MarcRomano\EulachonCH\Final_Eulachon_Critical_Habitat>
+**InvalidURL: URL has an invalid label.**
+
+- *REA SNK AK blackfish pts*
+<http://\\COMPUTER\C$\adfg\2006_adfg_finalproducts\arcproject\shapefiles\AK_blackfish_pts.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Trails*
+<http://\\DFH9JWH1\H$\TRAILS\TrailCycle1.mdb>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Final Critical Habitat for the Holmgren milk-vetch (Astragalus holmgreniorum)*
+<http://\\EFILE-GIS\GIS\GISData\Species\CriticalHabitat\holmmlkvet_final.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *ameican_crocodile-critical_habitat*
+<http://\\Gis\Gis\TEST_DIRECTORY\CRITICAL_HABITAT\ameican_crocodile-critical_habitat>
+**InvalidURL: URL has an invalid label.**
+
+- *everglades_snail_kite-critical_habitat*
+<http://\\Gis\Gis\TEST_DIRECTORY\CRITICAL_HABITAT\everglades_snail_kite-critical_habitat>
+**InvalidURL: URL has an invalid label.**
+
+- *rice_rat-critical_habitat*
+<http://\\Gis\Gis\TEST_DIRECTORY\CRITICAL_HABITAT\rice_rat-critical_habitat>
+**InvalidURL: URL has an invalid label.**
+
+- *critical_habitat_by_HUC10*
+<http://\\HQDATA4\PR\Pr3\GIS\Shapefiles\Critical Habitat\Salmonids\Atlantic salmon\critical_habitat_by_HUC10.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Alabama_Cavefish_Critical_Habitat*
+<http://\\IFW4FO-DAP-CART\C$\Documents and Settings\drollman\Desktop\Alabama_Cavefish_Critical_Habitat.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Final Critical Habitat for the Catesbaea melanocarpa*
+<http://\\IFW4FO-MVARGAS\C$\documents and settings\mvargas.ifw4fo-pr-esbqd.000\my documents\guajon\guajon_2007\guajon final shapefiles\Calabazas Unit.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *REA SNK Grazing Allotments on the Seward Peninsula*
+<http://\\IFW7JUN-NB003\E\REA_SewPen_BirdMammal.mdb>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Final Designated Critical Habitat for the southwest Alaska DPS of the northern sea otter*
+<http://\\IFW7MMM-BIOSUPV\C$\Data\CH_Zip\SeaOtterFinalCH>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK 2010Unit23trails*
+<http://\\IFW7SEL-BIO2\C$\BTS GIS\17b easements\2010 Trails\2010Unit23trails.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Manateeee*
+<http://\\IFW9-JDTXP12\C\workdir\Manateeee.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK NHDFlowline*
+<http://\\IGSKBTHIWS518\D\Workspace\v107\NHD_04_21_10_v1.07\NHD_File_Template_92107_04_21_10.gdb>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK NHDWaterbody*
+<http://\\IGSKBTHIWS531\D\ExtractTest\oracle_export\GDBExtractServer\Template\NHD_Template_High_92v2.mdb>
+**InvalidURL: URL has an invalid label.**
+
+- *Point Survey Sites for Appomattox Court House National Historical Park Avian Inventory (apco_pointcount_birds_2007.shp)*
+<http://\\INPFRSPDM1\C$\Documents and Settings\swakamiya\Desktop\Inventory_NRInfo\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\apco_pointcount_birds_2007.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Transect Survey Sites for Appomattox Court House National Historical Park Avian Inventory (apco_transects_birds_2007.shp)*
+<http://\\INPFRSPDM1\C$\Documents and Settings\swakamiya\Desktop\Inventory_NRInfo\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\apco_transects_birds_2007.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Area-Search Survey Sites for Booker T. Washington National Monument Avian Inventory (bowa_areas_birds_2009.shp)*
+<http://\\INPFRSPDM1\C$\Documents and Settings\swakamiya\Desktop\Inventory_NRInfo\BirdInventory_Bradshaw\20100301_NCSU_Review\final_spatial_data\bowa_areas_birds_2009.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *cana_boardwalks.shp = A Polygon Shapefile Representing the Boardwalks at Canaveral National Seashore, FL.*
+<http://\\INPSEROS12\GIS\gis_projects\REGION\xxx_data_store_load\data\boardwalks\cana_boardwalks.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *cana_landCover2003.shp = Land Cover 2003, Canaveral National Seashore, FL.*
+<http://\\INPSEROS12\GIS\gis_projects\REGION\xxx_data_store_load\data_ready\landCover2003canaClip>
+**InvalidURL: URL has an invalid label.**
+
+- *Oregon Chub Critical Habitat 2008*
+<http://\\Ifw1pdxs-gis.fws.doi.net\gis$\data\or\species\aquatic\inland\oregonchub\crithab\critical_habitat.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Apostle Islands National Lakeshore Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\APIS\APIS_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Grand Portage National Monument Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\GRPO\GRPO_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Ice Age National Scenic Trail Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\IATR\IATR_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Indiana Dunes National Lakeshore Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\INDU\INDU_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Isle Royale National Park Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\ISRO\ISRO_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Mississippi National River and Recreation Area Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\MISS\MISS_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Pictured Rocks National Lakeshore Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\PIRO\PIRO_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Saint Croix National Scenic Riverway Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\SACN\SACN_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Sleeping Bear Dunes National Lakeshore Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\SLBE\SLBE_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Voyageurs National Park Exotic Plant Management Locations, 2010*
+<http://\\Inpglknmbrs1\public\EPMT\GIS\FinalizedGISdata\VOYA\VOYA_GLEPMT_2010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *SSL_226_Critical_Habitat_AK*
+<http://\\NEPA-SLEWIS1\C$\BiOp_06\SSL_226_Critical_Habitat_AK.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Acropora_CH_po*
+<http://\\SERO-NOVELL-4\DATA1\GIS\ESRI CATALOG\ARCDATA\PRODUCTS\Distribution\AcroporaCH>
+**InvalidURL: URL has an invalid label.**
+
+- *SmalltoothSawfishCH_po*
+<http://\\SERO-NOVELL-4\DATA1\GIS\ESRI CATALOG\ARCDATA\PRODUCTS\Distribution\SmalltoothSawfishCH_po>
+**InvalidURL: URL has an invalid label.**
+
+- *john_sgrass_CH_FL_2003_po*
+<http://\\SERO-NOVELL-4\DATA1\GIS\ESRI CATALOG\ARCDATA\PRODUCTS\Distribution\john_sgrass_CH_FL_2003_po.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *RightWhaleCH_ln*
+<http://\\SERO-NOVELL-4\DATA1\GIS\ESRI CATALOG\ARCDATA\PRODUCTS\Distribution\right_whale_CH_po.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *NC_Steelhead_Distribution_06_2005*
+<http://\\Srsnap508\SNAP508\projects_gis\critical_habitat\final_frn_publication_products\web_products\cdfg_reprojected\NC_Steelhead_Distribution_06_2005.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *cc_chinook_ch_06_2005*
+<http://\\Srsnap508\SNAP508\projects_gis\critical_habitat\final_frn_publication_products\web_products\cdfg_reprojected\cc_chinook_ch_06_2005.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *ccc_steelhead_ch_06_2005*
+<http://\\Srsnap508\SNAP508\projects_gis\critical_habitat\final_frn_publication_products\web_products\cdfg_reprojected\ccc_steelhead_ch_06_2005.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *ccv_steelhead_ch_06_2005*
+<http://\\Srsnap508\SNAP508\projects_gis\critical_habitat\final_frn_publication_products\web_products\cdfg_reprojected\ccv_steelhead_ch_06_2005.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *cvsr_chinook_ch_06_2005*
+<http://\\Srsnap508\SNAP508\projects_gis\critical_habitat\final_frn_publication_products\web_products\cdfg_reprojected\cvsr_chinook_ch_06_2005.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *sc_steelhead_ch_06_2005*
+<http://\\Srsnap508\SNAP508\projects_gis\critical_habitat\final_frn_publication_products\web_products\cdfg_reprojected\sc_steelhead_ch_06_2005.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *sccc_steelhead_ch_06_2005*
+<http://\\Srsnap508\SNAP508\projects_gis\critical_habitat\final_frn_publication_products\web_products\cdfg_reprojected\sccc_steelhead_ch_06_2005.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *CAD Yosemite basemap*
+<http://\\TECHNO\C\JEREME\GIS\Yosemite\StreetAtlas_042010\Data\Newdata\ParkCADBasemap_911>
+**InvalidURL: URL has an invalid label.**
+
+- *REA SNK HU12 polygon*
+<http://\\TXFORTWORTD200\F\WBD\Archives\WBDHU12_archive_03Feb2011_9.2_File.gdb>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Critical Habitat Units - Mojave Desert*
+<http://\\atlas\ri\dtp\gis\adm\admin\chu\mojave_chu>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA SNK Waterfowl Habitat Areas MESA Volume 1*
+<http://\\dfgancfs02.dfg.alaska.local\Transfer\francesinoue\metadatatest\mesa\mesavol1_adfg\wfowl01vol1>
+**InvalidURL: URL has an invalid label.**
+
+- *REA SNK Corridor Alternatives*
+<http://\\dowlcluster1\Autocad\Projects\D60060\GIS\Deliverable\GIS_Data\WAAPS_GISdata2010.gdb>
+**InvalidURL: URL has an invalid label.**
+
+- *slackwater_darter_crithab_streams*
+<http://\\gisserver\gis_sp2\Endangered_Species\critical_habitat\TN\Fed_Register\slackwater_darter_crithab_streams.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Hines Emerald Dragonfly Critical Habitat*
+<http://\\ifw3cifo.fws.doi.net\share\KaylenGIS\Hines_Emerald_Dragonfly\POTENTIAL_COUNTY_POLYGON_UNION.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *cape_sable_seaside_sparrow-critical_habitat*
+<http://\\ifw4fo-flvebm2\gis\GIS_DATA\SPECIES\CAPE_SABLE_SEASIDE_SPARROW\cape_sable_seaside_sparrow-critical_habitat.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Final Critical Habitat for Succulent Owl's-clover (Castilleja campestris ssp. succulenta) - Vernal Pool Species*
+<http://\\ifw8cnosfo5\reserved\Crithab\Final\vp_cacas5_fCH_71FR7117.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *AshMeadowsAmargosaPupfish_CH*
+<http://\\ifw8lasv1\gis\GISData\Projects\Critical Habitat\DoneFinishedNewCH\AshMeadowsAmargosaPupfish_CH.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *AshMeadowsNaucorid_CH*
+<http://\\ifw8lasv1\gis\GISData\Projects\Critical Habitat\DoneFinishedNewCH\AshMeadowsNaucorid_CH.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *AshMeadowsSpeckledDace_CH*
+<http://\\ifw8lasv1\gis\GISData\Projects\Critical Habitat\DoneFinishedNewCH\AshMeadowsSpeckledDace_CH.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Final Critical Habitat for the Hiko White River Springfish*
+<http://\\ifw8lasv1\gis\GISData\Projects\Critical Habitat\DoneFinishedNewCH\HikoWhiteRiverSpringFish_CH_04212010.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *WhiteRiverSpringfish_CH*
+<http://\\ifw8lasv1\gis\GISData\Projects\Critical Habitat\DoneFinishedNewCH\WhiteRiverSpringfish_CH.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *crf_fCH_75FR12815*
+<http://\\ifw8sac-gis1\gis\BaseData\crithab\final\crf_fCH_75FR12815.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *ctssr_fCH_76FR54346*
+<http://\\ifw8sac-gis1\gis\BaseData\crithab\final\ctssr_fCH_76FR54346.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Final Critical Habitat for Conservancy Fairy Shrimp (Branchinecta conservatio) - Vernal Pool Species*
+<http://\\ifw8sac-gis1\gis\BaseData\crithab\final\vp_cfys_fCH_71FR7117.shp>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Critical Habitat for the Sierra Nevada Bighorn Sheep (Ovis canadensis californiana)*
+<http://\\ifw8ventsgis\data\Critical_Habitat\Sierra_Nevada_Bighorn\SNBS_fCH_FR080508.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *REA SNK Util data all years*
+<http://\\ilmakct6na1\gis\gis\gis_open_area\Laurie_Thorpe\Reindeer\Monitoring_Data\Util_data_all_years.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *REA SNK Muskoxen Distribution within the Kobuk - Seward Peninsula Planning Area*
+<http://\\ilmakfd3ds1\fd\users\chamfler\public\KSPRMP_FINAL_EIS_DISTRIBUTABLE_GIS_Data\ksprmp\WILDLIFE.mdb>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Precipitation Weighted Mean Calcium Concentration Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\05_09\Ca\ca_con_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2007 Precipitation Weighted Mean Chlorine Concentration Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\05_09\Cl\cl_con_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Precipitation Weighted Mean Potassium Concentration Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\05_09\K\k_con_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Precipitation Weighted Mean Magnesium Concentration Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\05_09\Mg\mg_con_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Precipitation Weighted Mean Nitrate Concentration Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\05_09\NO3\no3_con_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Precipitation Weighted Mean Sulfate Concentration Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\05_09\SO4\so4_con_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *Ozone: 2005 - 2009 Yearly Maximum 3-month Cumulative SUM60 Exposure Averaged*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\5yr_Avg_05_09\SUM60\sum60_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *Ozone: 2005 - 2009 3-Mo Cumulative 12-hr W126 Averaged*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\5yr_Avg_05_09\W126_3mo\w126_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *Ozone: 2005 - 2009 4th Highest 8-Hour Ozone Averaged*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\5yr_Avg_05_09\hi48hr\hi48hr_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Calcium Wet Deposition Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\WetDep_Avg_05_09\Ca\ca_avg_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Chlorine Wet Deposition Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\WetDep_Avg_05_09\Cl\cl_avg_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Potassium Wet Deposition Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\WetDep_Avg_05_09\K\k_avg_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Magnesium Wet Deposition Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\WetDep_Avg_05_09\Mg\mg_avg_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Ammonium NADP Wet Deposition Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\WetDep_Avg_05_09\NH4\nh4_avg_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Nitrate NADP Wet Deposition Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\WetDep_Avg_05_09\NO3\no3_avg_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Sodium Wet Deposition Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\WetDep_Avg_05_09\Na\na_avg_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *2005 - 2009 Sulfate (SO4) Wet Deposition Smoothed*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\AirAtlas\WetDep_Avg_05_09\SO4\so4_avg_0509s>
+**InvalidURL: URL has an invalid label.**
+
+- *Lakes_in_Parks*
+<http://\\inp2300dns03.nps.doi.net\NRPC\ARD_New\Works in Progress\Bingham, Drew\Nitrogen_Screening_Study\Lakes.gdb>
+**InvalidURL: URL has an invalid label.**
+
+- *USGS_NPS_SensVeg*
+<http://\\inp2300dns03.nps.doi.net\users\DBingham\Vegetation.gdb>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2008 Air Photo Graham County, NC*
+<http://\\inpgrsms01gis\GISData\GIS_final\images\DOQQ\HighResolution\Graham\graham2008index.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *2008 CIR Air Photo Blount County, TN*
+<http://\\inpgrsms01gis\GISData\GIS_final\images\DOQQ\NAIP\TN\2008_CIR\Blount\ortho_1-1_1m_j_tn009_2008_4.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *2008 CIR Air Photo Cocke County, TN.*
+<http://\\inpgrsms01gis\GISData\GIS_final\images\DOQQ\NAIP\TN\2008_CIR\Cocke\ortho_1-1_1m_j_tn029_2008_3.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *2008 CIR Air Photo Sevier County, TN*
+<http://\\inpgrsms01gis\GISData\GIS_final\images\DOQQ\NAIP\TN\2008_CIR\Sevier\ortho_1-1_1m_j_tn155_2008_3.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *2007 4-band Air Photo,TN*
+<http://\\inpgrsms01gis\GISData\GIS_final\images\DOQQ\NAIP\TN\2010\tennessee_2010_1m_4band\imagery\35082\m_3508201_ne_17_1_20100411.tif>
+**InvalidURL: URL has an invalid label.**
+
+- *2007 Air Photo,TN*
+<http://\\inpgrsms01gis\gisdata\GIS_final\images\DOQQ\NAIP\TN\2007\ortho_TN_NAIP_2007_index>
+**InvalidURL: URL has an invalid label.**
+
+- *Current Administrative Boundaries of National Park System Units 04/06/2010 - Cape Lookout National Seashore*
+<http://\\inpserosecn\gis\GIS\secn_gis\calo_nad83\data\basedata\boundary\park\calo_administrative.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *All Roads in Yellowstone National Park*
+<http://\\inpyellgis\sac_personnel\cguiles\Projects\G_Drive_Permanent_Layers\Infrastructure\Roads\yell_roads.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Yosemite area 1:125,000 digital raster graphic*
+<http://\\inpyosems6.nps.doi.net\PubData\GISdata\quads\drg\125kdrgs\yose_125kDRG.tif>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *StreetSegmentLn*
+<http://\\ojsfile1\global\GIS\SPATIAL_DATA\DataCatalog\DataUpdates_7_23_2010\StreetSegmentLn.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *Orthorectified Photomosaic for Walnut Canyon National Monument Vegetation Mapping Project*
+<http://\\usgs36\veg_prog$\3Flag_Parks\Deliverables\CD Folder\WACA\Basemap\MrSid_NAD83\waca_doqq.sid>
+**InvalidURL: URL has an invalid label.**
+
+- *October09GSedge*
+<http://\\yoda2\common\suiter\Carex lutea maps\Shape Files\Trust Resources\October09GSedge.shp>
+**InvalidURL: URL has an invalid label.**
+
+- *ameican_crocodile-critical_habitat*
+<http://american_crocodile-critical_habitat>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Understanding and Predicting Global Climate Change Impacts on the Vegetation and Fauna of Mangrove Forested Wetlands in Florida*
+<http://apt.allenpress.com/aptonline/?request=get-abstract&issn=0007-4977&volume=070&issue=03&page=0871>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *Effect of Water Flow on Transport of Solutes, Suspended Particles, and Particle-Associated Nutrients in the Everglades Ridge and Slough Landscape*
+<http://blackwell-synergy.com/doi/full/10.1046/j.1365-2427.2003.01143.x>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Processed Thematic Mapper satellite imagery for selected areas within the U.S.-Mexico borderlands*
+<http://edc.usgs.gov/Webglis/glisbin/guide.pl/glis/hyper /guide/lgsowg_mss>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Processed Thematic Mapper satellite imagery for selected areas within the U.S.-Mexico borderlands*
+<http://edc.usgs.gov/nsdi/landsat_mss/ph1crit.htm>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Color Infrared Digital Orthophoto Quadrangles for the South Florida Ecosystem Area*
+<http://edcsns17.cr.usgs.gov/EarthExplorer>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Thickness of the upper confining unit of the gray limestone aquifer, southern Florida, USGS WRIR 99-4213 figure 22*
+<http://fl.water.usgs.gov/Abstracts/wri99_4213_reese.html>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Characterizing Past and Present Mangrove Shorelines to Aid Conservation of the Smalltooth Sawfish, Pristis pectinata, Along the Southwest Coast of Florida*
+<http://frwebgate6.access.gpo.gov/cgi-bin/TEXTgate.cgi?WAISdocID=790959132340+1+1+0&WAISaction=retrieve>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *REA SNK PADUS1 2*
+<http://gapanalysis.nbii.gov/PADUS>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *REA NWP PADUS1 1*
+<http://gapanalysis.nbii.gov/PADUS/>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *U.S. Geological Survey Gap Analysis Program*
+<http://gis1.usgs.gov/arcgis/rest/services/gap/GAP_Land_Cover_Ecological_Systems_Landuse/MapServer>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *U.S. Geological Survey Gap Analysis Program*
+<http://gis1.usgs.gov/arcgis/rest/services/gap/GAP_Land_Cover_NVC_Class_Landuse/MapServer>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *U.S. Geological Survey Gap Analysis Program- Land Cover Data v2.2*
+<http://gis1.usgs.gov/arcgis/rest/services/gap/GAP_Land_Cover_NVC_Macrogroup_Landuse/MapServer>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Overburden above the Johnson-107 coal zone in the South Carbon coalfield, Wyoming (scovbg)*
+<http://greenwood.cr.usgs.gov/energy/coal/PP1625A/>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Evapotranspiration and Rainfall Data for EDEN Gages*
+<http://hdwp.er.usgs.gov/ET/GOES_FinalReport.pdf>
+**ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
+
+- *CCB_BackscatterTracklines: Survey lines along which acoustic backscatter data were acquired using a Klein 3000 sidescan sonar and a SWATHplus interferometric sonar offshore of Massachusetts within the northern Cape Cod Bay survey area (ESRI Shapefile, Geographic, WGS84).*
+<http://http//pubs.usgs.gov/of/2010/1006/>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2008 CIR Air Photo Cocke County, TN.*
+<http://http//www.apfo.usda.gov>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *sir-06-5129_alt_water_table_con*
+<http://http/pubs.er.usgs.gov/usgspubs/i/i558>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *SS_MOS1M.TIF - Nahant to Gloucester, 1m resolution Sidescan Sonar Mosaic*
+<http://http/pubs.usgs.gov/of/2005/1293/>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Geophysical Monitoring of the Southwest Florida Coast*
+<http://http;//pubs.er.usgs.gov/usgspubs/ofr/ofr97742>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Continuous Fixed Station Water Quality Measurements in Canaveral National Seashore, August 2006 (Certified)*
+<http://inp2300fcsmaca1/Reference.mvc/Reference>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2009 Image Mosaic Craters Of The Moon National Monument*
+<http://inp2300fcsmima1\FileStore\Imagery\CRMO_N_2009_NAIP_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2009 Image Mosaic Craters Of The Moon National Monument*
+<http://inp2300fcsmima1\FileStore\Imagery\CRMO_S_2009_NAIP_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2004 Image Mosaic Everglades National Park*
+<http://inp2300fcsmima1\FileStore\Imagery\EVER_01_2004_NC_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2004 Image Mosaic Everglades National Park*
+<http://inp2300fcsmima1\FileStore\Imagery\EVER_02_2004_NC_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2004 Image Mosaic Everglades National Park*
+<http://inp2300fcsmima1\FileStore\Imagery\EVER_03_2004_NC_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2004 Image Mosaic Everglades National Park*
+<http://inp2300fcsmima1\FileStore\Imagery\EVER_04_2004_NC_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2004 Image Mosaic Everglades National Park*
+<http://inp2300fcsmima1\FileStore\Imagery\EVER_05_2004_NC_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2004 Image Mosaic Everglades National Park*
+<http://inp2300fcsmima1\FileStore\Imagery\EVER_06_2004_NC_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *2004 Image Mosaic Everglades National Park*
+<http://inp2300fcsmima1\FileStore\Imagery\EVER_07_2004_NC_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *1996 Image Mosaic Rio Grande Wild and Scenic River*
+<http://inp2300fcsmima1\FileStore\Imagery\RIGR_NE_1996_CIR_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *1996 Image Mosaic Rio Grande Wild and Scenic River*
+<http://inp2300fcsmima1\FileStore\Imagery\RIGR_SW_1996_CIR_mosaic.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ADAM*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ADAM_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: AGFO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\AGFO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ALAG*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ALAG_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ALFL*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ALFL_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ALPO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ALPO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: AMIS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\AMIS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: AMME*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\AMME_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ANDE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ANDE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ANIA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ANIA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ANJO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ANJO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ANTI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ANTI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ASIS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ASIS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: AZRU*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\AZRU_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BAND*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BAND_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BELA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BELA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BIBE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BIBE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BICA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BICA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BICY*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BICY_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BISO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BISO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BITH*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BITH_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BLRI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BLRI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BOHA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BOHA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: BOST*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\BOST_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CACO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CACO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CAHA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CAHA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CAKR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CAKR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CALO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CALO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CANA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CANA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CARE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CARE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CARI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CARI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CARL*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CARL_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CAVE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CAVE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CEBR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CEBR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CHAT*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CHAT_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CHCH*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CHCH_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CHCU*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CHCU_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CHOH*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CHOH_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CHYO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CHYO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CIRO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CIRO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CLBA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CLBA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: COLM*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\COLM_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: COLO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\COLO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CONG*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CONG_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CORO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CORO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CRLA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CRLA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CRMO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CRMO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CUGA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CUGA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CURE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CURE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: CUVA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\CUVA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: DAAV*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\DAAV_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: DELA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\DELA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: DENA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\DENA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: DEPO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\DEPO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: DESO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\DESO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: DETO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\DETO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: DEWA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\DEWA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: DRTO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\DRTO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: EBLA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\EBLA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: EDIS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\EDIS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: EFMO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\EFMO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: EISE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\EISE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ELMA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ELMA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ELMO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ELMO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ELRO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ELRO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: EVER*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\EVER_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FIIS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FIIS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FILA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FILA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FLNI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FLNI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FOCA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FOCA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FODO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FODO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FOLA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FOLA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FOLS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FOLS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FOMA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FOMA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FOMC*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FOMC_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FOPU*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FOPU_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FORA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FORA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FOVA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FOVA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FOWA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FOWA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FRDE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FRDE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: FRHI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\FRHI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GAAR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GAAR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GATE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GATE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GERO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GERO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GETT*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GETT_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GEWA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GEWA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GLBA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GLBA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GOGA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GOGA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GOIS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GOIS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GOSP*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GOSP_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GREE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GREE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GRSM*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GRSM_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: GWMP*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\GWMP_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: HAFO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\HAFO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: HEHO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\HEHO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: HOBE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\HOBE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: HOFR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\HOFR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ILMI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ILMI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: JEFM*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\JEFM_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: JELA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\JELA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: JODA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\JODA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: JOFL*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\JOFL_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: JOTR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\JOTR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: KATM*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\KATM_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: KEFJ*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\KEFJ_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: KEMO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\KEMO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: KLGO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\KLGO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: KOVA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\KOVA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: LACL*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\LACL_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: LAMR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\LAMR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: LARO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\LARO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: LEWI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\LEWI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: LOWE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\LOWE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: LYJO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\LYJO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: MABI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\MABI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: MANA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\MANA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: MIMA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\MIMA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: MIMI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\MIMI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: MNRR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\MNRR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: MOJA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\MOJA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: MONO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\MONO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: MORR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\MORR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: NACA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\NACA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: NACC*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\NACC_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: NACE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\NACE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: NATC*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\NATC_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: NATR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\NATR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: NEPE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\NEPE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: NOAT*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\NOAT_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: NPSA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\NPSA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: OBED*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\OBED_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: OCMU*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\OCMU_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: OLYM*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\OLYM_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ORCA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ORCA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PAAL*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PAAL_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PAGR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PAGR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PAIS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PAIS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PECO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PECO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PETR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PETR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PEVI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PEVI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PISC*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PISC_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: POCH*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\POCH_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: POPO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\POPO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PRSF*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PRSF_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: PRWI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\PRWI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: REDW*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\REDW_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: RIGR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\RIGR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ROLA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ROLA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: RORI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\RORI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: RRBH*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\RRBH_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: RUCA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\RUCA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SAAN*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SAAN_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SACR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SACR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SAFR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SAFR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SAGA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SAGA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SAGU*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SAGU_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SAHI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SAHI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SAIR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SAIR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SAMA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SAMA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SAMO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SAMO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SARA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SARA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: SITK*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\SITK_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: STLI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\STLI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: STRI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\STRI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: THIS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\THIS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: THRO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\THRO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: TICA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\TICA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: TIMU*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\TIMU_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: UPDE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\UPDE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: VAFO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\VAFO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: VAMA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\VAMA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: VICR*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\VICR_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: WAMO*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\WAMO_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: WAPA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\WAPA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: WHIS*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\WHIS_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: WHMI*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\WHMI_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: WHSA*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\WHSA_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: WRST*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\WRST_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: YELL*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\YELL_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: YOSE*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\YOSE_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: YUCH*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\YUCH_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Hydrographic and Impairment Statistics Database: ZION*
+<http://inp2300fcsmoca1\FileStore\WRD_HIS_v4\ZION_HIS.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Effect of Water Flow on Transport of Solutes, Suspended Particles, and Particle-Associated Nutrients in the Everglades Ridge and Slough Landscape*
+<http://jeq.scijournals.org/search.dtl>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *USGS Water Data for the Nation*
+<http://maps.waterdata.usgs.gov/mapper/index.html>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *A spatial database of bedding attitudes to accompany Geologic map of the greater Denver area, Front Range urban corridor, Colorado, by Donald E. Trimble and Michael N. Machette*
+<http://ngmsvr.wr.usgs.gov/Prodesc/proddesc_9745.htm>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Potentiometric surface contours for the Madison aquifer , Black Hills area, South Dakota*
+<http://none>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Tectonic regions of northern Afghanistan and adjacent areas (gregafg.shp)*
+<http://pub.usgs.gov/of/2006/1179>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *GreaterBoston_LT.shp - Digital Shoreline Analysis System version 4.1 Transects with Long-Term Rate Calculations for the Greater Boston region from the southern side of Cape Ann, Massachusetts to Sandy Neck Beach in Sandwich, Massachusetts*
+<http://pubs.gov/of/2008/1278/>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *H11310INT: Interpretation of NOAA H11310 Sidescan Sonar and Bathymetric Data from Central Narragansett Bay*
+<http://pubs.usgs.gov.of/2006/1199/data/interpretation/mosaicinterp/mosaicinterp.zip>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Mahogany Bed and Parachute Creek Member Digital Line Outcrops of the Uinta Basin, Utah and Colorado*
+<http://pubs.usgs.gov/dds/dds-069/dds-069-bb/>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Aeromagnetic data for South-central North Carolina West, North Carolina Survey Part 2 of 2*
+<http://pubs.usgs.gov/of/2002/ofr-02-361/>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *HOLLISTER69 - Sediments on the Shelf South of Martha's Vineyard*
+<http://pubs.usgs.gov/of/2003/of03-001/>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *EC_Q14.TIF - U.S. Atlantic East Coast EEZ GLORIA sidescan-sonar data mosaic (14 of 23) (ACEA, 50 m, Clarke1866)*
+<http://pubs.usgs.gov/of/2010/1332/gloria_data/atlantic_coast/ec_q14.zip>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *HW1_Q10.TIF - Hawaii I - Southeastern Hawaiian Ridge U.S. EEZ GLORIA sidescan-sonar data mosaic (10 of 29) (LCC, 50 m, WGS84)*
+<http://pubs.usgs.gov/of/2010/1332/gloria_data/hawaii1/hw1_q10.zip>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Arid land irrigation in the United States Pacific Northwest for 2001*
+<http://pubs.usgs.gov/sir/2013/5103>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Population Structure and Spatial Delineation of Consumer Communities in the Everglades*
+<http://rparticle.web-p.cisti.nrc.ca/rparticle/AbstractTemplateServlet?calyLang=eng&journal=cjfas&volume=40&year=0&issue=9&msno=f83-170>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *An Assessment of Aquifer Storage and Recovery and Mercury Methylation in the South Florida Everglades Ecosystem*
+<http://rparticle.web-p.cisti.nrc.ca/rparticle/AbstractTemplateServlet?calyLang=eng&journal=cjfas&volume=55&year=0&issue=4&msno=f97-304>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *KBRA OPWP Soil Rooting Depth*
+<http://soildatamart.nrcs.usda.gov/Metadata.aspx?Survey=US>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *DH_bathy_wgaps.asc: ASCII grid of bathymetry data collected by the U.S. Geological Survey and the National Oceanic and Atmospheric Administration offshore of Massachusetts between Duxbury and Hull with data gaps (ARC/INFO ASCII GRID)*
+<http://surveys.ngdc.noaa.gov/mgg/NOS/coast/H10001-H12000/H10993/DR/H10993.pdf>
+**ConnectionError: ('Connection aborted.', error(60, 'ETIMEDOUT'))**
+
+- *Vegetation Disturbance Database (Polygon)*
+<http://to be determined>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Inventory of Mammals at Walnut Canyon, Wupatki, and Sunset Crater National Monuments, WUPA_WACA_mammal_Inv.mdb*
+<http://via email>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Nevada Department of Water Resources State Crop Inventories for Newark, Little Smoky, and Steptoe Valleys 2000, 2002, and 2005*
+<http://water.usgs.gov/GIS/dsdl/DS273_IrrigatedAcreage.zip>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Upper Klamath Basin Landsat Image for November 8, 2004: Path 45 Rows 30 and 31*
+<http://water.usgs.gov/GIS/dsdl/erosl1t_11082004_p45r30_l5_kl_NAD83.zip>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Vulnerability of shallow ground water and drinking-water wells to nitrate in the United States: Model of predicted nitrate concentration in U.S. ground water used for drinking (simulation depth 50 meters) -- Input data set for drainageditch (gwava-dw_ddit)*
+<http://water.usgs.gov/lookup/getspatial?gwava-dw_twre>
+**ConnectionError: ('Connection aborted.', BadStatusLine("''",))**
+
+- *Evaluation of faults and their effect on ground-water flow southwest of Frenchman Flat, Nye and Clark Counties, Nevada: A Digital Database*
+<http://wrgis.wr.usgs.gov/open-file/of98-580/frofr.tar.gz>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *sir-06-5129_cogcc_production_point*
+<http://www.oil-gas.state.co.us/Library/statistics.html>
+**ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
+
+- *sir-06-5129_cogcc_production_point*
+<http://www.oil-gas.state.co.us/downloads/production/co%201999%20Annual%20Production%20Summary-XP.zip>
+**ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
+
+- *sir-06-5129_cogcc_production_point*
+<http://www.oil-gas.state.co.us/downloads/production/co%202000%20Annual%20Production%20Summary-xp.zip>
+**ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
+
+- *sir-06-5129_cogcc_production_point*
+<http://www.oil-gas.state.co.us/downloads/production/co%202001%20Annual%20Production%20Summary-xp.zip>
+**ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
+
+- *sir-06-5129_cogcc_production_point*
+<http://www.oil-gas.state.co.us/downloads/production/co%202002%20Annual%20Production%20Summary-xp.zip>
+**ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
+
+- *sir-06-5129_cogcc_production_point*
+<http://www.oil-gas.state.co.us/downloads/production/co%202003%20Annual%20Production%20Summary-xp.zip>
+**ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
+
+- *sir-06-5129_cogcc_production_point*
+<http://www.oil-gas.state.co.us/downloads/production/co%202004%20Annual%20Production%20Summary-xp.zip>
+**ConnectionError: ('Connection aborted.', error(61, 'ECONNREFUSED'))**
+
+- *Hydrographic and Impairment Statistics Database: KNRI*
+<http://www1.nrintra.nps.gov/wrd/HIS/index.cfm>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *Digital data sets that describe aquifer characteristics of the Vamoosa-Ada aquifer in east-central Oklahoma*
+<http://wwwok.cr.usgs.gov/gis/geology/index.html>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
+
+- *H11310INT: Interpretation of NOAA H11310 Sidescan Sonar and Bathymetric Data from Central Narragansett Bay*
+<http:/pubs.usgs.gov/of/2006/1199/>
+**InvalidURL: Invalid network location**
+
+- *RESON_BS5M.tif - 5 meter multibeam-sonar backscatter GeoTIFF mosaic of the offshore portion of the Cape Ann to Salisbury Beach Massachusetts survey area.*
+<http:/pubs.usgs.gov/of/2007/1373/GIS/raster/backscatter/reson_bs5m.zip>
+**InvalidURL: Invalid network location**
+
+- *SEG-Y Formatted Seismic-Reflection Profile Data Collected in the Potomac River/Chesapeake Bay from Sept. 6, 2006 to Sept. 8, 2006*
+<http:/pubs.usgs.gov/of/2009/1151/data/seismics/segy_meta.zip>
+**InvalidURL: Invalid network location**
+
+- *Attributes for MRB_E2RF1 Catchments by Major River Basins in the Conterminous United States: NLCD 2001 Land Use and Land Cover*
+<http:/water.usgs.gov/nawqa/studies/mrb/mrb_factsheet.pdf>
+**InvalidURL: Invalid network location**
+
+- *Digital Orthophoto Mosaic for Fort Vancouver National Historic Site*
+<http:\\science.nature.nps.gov\nrdata>
+**InvalidURL: Invalid network location**
+
+- *Field Plot and Observation Points for Colorado National Monument Vegetation Mapping Project*
+<https://science1.nature.nps.gov/naturebib/>
+**ConnectionError: ('Connection aborted.', gaierror(8, 'nodename nor servname provided, or not known'))**
 
 
