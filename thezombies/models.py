@@ -29,7 +29,7 @@ ftp_urls_q = Q(requested_url__startswith='ftp')
 class URLInspectionQuerySet(HStoreQuerySet):
 
     def requested_urls_distinct(self):
-        return self.order_by('requested_url').distinct('requested_url')
+        return self.order_by('requested_url', '-created_at').distinct('requested_url')
 
     def server_errors(self):
         """Status codes in the 500 range"""

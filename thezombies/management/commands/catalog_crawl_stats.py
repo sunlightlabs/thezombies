@@ -1,8 +1,7 @@
 from __future__ import division
 from django.core.management.base import LabelCommand
 from django.utils import timezone
-from thezombies.models import (Audit, URLInspection)
-from optparse import make_option
+from thezombies.models import (Agency, Audit, URLInspection)
 
 REPORT_DATE_FORMATTER = u"{:%Y-%m-%d %I:%M%p %Z}\n"
 
@@ -13,15 +12,16 @@ class Command(LabelCommand):
     help = u'Report stats on data catalog crawl audits'
 
     def _content_types_for_inspections(self, url_inspections):
-        selector = u'content__content_type'
-        insp_content_types = url_inspections.select_related(selector).order_by(selector).distinct(selector).only(selector)
-        return list(set([x.content.content_type.split(';')[0] for x in insp_content_types if x.content.content_type]))
+        insp_content_types = url_inspections.initial_urls_distinct().filter(headers__contains='content-type')
+        raw_types = [URLInspection.objects.filter(id=x.id).hpeek(attr='headers', key='content-type') for x in insp_content_types]
+        return frozenset([t.split(';')[0].lower() for t in raw_types])
 
-    def markdown_report(self, audit_set):
-        for audit in audit_set:
-            self.stdout.write(u"# Data Catalog Crawl Report\n")
-            report_date = REPORT_DATE_FORMATTER.format(timezone.localtime(timezone.now()))
-            self.stdout.write(u"Report generated: {0}\n\n".format(report_date))
+    def markdown_report(self, agency_set):
+        self.stdout.write(u"# Data Catalog Crawl Report\n")
+        report_date = REPORT_DATE_FORMATTER.format(timezone.localtime(timezone.now()))
+        self.stdout.write(u"Report generated: {0}\n\n".format(report_date))
+        for agency in agency_set:
+            audit = agency.audit_set.filter(audit_type=Audit.DATA_CATALOG_CRAWL).latest()
             self.stdout.write(u"## {0}".format(audit.agency.name))
             date_str = REPORT_DATE_FORMATTER.format(timezone.localtime(audit.updated_at))
             num_urls_visited = audit.url_inspections.filter(parent__isnull=True).count()
@@ -62,9 +62,10 @@ class Command(LabelCommand):
             self.stdout.write(u"*"*80)
             self.stdout.write(u"\n")
 
-    def urls_report(self, audit_set):
+    def urls_report(self, agency_set):
         self.stdout.write(u'Agency,"Data items","URLs inspected","HTTP URLs","FTP URLs","Suspicious URLs","404s"')
-        for audit in audit_set:
+        for agency in agency_set:
+            audit = agency.audit_set.filter(audit_type=Audit.DATA_CATALOG_CRAWL).latest()
             col_vals = [audit.agency.name,
                         audit.probe_set.json_probes().count(),
                         audit.url_inspections.initial_urls().count(),
@@ -74,24 +75,28 @@ class Command(LabelCommand):
                         audit.url_inspections.not_found().count()]
             self.stdout.write(u','.join([str(c) for c in col_vals]))
 
-    def content_types_report(self, audit_set):
-        url_inspections = URLInspection.objects.filter(probe__audit__in=audit_set, parent__isnull=True)
-
+    def content_types_report(self, agency_set):
         def count_content_types(insp_list, content_types):
-            for atype in sorted(content_types):
-                type_count = insp_list.filter(content__content_type__contains=atype).count()
-                yield (atype, type_count)
+            for type_name in sorted(content_types):
+                type_count = insp_list.filter(headers__icontains=type_name).count()
+                yield (type_name, type_count)
 
-        content_insp_list = url_inspections.filter(content__isnull=False)
-        content_types = self._content_types_for_inspections(content_insp_list)
-        counted_content_types = count_content_types(content_insp_list, content_types)
-        self.stdout.write(u"\n".join([u"{},{}".format(*t) for t in counted_content_types]))
+        url_inspections = URLInspection.objects.initial_urls_distinct()
+        content_types = sorted(self._content_types_for_inspections(url_inspections))
+        self.stdout.write(u"Agency Name,{}".format(u",".join([u'"{}"'.format(t) for t in content_types])))
+        for agency in agency_set:
+            try:
+                audit = agency.audit_set.filter(audit_type=Audit.DATA_CATALOG_CRAWL).latest()
+                counted_content_types = dict(count_content_types(audit.url_inspections.initial_urls_distinct(), content_types))
+                self.stdout.write(u'"{}",{}'.format(audit.agency.name, u",".join([str(counted_content_types[t]) for t in content_types])))
+            except Audit.DoesNotExist:
+                pass
 
     def handle_label(self, label, **options):
-        audit_set = Audit.objects.filter(audit_type=Audit.DATA_CATALOG_CRAWL).order_by('agency_id', 'created_at').distinct('agency')
+        agency_set = Agency.objects.all()
         if label == 'urls':
-            self.urls_report(audit_set)
+            self.urls_report(agency_set)
         elif label == 'content-types':
-            self.content_types_report(audit_set)
+            self.content_types_report(agency_set)
         elif label == 'report':
-            self.markdown_report(audit_set)
+            self.markdown_report(agency_set)
