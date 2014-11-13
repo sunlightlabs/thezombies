@@ -31,13 +31,17 @@ class URLInspectionQuerySet(HStoreQuerySet):
     def requested_urls_distinct(self):
         return self.order_by('requested_url', '-created_at').distinct('requested_url')
 
+    def all_errors(self):
+        """Status codes (400 and up)"""
+        return self.filter(status_code__gte=400)
+
     def server_errors(self):
         """Status codes in the 500 range"""
         return self.filter(status_code__gte=500)
 
     def client_errors(self):
         """Status codes in the 400 range"""
-        return self.filter(status_code__gte=400, status_code_lt=500)
+        return self.filter(status_code__gte=400, status_code__lt=500)
 
     def not_found(self):
         return self.filter(status_code=404)
@@ -229,10 +233,10 @@ class Audit(models.Model):
         return self.url_inspections.count()
 
     def url_inspections_failure_count(self):
-        return self.url_inspections.status_code_errors().count()
+        return self.url_inspections.all_errors().count()
 
     def url_inspections_404_count(self):
-        return self.url_inspections.status_code_404s().count()
+        return self.url_inspections.not_found().count()
 
     def url_inspections_html_count(self):
         return self.url_inspections.html_content().count()
