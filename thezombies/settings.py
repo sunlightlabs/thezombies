@@ -20,11 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -112,6 +112,7 @@ MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 
 BROKER_URL = os.getenv('BROKER_URL', "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', "redis://localhost:6379/1")
+CELERY_TASK_SERIALIZER = 'json'
 CELERY_DISABLE_RATE_LIMITS = True
 CELERYD_TASK_TIME_LIMIT = 10 * 60
 CELERY_DEFAULT_RATE_LIMIT = '100/s'
