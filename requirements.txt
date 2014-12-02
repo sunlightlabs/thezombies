@@ -16,3 +16,4 @@ djorm-pgarray
 whitenoise
 django-extensions
 fabric
+ipython
