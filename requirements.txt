@@ -12,7 +12,6 @@ Django>=1.7
 dj_database_url
 django-hstore
 djorm-pgarray
-django-compressor
 whitenoise
 django-extensions
 fabric
