@@ -8,7 +8,7 @@ ujson
 jsonschema
 psycopg2
 pytz
-Django==1.7
+Django>=1.7
 dj_database_url
 django-hstore
 djorm-pgarray
