@@ -2,25 +2,10 @@
 __pycache__/
 *.py[cod]
 
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-env/
-bin/
-build/
-develop-eggs/
 dist/
-eggs/
 lib/
 lib64/
-parts/
-sdist/
 var/
-*.egg-info/
-.installed.cfg
-*.egg
 
 # Installer logs
 pip-log.txt
@@ -37,20 +22,9 @@ coverage.xml
 # Translations
 *.mo
 
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Rope
-.ropeproject
-
 # Django stuff:
 *.log
 *.pot
-
-# Sphinx documentation
-docs/_build/
 
 # tmp for tmp files
 tmp/*
@@ -63,11 +37,10 @@ tmp/*
 settings.cfg
 
 # app
-.webcache/
-.webassets-cache/
-gen/
+
 staticfiles/*
 !staticfiles/humans.txt
+!staticfiles/CACHE/.keep
 media/
 !*.sql
 sandbox/
