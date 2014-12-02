@@ -107,8 +107,8 @@ MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 
 # Celery
 
-BROKER_URL = os.getenv('REDISGREEN_URL', "redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.getenv('REDISGREEN_URL', "redis://localhost:6379/1")
+BROKER_URL = os.getenv('REDISCLOUD_URL', "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.getenv('REDISCLOUD_URL', "redis://localhost:6379/1")
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_DISABLE_RATE_LIMITS = True
 CELERYD_TASK_TIME_LIMIT = 10 * 60
