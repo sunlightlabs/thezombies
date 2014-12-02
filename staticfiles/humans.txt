@@ -1,0 +1,11 @@
+/* TEAM */
+
+    Lead cool guy: Daniel Cloud
+    Contact: dcloud [at] sunlightfoundation.com
+    Location: Washington, DC, USA
+    Twitter: @danielcloud
+
+/* SITE */
+    Language: English
+    Doctype:HTML5
+    IDE: Sublime Text
