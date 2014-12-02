@@ -11,6 +11,7 @@ pytz
 Django>=1.7
 dj_database_url
 django-hstore
+django-postgrespool
 djorm-pgarray
 whitenoise
 django-extensions
