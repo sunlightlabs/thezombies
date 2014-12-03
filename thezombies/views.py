@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, get_list_or_404
+from django.http import Http404
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import RedirectView
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
@@ -19,12 +20,6 @@ class AgencyList(ListView):
 class AgencyView(DetailView):
     model = Agency
     template_name = 'agency_detail.html'
-
-
-class AuditList(ListView):
-    model = Audit
-    paginate_by = 50
-    template_name = 'audits_list.html'
 
 
 class AuditDayArchiveView(DayArchiveView):
@@ -53,26 +48,28 @@ class AuditYearArchiveView(YearArchiveView):
     template_name = 'audits_list.html'
 
 
-class AuditOfTypeList(ListView):
+class AuditListView(ListView):
     model = Audit
     paginate_by = 50
     template_name = 'audits_list.html'
 
     def get_queryset(self, **kwargs):
-        audit_type_str = self.kwargs.get('audit_type', None)
-        audit_type = None
-        if audit_type_str == 'generic':
-            audit_type = Audit.GENERIC_AUDIT
-        elif audit_type_str == 'validation':
-            audit_type = Audit.DATA_CATALOG_VALIDATION
-        elif audit_type_str == 'crawl':
-            audit_type = Audit.DATA_CATALOG_CRAWL
-        self.audit_list = get_list_or_404(Audit, audit_type=audit_type)
-        self.audit_type_string = audit_type_str
+        audit_filter_kwargs = {}
+        self.audit_type_string = self.kwargs.get('audit_type', None)
+        if self.audit_type_string:
+            if self.audit_type_string == 'generic':
+                audit_filter_kwargs['audit_type'] = Audit.GENERIC_AUDIT
+            elif self.audit_type_string == 'validation':
+                audit_filter_kwargs['audit_type'] = Audit.DATA_CATALOG_VALIDATION
+            elif self.audit_type_string == 'crawl':
+                audit_filter_kwargs['audit_type'] = Audit.DATA_CATALOG_CRAWL
+            else:
+                raise Http404
+        self.audit_list = Audit.objects.filter(**audit_filter_kwargs)
         return self.audit_list
 
     def get_context_data(self, **kwargs):
-        context = super(AuditOfTypeList, self).get_context_data(**kwargs)
+        context = super(AuditListView, self).get_context_data(**kwargs)
         context['audit_type'] = self.audit_type_string
         return context
 

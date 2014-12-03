@@ -20,7 +20,15 @@
                 <!-- Left Nav Section -->
                 <ul class="left">
                   <li><a href="{% url 'agency-list' %}">Agencies</a></li>
-                  <li><a href="{% url 'audits-list' %}">Audits</a></li>
+                  <li class="has-dropdown">
+                    <a>Audits</a>
+                    <ul class="dropdown">
+                        <li><a href="{% url 'audits-list' %}">All</a></li>
+                        <li><a href="{% url 'audits-list-filtered' audit_type='validation' %}">Catalog Validation</a></li>
+                        <li><a href="{% url 'audits-list-filtered' audit_type='crawl' %}">Catalog Crawl</a></li>
+                        <li><a href="{% url 'audits-list-filtered' audit_type='generic' %}">Generic</a></li>
+                    </ul>
+                  </li>
                 </ul>
               </section>
         </nav>
@@ -38,6 +46,11 @@
     <script src="{% static 'bower_components/foundation/js/vendor/fastclick.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'bower_components/foundation/js/vendor/modernizr.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'bower_components/foundation/js/foundation.min.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'bower_components/foundation/js/foundation/foundation.topbar.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script>
+        $(document).foundation();
+    </script>
 {% endblock %}
 </body>
 </html>
