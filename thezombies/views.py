@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.views.generic import ListView, DetailView
+from django.views.generic.dates import DayArchiveView, MonthArchiveView, YearArchiveView
 
 from thezombies.models import (Agency, Audit)
 
@@ -17,6 +18,29 @@ class AgencyView(DetailView):
 class AuditList(ListView):
     model = Audit
     paginate_by = 50
+    template_name = 'audits_list.html'
+
+
+class AuditDayArchiveView(DayArchiveView):
+    queryset = Audit.objects.all()
+    date_field = "created_at"
+    month_format = "%m"
+    make_object_list = True
+    template_name = 'audits_list.html'
+
+
+class AuditMonthArchiveView(MonthArchiveView):
+    queryset = Audit.objects.all()
+    date_field = "created_at"
+    month_format = "%m"
+    make_object_list = True
+    template_name = 'audits_list.html'
+
+
+class AuditYearArchiveView(YearArchiveView):
+    queryset = Audit.objects.all()
+    date_field = "created_at"
+    make_object_list = True
     template_name = 'audits_list.html'
 
 
