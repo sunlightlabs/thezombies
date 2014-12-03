@@ -24,6 +24,7 @@ class AgencyView(DetailView):
 
 class AuditDayArchiveView(DayArchiveView):
     queryset = Audit.objects.all()
+    allow_empty = True
     paginate_by = 50
     date_field = "created_at"
     month_format = "%m"
@@ -33,6 +34,7 @@ class AuditDayArchiveView(DayArchiveView):
 
 class AuditMonthArchiveView(MonthArchiveView):
     queryset = Audit.objects.all()
+    allow_empty = True
     paginate_by = 50
     date_field = "created_at"
     month_format = "%m"
@@ -42,6 +44,7 @@ class AuditMonthArchiveView(MonthArchiveView):
 
 class AuditYearArchiveView(YearArchiveView):
     queryset = Audit.objects.all()
+    allow_empty = True
     paginate_by = 50
     date_field = "created_at"
     make_object_list = True
