@@ -1,5 +1,5 @@
 Gunicorn
-celery[eventlet,redis]
+celery[eventlet]
 requests
 CacheControl
 simplejson
