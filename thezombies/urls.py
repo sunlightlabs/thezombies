@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from thezombies.views import (AgencyList, AgencyView, AuditList, AuditView, AuditURLList,
+from thezombies.views import (HomeView, AgencyList, AgencyView, AuditList, AuditView, AuditURLList,
                               AuditOfTypeList, AuditDayArchiveView, AuditMonthArchiveView, AuditYearArchiveView)
 
 urlpatterns = patterns('',
-    url(r'^$', AgencyList.as_view(), name='agency-list'),
+    url(r'^$', HomeView.as_view(), name='home'),
+    url(r'^agency/$', AgencyList.as_view(), name='agency-list'),
     url(r'^agency/(?P<slug>[\w\-]+)/$', AgencyView.as_view(), name='agency-detail'),
     url(r'^audits/$', AuditList.as_view(), name='audits-list'),
     url(r'^audits/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d+)/$', AuditDayArchiveView.as_view(), name='audits-list-day'),
