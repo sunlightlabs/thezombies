@@ -1,5 +1,6 @@
 -r requirements.txt
 django-dotenv
 fabric
-ipython
 django-debug-toolbar
+ipython
+ipdb
