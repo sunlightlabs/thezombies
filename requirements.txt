@@ -14,5 +14,3 @@ django-postgrespool
 djorm-pgarray
 whitenoise
 django-extensions
-fabric
-ipython
