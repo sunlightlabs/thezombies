@@ -34,6 +34,24 @@ class AuditAdmin(admin.ModelAdmin):
         }),
     )
 
+    def url_inspections(self, obj):
+        return URLInspection.objects.filter(probe__in=obj.probe_set.all())
+
+    def url_inspections_count(self, obj):
+        return self.url_inspections(obj).count()
+
+    def url_inspections_failure_count(self, obj):
+        return self.url_inspections(obj).all_errors().count()
+
+    def url_inspections_404_count(self, obj):
+        return self.url_inspections(obj).not_found().count()
+
+    def url_inspections_html_count(self, obj):
+        return self.url_inspections(obj).html_content().count()
+
+    def url_inspections_ftp_count(self, obj):
+        return self.url_inspections.ftp_urls().count()
+
     def display_name(self, obj):
         name = 'Audit for {0}'.format(obj.agency.name)
         if obj.url:

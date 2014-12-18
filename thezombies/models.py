@@ -187,6 +187,9 @@ class Probe(models.Model):
     def error_count(self):
         return len(self.errors)
 
+    def get_absolute_url(self):
+        return reverse('probe-detail', kwargs={'pk': str(self.pk)})
+
 
 class Audit(models.Model):
     """An audit on agency, made up of auditables"""
@@ -225,24 +228,9 @@ class Audit(models.Model):
     def get_absolute_url(self):
         return reverse('audit-detail', kwargs={'pk': str(self.pk)})
 
-    @property
-    def url_inspections(self):
-        return URLInspection.objects.filter(probe__in=self.probe_set.all())
-
-    def url_inspections_count(self):
-        return self.url_inspections.count()
-
-    def url_inspections_failure_count(self):
-        return self.url_inspections.all_errors().count()
-
-    def url_inspections_404_count(self):
-        return self.url_inspections.not_found().count()
-
-    def url_inspections_html_count(self):
-        return self.url_inspections.html_content().count()
-
-    def url_inspections_ftp_count(self):
-        return self.url_inspections.ftp_urls().count()
+    # @property
+    # def url_inspections(self):
+    #     return URLInspection.objects.filter(probe__in=self.probe_set.all())
 
     def error_list(self):
         error_list = []
@@ -305,16 +293,6 @@ class URLInspection(models.Model):
 
     def __str__(self):
         return self.__repr__()
-
-    @property
-    def content_type(self):
-        if self.content:
-            return self.content.content_type
-        else:
-            content_type = 'Unknown'
-            if self.headers:
-                content_type = self.headers.get('content-type', 'Unknown')
-            return content_type
 
 
 class Agency(models.Model):
