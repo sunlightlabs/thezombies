@@ -1,0 +1,31 @@
+{% load brains %}
+<table>
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Status code</th>
+            <th>Content type</th>
+            <th>Number of non-HTTP Errors</th>
+            <th>Access level</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for resp in page_obj %}
+        <tr>
+            <td>{{ resp.requested_url|urlizetrunc:100 }}</td>
+            <td><span class="label {% spaceless %}
+            {% if resp.status_code and resp.status_code < 400 %}
+                warn
+            {% else %}
+                alert
+            {% endif %}
+            {% endspaceless %}">{{ resp.status_code|httpreason:True|default:"Unknown" }}</span></td>
+            <td>{{ resp.content.content_type }}</td>
+            <td>{{ resp.probe.errors|length }}</td>
+            <td>{{ resp.info.accessLevel|title }}</td>
+            <td>{{ resp.info.urlType|default:"None" }}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>

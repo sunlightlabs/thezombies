@@ -1,0 +1,33 @@
+{% extends "audit_detail.html" %}{% load staticfiles %}{% load tz %}{% load brains %}
+{% block content %}
+    {% include "_audit_header.html" %}
+    <section>
+        <h3>Summary</h3>
+        <h4 class="subheader">Ran {{ object.probe_set.count }} probes for audit.</h4>
+        <h4 class="subheader">{{ object.url_inspections_count|default:0 }} URLs were inspected.</h4>
+        <h4 class="subheader">{{ object.error_count }} Errors were recorded.</h4>
+        <p><a href="{% url 'audit-url-list' pk=object.pk %}">View the results</a></p>
+    </section>
+    <section>
+        {% for probe in object.probe_set.all %}
+            <h4> {{ probe.get_probe_type_display }} </h4>
+            {% if probe.probe_type == probe.VALIDATION_PROBE %}
+                <p>Data catalog is valid: <strong>{{ probe.result.is_valid_data_catalog|yesno|title }}</strong></p>
+            {% endif %}
+            {% if probe.probe_type == probe.JSON_PROBE %}
+                <p>Is JSON: <strong>{{ probe.result.is_json|yesno|title }}</strong></p>
+            {% endif %}
+            {% if probe.probe_type == probe.URL_PROBE %}
+            <p>{{ probe.initial.url }} &rarr; {{ probe.result.status_code }}</p>
+            {% endif %}
+            {% if probe.errors %}
+            <h5>Errors</h5>
+            <ul>
+            {% for e in probe.errors  %}
+                <li>{{ e }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        {% endfor %}
+    </section>
+{% endblock %}

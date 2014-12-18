@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load staticfiles %}{% load tz %}{% load brains %}
+{% extends "base.html" %}{% load staticfiles %}{% load tz %}
 {% block pagetitle %}{{ audit.agency }}: {{ audit.get_audit_type_display }} | {{ block.super }}{% endblock pagetitle %}
 {% block content %}
 {% include "_audit_header.html" with object=audit %}
@@ -7,36 +7,7 @@
 <p>URLs: <strong>{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of {{ paginator.count }}</p>
 {% endif %}
 {% include "_pagination_links.html" %}
-<table>
-    <thead>
-        <tr>
-            <th>URL</th>
-            <th>Status code</th>
-            <th>Content type</th>
-            <th>Number of non-HTTP Errors</th>
-            <th>Access level</th>
-            <th>Type</th>
-        </tr>
-    </thead>
-    <tbody>
-{% for resp in page_obj %}
-        <tr>
-            <td>{{ resp.requested_url|urlizetrunc:100 }}</td>
-            <td><span class="label {% spaceless %}
-            {% if resp.status_code and resp.status_code < 400 %}
-                warn
-            {% else %}
-                alert
-            {% endif %}
-            {% endspaceless %}">{{ resp.status_code|httpreason:True|default:"Unknown" }}</span></td>
-            <td>{{ resp.content_type }}</td>
-            <td>{{ resp.probe.errors|length }}</td>
-            <td>{{ resp.info.accessLevel|title }}</td>
-            <td>{{ resp.info.urlType|default:"None" }}</td>
-        </tr>
-{% endfor %}
-    </tbody>
-</table>
+{% include "_audit_url_table.html" %}
 {% include "_pagination_links.html" %}
 {% if is_paginated %}
 <p>URLs: <strong>{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of {{ paginator.count }}</p>
