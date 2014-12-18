@@ -113,23 +113,6 @@ class AuditView(SingleObjectMixin, ListView):
         return template_names
 
 
-class AuditURLList(ListView):
-    paginate_by = 50
-    template_name = 'audit_url_list.html'
-
-    def get_queryset(self):
-        self.audit = get_object_or_404(Audit, pk=self.kwargs.get('pk'))
-        # probe_set = self.audit.probe_set.all()
-        # probe_set.only('content__content_type', 'probe__errors', 'info')
-        url_inspections = URLInspection.objects.filter(probe__in=probe_set)
-        return url_inspections
-
-    def get_context_data(self, **kwargs):
-        context = super(AuditURLList, self).get_context_data(**kwargs)
-        context['audit'] = self.audit
-        return context
-
-
 class ProbeView(DetailView):
     model = Probe
     template_name = "probe_detail.html"

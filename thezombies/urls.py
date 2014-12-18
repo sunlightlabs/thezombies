@@ -13,7 +13,6 @@ urlpatterns = patterns('',
     url(r'^audits/(?P<year>\d{4})/(?P<month>\d{2})/$', AuditMonthArchiveView.as_view(), name='audits-list-month'),
     url(r'^audits/(?P<year>\d{4})/$', AuditYearArchiveView.as_view(), name='audits-list-year'),
     url(r'^audits/(?P<pk>\d+)/$', AuditView.as_view(), name='audit-detail'),
-    url(r'^audits/(?P<pk>\d+)/urls/$', AuditURLList.as_view(), name='audit-url-list'),
     url(r'^audits/(?P<audit_type>\w+)/$', AuditListView.as_view(), name='audits-list-filtered'),
     url(r'^probes/(?P<pk>\d+)/$', ProbeView.as_view(), name='probe-detail'),
 
