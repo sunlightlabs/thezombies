@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from thezombies.views import (HomeView, AgencyList, AgencyView, AuditListView, AuditView, AuditURLList,
+from thezombies.views import (HomeView, AgencyList, AgencyView, AuditListView, AuditView,
                               AuditDayArchiveView, AuditMonthArchiveView, AuditYearArchiveView, ProbeView)
 
 urlpatterns = patterns('',
