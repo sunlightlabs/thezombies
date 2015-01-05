@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from celery import shared_task, chain, group
 from django.db import transaction, DatabaseError
 
-from .utils import error_handler, ResultDict
+from .utils import error_handler, ResultDict, logger
 from .urls import request_url
 from .json import parse_json
 from .catalog import (validate_json_catalog, create_data_crawl_audit)
@@ -18,13 +18,19 @@ def parse_json_from_inspection(taskarg):
         taskarg = taskarg[0]
     inspection_id = taskarg.get('inspection_id', None)
     audit_id = taskarg.get('audit_id', None)
+    if not audit_id:
+        logger.warn('Running parse_json_from_inspection with an audit_id')
     prev_probe_id = taskarg.get('probe_id', None)
     probe = None
-    with transaction.atomic():
-        probe = Probe.objects.create(probe_type=Probe.JSON_PROBE,
-                                     initial={'inspection_id': inspection_id},
-                                     previous_id=prev_probe_id, audit_id=audit_id)
     returnval = ResultDict(taskarg)
+    try:
+        with transaction.atomic():
+            probe = Probe.objects.create(probe_type=Probe.JSON_PROBE,
+                                         initial={'inspection_id': inspection_id},
+                                         previous_id=prev_probe_id, audit_id=audit_id)
+    except DatabaseError as e:
+        returnval.add_error(e)
+        logger.error('DatabaseError -> Unable to create JSON probe in parse_json_from_inspection')
     if probe:
         returnval['probe_id'] = probe.id
     inspection = URLInspection.objects.get(id=inspection_id)
@@ -37,10 +43,15 @@ def parse_json_from_inspection(taskarg):
     probe.result['json_errors'] = True if parse_errors else False
     probe.result['is_json'] = True if jsondata else False
     errors = result_dict.get('errors', None)
-    with transaction.atomic():
-        if errors:
-            probe.errors.extend(errors)
-        probe.save()
+    try:
+        with transaction.atomic():
+            if errors:
+                probe.errors.extend(errors)
+            probe.save()
+            logger.info('Updated JSON probe from parse_json_from_inspection')
+    except DatabaseError:
+        logger.warn('DatabaseError -> Unable finalize_audit')
+        raise e
 
     return returnval
 
@@ -59,7 +70,10 @@ def finalize_audit(taskarg):
                 audit.save()
                 returnval['saved'] = True
         except DatabaseError as e:
+            logger.warn('DatabaseError -> Unable finalize_audit')
             raise e
+    else:
+        logger.warn('Unable to finalize audit. No audit_id provided!')
 
 
 @shared_task
@@ -87,6 +101,7 @@ def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
             probe.result['status_code'] = response.status_code
             inspection.save()
         audit = Audit.objects.create(agency_id=agency_id)
+        returnval['audit_id'] = audit.id
         audit.audit_type = audit_type
         audit.probe_set.add(probe)
         audit.save()
@@ -95,9 +110,9 @@ def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
             probe.result['inspection_id'] = inspection.id
         probe.errors.extend(returnval.errors)
         probe.save()
-        returnval['audit_id'] = audit.id
     if response and not response.ok:
         # If the inspection is not okay, raise an error so we can handle that as an error
+        logger.warn(u'Received non-okay response for requested url: {0}'.format(url))
         response.raise_for_status()
     return returnval
 

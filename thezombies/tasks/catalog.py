@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from itertools import islice
 from django.conf import settings
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from celery import shared_task
 import ujson
 from jsonschema import Draft4Validator
@@ -68,7 +68,7 @@ def inspect_data_catalog_item_url(taskarg):
 @shared_task
 def validate_json_catalog(taskarg):
     """
-    Validate jsondata against the DATA_CATALOG_SCHEMA
+    Validate json data against the DATA_CATALOG_SCHEMA
     """
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
@@ -76,11 +76,19 @@ def validate_json_catalog(taskarg):
     prev_probe_id = taskarg.get('probe_id', None)
     inspection_id = taskarg.get('inspection_id', None)
     probe = None
-    with transaction.atomic():
-        probe = Probe.objects.create(probe_type=Probe.VALIDATION_PROBE,
-                                     initial={'inspection_id': inspection_id},
-                                     previous_id=prev_probe_id, audit_id=audit_id)
     returnval = ResultDict(taskarg)
+    if audit_id:
+        logger.info('Validating JSON catalog for audit {0}'.format(audit_id))
+    else:
+        logger.warning(u'validate_json_catalog running without an audit_id')
+    try:
+        with transaction.atomic():
+            probe = Probe.objects.create(probe_type=Probe.VALIDATION_PROBE,
+                                         initial={'inspection_id': inspection_id},
+                                         previous_id=prev_probe_id, audit_id=audit_id)
+    except IntegrityError as e:
+        returnval.add_error(e)
+        logger.error('Error creating JSON probe in validate_json_catalog')
     if probe:
         returnval['probe_id'] = probe.id
     is_valid = False
@@ -96,6 +104,8 @@ def validate_json_catalog(taskarg):
     with transaction.atomic():
         probe.errors.extend(returnval.errors)
         probe.save()
+        logger.info('Updated JSON probe in validate_json_catalog')
+
     returnval['audit_type'] = Audit.DATA_CATALOG_VALIDATION
     return returnval
 
