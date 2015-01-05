@@ -1,4 +1,5 @@
 Gunicorn
+librabbitmq
 celery[eventlet]
 requests
 CacheControl
