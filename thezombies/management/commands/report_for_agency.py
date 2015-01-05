@@ -1,7 +1,7 @@
 from __future__ import division
 from collections import Counter
 from django.core.management.base import BaseCommand, CommandError
-from thezombies.models import (Agency, Audit, Probe, ftp_urls_q)
+from thezombies.models import (Agency, Audit, Probe, URLInspection, ftp_urls_q)
 from thezombies.utils import datetime_string
 
 
@@ -23,15 +23,16 @@ class Command(BaseCommand):
                 is_valid = Probe.objects.filter(id=validation_probe.id).hpeek(attr=u'result', key=u'is_valid_data_catalog')
                 crawl_audit = Audit.objects.filter(agency=agency, audit_type=Audit.DATA_CATALOG_CRAWL).latest()
                 catalog_item_count = crawl_audit.probe_set.json_probes().count()
-                num_urls_found = crawl_audit.url_inspections.initial_urls_distinct().count()
-                http_urls_distinct = crawl_audit.url_inspections.http_urls_distinct().count()
-                ftp_urls_distinct = crawl_audit.url_inspections.ftp_urls_distinct()
+                url_inspections = URLInspection.objects.filter(probe__in=crawl_audit.probe_set.all())
+                num_urls_found = url_inspections.initial_urls_distinct().count()
+                http_urls_distinct = url_inspections.http_urls_distinct().count()
+                ftp_urls_distinct = url_inspections.ftp_urls_distinct()
                 ftp_urls_pct = ftp_urls_distinct.count()/num_urls_found
-                suspicious_urls_distinct = crawl_audit.url_inspections.suspicious_urls_distinct()
+                suspicious_urls_distinct = url_inspections.suspicious_urls_distinct()
                 suspicious_urls_pct = suspicious_urls_distinct.count()/num_urls_found
-                not_found_urls = crawl_audit.url_inspections.not_found()
+                not_found_urls = url_inspections.not_found()
                 not_found_pct = not_found_urls.count()/num_urls_found
-                sans_responses_urls = crawl_audit.url_inspections.exclude(ftp_urls_q).sans_responses_distinct()
+                sans_responses_urls = url_inspections.exclude(ftp_urls_q).sans_responses_distinct()
                 report_lines = []
                 report_lines.append(u"# Report for {agency}\n\n".format(agency=agency))
                 report_lines.append(u"Report generated: {0}\n\n".format(report_date))

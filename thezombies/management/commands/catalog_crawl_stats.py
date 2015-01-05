@@ -8,7 +8,7 @@ REPORT_DATE_FORMATTER = u"{:%Y-%m-%d %I:%M%p %Z}\n"
 
 class Command(LabelCommand):
     """Report stats on data catalog crawl audits."""
-    args = u'None'
+    args = u'[urls|content-types|report]'
     help = u'Report stats on data catalog crawl audits'
 
     def _content_types_for_inspections(self, url_inspections):
@@ -24,11 +24,12 @@ class Command(LabelCommand):
             audit = agency.audit_set.filter(audit_type=Audit.DATA_CATALOG_CRAWL).latest()
             self.stdout.write(u"## {0}".format(audit.agency.name))
             date_str = REPORT_DATE_FORMATTER.format(timezone.localtime(audit.updated_at))
-            num_urls_visited = audit.url_inspections.filter(parent__isnull=True).count()
-            insp_list = audit.url_inspections.filter(content__isnull=False)
+            url_inspections = URLInspection.objects.filter(probe__in=audit.probe_set.all())
+            num_urls_visited = url_inspections.filter(parent__isnull=True).count()
+            insp_list = url_inspections.filter(content__isnull=False)
             errored_inspections = insp_list.server_errors()
             not_found = insp_list.not_found().count()
-            typeless_inspections = audit.url_inspections.responses_sans_content_type()
+            typeless_inspections = url_inspections.responses_sans_content_type()
             ftp_inspections = typeless_inspections.ftp_urls_distinct()
             typeless_http_inspections = typeless_inspections.http_urls_distinct()
             other_typeless_inspections = typeless_inspections.exclude(id__in=ftp_inspections).exclude(id__in=typeless_http_inspections)
@@ -66,13 +67,14 @@ class Command(LabelCommand):
         self.stdout.write(u'Agency,"Data items","URLs inspected","HTTP URLs","FTP URLs","Suspicious URLs","404s"')
         for agency in agency_set:
             audit = agency.audit_set.filter(audit_type=Audit.DATA_CATALOG_CRAWL).latest()
+            url_inspections = URLInspection.objects.filter(probe__in=audit.probe_set.all())
             col_vals = [audit.agency.name,
                         audit.probe_set.json_probes().count(),
-                        audit.url_inspections.initial_urls().count(),
-                        audit.url_inspections.http_urls().count(),
-                        audit.url_inspections.ftp_urls().count(),
-                        audit.url_inspections.suspicious_urls().count(),
-                        audit.url_inspections.not_found().count()]
+                        url_inspections.initial_urls().count(),
+                        url_inspections.http_urls().count(),
+                        url_inspections.ftp_urls().count(),
+                        url_inspections.suspicious_urls().count(),
+                        url_inspections.not_found().count()]
             self.stdout.write(u','.join([str(c) for c in col_vals]))
 
     def content_types_report(self, agency_set):
@@ -87,7 +89,7 @@ class Command(LabelCommand):
         for agency in agency_set:
             try:
                 audit = agency.audit_set.filter(audit_type=Audit.DATA_CATALOG_CRAWL).latest()
-                counted_content_types = dict(count_content_types(audit.url_inspections.initial_urls_distinct(), content_types))
+                counted_content_types = dict(count_content_types(url_inspections.initial_urls_distinct(), content_types))
                 self.stdout.write(u'"{}",{}'.format(audit.agency.name, u",".join([str(counted_content_types[t]) for t in content_types])))
             except Audit.DoesNotExist:
                 pass
