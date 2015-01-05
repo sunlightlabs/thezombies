@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from thezombies.models import Agency
 from thezombies.tasks.main import crawl_agency_datasets
 
 
@@ -15,3 +16,8 @@ class Command(BaseCommand):
                 self.stdout.write(u'This can take many minutes...')
             else:
                 self.stderr.write(u"Didn't get an agency_id!")
+        else:
+            self.stdout.write(u'Please provide an agency id:\n')
+            agency_list = u'\n'.join(['{0:2d}: {1}'.format(a.id, a.name) for a in Agency.objects.all()])
+            self.stdout.write(agency_list)
+            self.stdout.write(u'\n')
