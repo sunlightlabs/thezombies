@@ -4,7 +4,7 @@
     <section>
         <h3>Summary</h3>
         <h4 class="subheader">Ran {{ audit.probe_set.count }} probes for audit.</h4>
-        <h4 class="subheader">{{ audit.url_inspections_count|default:0 }} URLs were inspected.</h4>
+        <h4 class="subheader">{{ paginator.count }} URLs were inspected.</h4>
     </section>
     <section>
     {% if is_paginated %}

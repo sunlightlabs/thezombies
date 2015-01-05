@@ -5,7 +5,7 @@
     <section>
         <h3>Summary</h3>
         <h4 class="subheader">Ran {{ object.probe_set.count }} probes for audit.</h4>
-        <h4 class="subheader">{{ object.url_inspections_count|default:0 }} URLs were inspected.</h4>
+        <h4 class="subheader">{{ paginator.count }} URLs were inspected.</h4>
         <h4 class="subheader">{{ object.error_count }} Errors were recorded.</h4>
     </section>
 {% endblock %}
