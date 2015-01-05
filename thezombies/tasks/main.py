@@ -103,6 +103,22 @@ def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
 
 
 @shared_task
+def validate_agency_catalog(agency_id):
+    try:
+        agency = Agency.objects.get(id=agency_id)
+        task_chain = chain(
+            audit_for_agency_url.subtask((agency.id, agency.data_json_url, Audit.DATA_CATALOG_VALIDATION),
+                                         options={'link_error': error_handler.s()}),
+            parse_json_from_inspection.s(),
+            validate_json_catalog.s(),
+            finalize_audit.s()
+        )
+        return task_chain()
+    except Agency.DoesNotExist as e:
+        raise e
+
+
+@shared_task
 def validate_data_catalogs():
     agencies = Agency.objects.all()
     groupchain = group([chain(
