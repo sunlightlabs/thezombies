@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from itertools import islice
 from django.conf import settings
-from django.db import transaction, IntegrityError
+from django.db import transaction, DatabaseError
 from celery import shared_task
 import ujson
 from jsonschema import Draft4Validator
@@ -81,32 +81,42 @@ def validate_json_catalog(taskarg):
         logger.info('Validating JSON catalog for audit {0}'.format(audit_id))
     else:
         logger.warning(u'validate_json_catalog running without an audit_id')
+    prev_probe = None
     try:
         with transaction.atomic():
-            probe = Probe.objects.create(probe_type=Probe.VALIDATION_PROBE,
-                                         initial={'inspection_id': inspection_id},
-                                         previous_id=prev_probe_id, audit_id=audit_id)
-    except IntegrityError as e:
+            prev_probe = Probe.objects.get(id=prev_probe_id)
+    except DatabaseError as e:
         returnval.add_error(e)
-        logger.error('Error creating JSON probe in validate_json_catalog')
-    if probe:
-        returnval['probe_id'] = probe.id
-    is_valid = False
-    jsondata = taskarg.get('json', None)
-    if jsondata and CATALOG_SCHEMA:
-        is_valid = catalog_validator.is_valid(jsondata)
-        if not is_valid:
-            # Save up to SCHEMA_ERROR_LIMIT errors from schema validation
-            error_iter = islice(catalog_validator.iter_errors(jsondata), SCHEMA_ERROR_LIMIT)
-            for e in error_iter:
-                returnval.add_error(e)
-    probe.result['is_valid_data_catalog'] = is_valid
-    with transaction.atomic():
-        probe.errors.extend(returnval.errors)
-        probe.save()
-        logger.info('Updated JSON probe in validate_json_catalog')
+        returnval['success'] = False
+        logger.error('Error fetching previous JSON probe in validate_json_catalog')
 
-    returnval['audit_type'] = Audit.DATA_CATALOG_VALIDATION
+    if prev_probe:
+        try:
+            with transaction.atomic():
+                probe = Probe.objects.create(probe_type=Probe.VALIDATION_PROBE,
+                                             initial={'inspection_id': inspection_id},
+                                             previous_id=prev_probe_id, audit_id=audit_id)
+        except DatabaseError as e:
+            returnval.add_error(e)
+            logger.error('Error creating JSON probe in validate_json_catalog')
+        if probe:
+            returnval['probe_id'] = probe.id
+        is_valid = False
+        jsondata = prev_probe.result.get('json', None)
+        if jsondata and CATALOG_SCHEMA:
+            is_valid = catalog_validator.is_valid(jsondata)
+            if not is_valid:
+                # Save up to SCHEMA_ERROR_LIMIT errors from schema validation
+                error_iter = islice(catalog_validator.iter_errors(jsondata), SCHEMA_ERROR_LIMIT)
+                for e in error_iter:
+                    returnval.add_error(e)
+        probe.result['is_valid_data_catalog'] = is_valid
+        with transaction.atomic():
+            probe.errors.extend(returnval.errors)
+            probe.save()
+            logger.info('Updated JSON probe in validate_json_catalog')
+
+        returnval['audit_type'] = Audit.DATA_CATALOG_VALIDATION
     return returnval
 
 

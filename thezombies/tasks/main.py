@@ -38,10 +38,10 @@ def parse_json_from_inspection(taskarg):
     encoding = inspection.encoding if inspection.encoding else inspection.apparent_encoding
     result_dict = parse_json({'content': inspection_content, 'encoding': encoding})
     jsondata = result_dict.get('json', None)
-    returnval['json'] = jsondata
     parse_errors = result_dict.get('parse_errors', False)
     probe.result['json_errors'] = True if parse_errors else False
     probe.result['is_json'] = True if jsondata else False
+    probe.result['json'] = jsondata
     errors = result_dict.get('errors', None)
     try:
         with transaction.atomic():
