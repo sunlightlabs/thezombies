@@ -106,7 +106,7 @@ MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 
 # Celery
 
-BROKER_URL = os.getenv('RABBITMQ_BIGWIG_URL', "amqp://")
+BROKER_URL = os.getenv('CLOUDAMQP_URL', 'amqp://localhost')
 CELERY_RESULT_BACKEND = 'amqp'
 CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 CELERY_TASK_SERIALIZER = 'pickle'
