@@ -1,6 +1,7 @@
 Gunicorn
 librabbitmq
 celery[eventlet]
+django-atomic-celery
 requests
 CacheControl
 simplejson

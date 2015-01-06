@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django_hstore',
     'django_extensions',
 
+    'django_atomic_signals',
+    'django_atomic_celery',
     'thezombies',
 )
 

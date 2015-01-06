@@ -9,7 +9,7 @@ from django.conf import settings
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'thezombies.settings')
 
-app = Celery('thezombies')
+app = Celery('thezombies', task_cls='django_atomic_celery:PostTransactionTask')
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.
