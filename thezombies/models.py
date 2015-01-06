@@ -92,7 +92,7 @@ class URLInspectionManager(hstore.HStoreManager):
 
     def create_from_response(self, resp, save_content=True):
         """
-        Create a URLInspection object from a requests.Response
+        Create a URLInspection object from a requests.Response or dictionary made from a requests.Response
         """
         if isinstance(resp, Response):
             content_type = resp.headers.get('content-type', None)
@@ -105,8 +105,8 @@ class URLInspectionManager(hstore.HStoreManager):
             obj.requested_url = resp.history[0].url if len(resp.history) > 0 else resp.request.url
             obj.headers = dict(resp.headers)
             # TODO: defer detection of apparent encoding. A task, perhaps
-            if save_content:
-                obj.apparent_encoding = resp.apparent_encoding
+            # if save_content:
+            #     obj.apparent_encoding = resp.apparent_encoding
             for n, hist in enumerate(resp.history):
                 histobj = self.create(requested_url=hist.request.url, url=hist.url,
                                       status_code=hist.status_code, encoding=resp.encoding, parent=obj)
@@ -115,8 +115,29 @@ class URLInspectionManager(hstore.HStoreManager):
                 obj.history[str(n)] = histobj
 
             return obj
+        elif isinstance(resp, dict) and resp.has_key('url'):
+            content_type = resp.get('content-type', None)
+            content = ResponseContent.objects.create(content_type=content_type)
+            if save_content:
+                content.binary = resp.content
+                content.save()
+            obj = self.create(content=content, url=resp.url, status_code=resp.status_code,
+                              encoding=resp.encoding, reason=resp.reason)
+            obj.requested_url = resp.history[0].get('url') if len(resp.history) > 0 else resp.get('url')
+            obj.headers = resp.headers
+            if save_content and resp.has_key('apparent_encoding'):
+                # We can save apparent encoding if it was calculated and stored on the dict.
+                obj.apparent_encoding = resp.get('apparent_encoding')
+            for n, hist in enumerate(resp.history):
+                histobj = self.create(requested_url=hist.get('url'), url=hist.get('url'),
+                                      status_code=hist.get('status_code'), encoding=hist.get('encoding'), parent=obj)
+                histobj.headers = hist.headers
+                histobj.save()
+                obj.history[str(n)] = histobj
+
+            return obj
         else:
-            raise TypeError(u'create_from_response expects a requests.Response object')
+            raise TypeError(u'create_from_response expects a requests.Response object or a compatible dictionary')
 
 
 class ProbeQuerySet(HStoreQuerySet):

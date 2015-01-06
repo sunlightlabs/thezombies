@@ -9,7 +9,7 @@ import redis
 from cachecontrol import CacheControl
 from cachecontrol.caches import RedisCache
 
-from .utils import ResultDict, logger
+from .utils import ResultDict, logger, response_to_dict
 from thezombies.models import URLInspection
 
 try:
@@ -34,6 +34,7 @@ def check_and_correct_url(url, method='GET'):
     """
     returnval = ResultDict({'initial_url': url})
     try:
+        logger.info('Checking URL: {0}'.format(url))
         scheme, netloc, path, params, query, fragments = urlparse(str(url))
         if scheme is '':
             # Maybe it is an http url without the scheme?
@@ -49,7 +50,7 @@ def check_and_correct_url(url, method='GET'):
         returnval['valid_url'] = True
         returnval['corrected_url'] = corrected_url
     except Exception as e:
-        logger.info("Error validating url '{url}'".format(url=url))
+        logger.warn("Error validating url '{url}'".format(url=url))
         returnval.add_error(e)
         returnval['valid_url'] = False
 
@@ -65,14 +66,17 @@ def request_url(url, method='GET'):
     :param method: http method to use, as a string. Default is 'GET'
     """
     resp = None
+    logger.info('Preparing request for URL: {0}'.format(url))
     checker_result = check_and_correct_url(url)
     corrected_url = checker_result.get('corrected_url', None)
     returnval = ResultDict(checker_result)
     returnval['url_request_attempted'] = False
     if corrected_url:
         try:
+            logger.info('Requesting URL: {0}'.format(url))
             resp = session.request(method.upper(), corrected_url, allow_redirects=True, timeout=REQUEST_TIMEOUT)
         except requests.exceptions.Timeout as e:
+            logger.warn('Requesting URL: {0}'.format(url))
             returnval.add_error(e)
             returnval['timeout'] = True
         except Exception as e:
@@ -84,7 +88,8 @@ def request_url(url, method='GET'):
                 resp.raise_for_status()
             except Exception as e:
                 returnval.add_error(e)
-        returnval['response'] = resp
+        returnval['response'] = response_to_dict(resp)
+    logger.info('Returning from request_url')
     return returnval
 
 

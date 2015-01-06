@@ -3,6 +3,7 @@ from celery.result import AsyncResult
 from jsonschema import ValidationError
 from celery import shared_task
 from celery.utils.log import get_task_logger
+from requests.models import Response
 
 logger = get_task_logger(__name__)
 
@@ -39,6 +40,22 @@ class ResultDict(dict):
     def errors(self):
         return self._errors
 
+
+def response_to_dict(resp):
+    """Rudimentary conversion of a requests.Response to a dictionary. Does not include values for all fields"""
+    if isinstance(resp, Response):
+        obj = dict.fromkeys([x for x in Response.__attrs__ if not x.startswith('_')], None)
+        obj['url'] = resp.url
+        obj['headers'] = dict(resp.headers)
+        obj['content'] = resp.content
+        obj['history'] = [response_to_dict(r) for r in resp.history]
+        obj['encoding'] = resp.encoding
+        obj['status_code'] = resp.status_code
+        obj['reason'] = resp.reason
+        return obj
+    else:
+        raise TypeError('resp is not an instance of a requests.Response')
+    return None
 
 @shared_task
 def error_handler(uuid):
