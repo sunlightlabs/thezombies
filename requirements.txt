@@ -1,3 +1,4 @@
+ipython
 Gunicorn
 librabbitmq
 celery[eventlet]
