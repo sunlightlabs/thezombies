@@ -122,3 +122,8 @@ DATA_CATALOG_SCHEMA_PATH = os.path.join(BASE_DIR, 'schema/1_0_final/catalog.json
 # Request timeout (seconds)
 
 REQUEST_TIMEOUT = 60 * 3
+
+# Redis (caching backend)
+
+REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+

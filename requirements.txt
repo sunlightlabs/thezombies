@@ -3,6 +3,7 @@ librabbitmq
 celery[eventlet]
 django-atomic-celery
 requests
+redis
 CacheControl
 simplejson
 ujson

@@ -5,7 +5,9 @@ from celery import shared_task
 
 import requests
 from requests.exceptions import InvalidURL
+import redis
 from cachecontrol import CacheControl
+from cachecontrol.caches import RedisCache
 
 from .utils import ResultDict, logger
 from thezombies.models import URLInspection
@@ -17,7 +19,10 @@ except ImportError:
 
 
 REQUEST_TIMEOUT = getattr(settings, 'REQUEST_TIMEOUT', 60)
-session = CacheControl(requests.Session(), cache_etags=False)
+
+pool = redis.ConnectionPool.from_url(settings.REDIS_URL)
+r = redis.Redis(connection_pool=pool)
+session = CacheControl(requests.Session(), RedisCache(r), cache_etags=False)
 
 
 @shared_task
