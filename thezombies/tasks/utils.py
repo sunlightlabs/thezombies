@@ -57,7 +57,7 @@ def response_to_dict(resp):
         obj['encoding'] = resp.encoding
         obj['status_code'] = resp.status_code
         obj['reason'] = resp.reason
-        return AttrDict(obj)
+        return obj
     else:
         raise TypeError('resp is not an instance of a requests.Response')
     return None

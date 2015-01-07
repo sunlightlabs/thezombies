@@ -8,6 +8,7 @@ from .urls import request_url
 from .json import parse_json
 from .catalog import (validate_json_catalog, create_data_crawl_audit)
 from thezombies.models import (Probe, Audit, URLInspection, Agency)
+from requests import Response
 
 
 @task
@@ -111,10 +112,10 @@ def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
             probe.result['inspection_id'] = inspection.id
         probe.errors.extend(returnval.errors)
         probe.save()
-    if response and not response.ok:
-        # If the inspection is not okay, raise an error so we can handle that as an error
-        logger.warn(u'Received non-okay response for requested url: {0}'.format(url))
-        response.raise_for_status()
+    if response and isinstance(response, Response) and not response.ok:
+            # If the inspection is not okay, raise an error so we can handle that as an error
+            logger.warn(u'Received non-okay response for requested url: {0}'.format(url))
+            response.raise_for_status()
     return returnval
 
 

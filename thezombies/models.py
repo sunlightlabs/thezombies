@@ -95,6 +95,8 @@ class URLInspectionManager(hstore.HStoreManager):
         """
         Create a URLInspection object from a requests.Response or dictionary made from a requests.Response
         """
+        if isinstance(resp, dict):
+            resp = AttrDict(resp)
         if isinstance(resp, Response) or isinstance(resp, AttrDict):
             content_type = resp.headers.get('content-type', None)
             content = ResponseContent.objects.create(content_type=content_type)
