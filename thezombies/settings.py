@@ -105,16 +105,7 @@ MEDIA_ROOT = os.getenv('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 
 # Celery
-
-BROKER_URL = os.getenv('CLOUDAMQP_URL', 'amqp://localhost')
-CELERY_RESULT_BACKEND = 'amqp'
-CELERY_MESSAGE_COMPRESSION = 'gzip'
-CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
-CELERY_TASK_SERIALIZER = 'pickle'
-# CELERY_DISABLE_RATE_LIMITS = True
-CELERYD_TASK_TIME_LIMIT = 10 * 60
-CELERY_DEFAULT_RATE_LIMIT = '100/s'
-CELERY_ACCEPT_CONTENT = ['pickle', 'json']
+# See celeryconfig.py
 
 # JSON Schema
 
@@ -127,4 +118,3 @@ REQUEST_TIMEOUT = 60 * 3
 # Redis (caching backend)
 
 REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
-
