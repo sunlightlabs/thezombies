@@ -1,9 +1,10 @@
 from __future__ import absolute_import
 from celery.result import AsyncResult
 from jsonschema import ValidationError
-from celery import shared_task
+from django_atomic_celery import task
 from celery.utils.log import get_task_logger
 from requests.models import Response
+from attrdict import AttrDict
 
 logger = get_task_logger(__name__)
 
@@ -46,18 +47,23 @@ def response_to_dict(resp):
     if isinstance(resp, Response):
         obj = dict.fromkeys([x for x in Response.__attrs__ if not x.startswith('_')], None)
         obj['url'] = resp.url
+        obj['ok'] = resp.ok
+        obj['request'] = {
+            'url': resp.request.url
+        }
         obj['headers'] = dict(resp.headers)
         obj['content'] = resp.content
         obj['history'] = [response_to_dict(r) for r in resp.history]
         obj['encoding'] = resp.encoding
         obj['status_code'] = resp.status_code
         obj['reason'] = resp.reason
-        return obj
+        return AttrDict(obj)
     else:
         raise TypeError('resp is not an instance of a requests.Response')
     return None
 
-@shared_task
+
+@task
 def error_handler(uuid):
     result = AsyncResult(uuid)
     exc = result.get(propagate=False)

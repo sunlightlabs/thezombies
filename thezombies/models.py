@@ -1,4 +1,5 @@
 from requests import Response
+from attrdict import AttrDict
 
 from django.db import models
 from django.db.models import Q
@@ -94,7 +95,7 @@ class URLInspectionManager(hstore.HStoreManager):
         """
         Create a URLInspection object from a requests.Response or dictionary made from a requests.Response
         """
-        if isinstance(resp, Response):
+        if isinstance(resp, Response) or isinstance(resp, AttrDict):
             content_type = resp.headers.get('content-type', None)
             content = ResponseContent.objects.create(content_type=content_type)
             if save_content:
@@ -109,29 +110,8 @@ class URLInspectionManager(hstore.HStoreManager):
             #     obj.apparent_encoding = resp.apparent_encoding
             for n, hist in enumerate(resp.history):
                 histobj = self.create(requested_url=hist.request.url, url=hist.url,
-                                      status_code=hist.status_code, encoding=resp.encoding, parent=obj)
+                                      status_code=hist.status_code, encoding=hist.encoding, parent=obj)
                 histobj.headers = dict(hist.headers)
-                histobj.save()
-                obj.history[str(n)] = histobj
-
-            return obj
-        elif isinstance(resp, dict) and resp.has_key('url'):
-            content_type = resp.get('content-type', None)
-            content = ResponseContent.objects.create(content_type=content_type)
-            if save_content:
-                content.binary = resp.content
-                content.save()
-            obj = self.create(content=content, url=resp.url, status_code=resp.status_code,
-                              encoding=resp.encoding, reason=resp.reason)
-            obj.requested_url = resp.history[0].get('url') if len(resp.history) > 0 else resp.get('url')
-            obj.headers = resp.headers
-            if save_content and resp.has_key('apparent_encoding'):
-                # We can save apparent encoding if it was calculated and stored on the dict.
-                obj.apparent_encoding = resp.get('apparent_encoding')
-            for n, hist in enumerate(resp.history):
-                histobj = self.create(requested_url=hist.get('url'), url=hist.get('url'),
-                                      status_code=hist.get('status_code'), encoding=hist.get('encoding'), parent=obj)
-                histobj.headers = hist.headers
                 histobj.save()
                 obj.history[str(n)] = histobj
 
