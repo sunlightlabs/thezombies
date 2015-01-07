@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from django.db import transaction
 from django.conf import settings
-from celery import shared_task
+from django_atomic_celery import task
 
 import requests
 from requests.exceptions import InvalidURL
@@ -25,7 +25,7 @@ r = redis.Redis(connection_pool=pool)
 session = CacheControl(requests.Session(), cache=RedisCache(r), cache_etags=False)
 
 
-@shared_task
+@task
 def check_and_correct_url(url, method='GET'):
     """Check a url for issues, record exceptions, and attempt to correct the url.
 
@@ -57,7 +57,7 @@ def check_and_correct_url(url, method='GET'):
     return returnval
 
 
-@shared_task
+@task
 def request_url(url, method='GET'):
     """Task to request a url, a GET request by default. Tracks and returns errors.
     Will not raise an Exception, but may return None for response
@@ -93,7 +93,7 @@ def request_url(url, method='GET'):
     return returnval
 
 
-@shared_task
+@task
 def get_or_create_inspection(url, with_content=False):
     """Task to get the lastest URLInspection or create a new one if none exists.
 

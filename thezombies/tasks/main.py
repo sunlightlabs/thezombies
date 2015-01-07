@@ -1,5 +1,6 @@
 from __future__ import absolute_import
-from celery import shared_task, chain, group
+from celery import chain, group
+from django_atomic_celery import task
 from django.db import transaction, DatabaseError
 
 from .utils import error_handler, ResultDict, logger
@@ -9,7 +10,7 @@ from .catalog import (validate_json_catalog, create_data_crawl_audit)
 from thezombies.models import (Probe, Audit, URLInspection, Agency)
 
 
-@shared_task
+@task
 def parse_json_from_inspection(taskarg):
     """
     Task to parse json from a inspection.
@@ -56,7 +57,7 @@ def parse_json_from_inspection(taskarg):
     return returnval
 
 
-@shared_task
+@task
 def finalize_audit(taskarg):
     audit_id = taskarg.get('audit_id', None)
     audit_type = taskarg.get('audit_type', Audit.GENERIC_AUDIT)
@@ -76,7 +77,7 @@ def finalize_audit(taskarg):
         logger.warn('Unable to finalize audit. No audit_id provided!')
 
 
-@shared_task
+@task
 def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
     """Task to save a basic audit given an agency_id and a url.
 
@@ -98,7 +99,7 @@ def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
         if response is not None:
             inspection = URLInspection.objects.create_from_response(response)
             inspection.probe = probe
-            probe.result['status_code'] = response.status_code
+            probe.result['status_code'] = response.get('status_code')
             inspection.save()
         audit = Audit.objects.create(agency_id=agency_id)
         returnval['audit_id'] = audit.id
@@ -117,7 +118,7 @@ def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
     return returnval
 
 
-@shared_task
+@task
 def validate_agency_catalog(agency_id):
     try:
         agency = Agency.objects.get(id=agency_id)
@@ -133,7 +134,7 @@ def validate_agency_catalog(agency_id):
         raise e
 
 
-@shared_task
+@task
 def validate_data_catalogs():
     agencies = Agency.objects.all()
     groupchain = group([chain(
@@ -146,7 +147,7 @@ def validate_data_catalogs():
     return groupchain.skew(start=1, stop=20)()
 
 
-@shared_task
+@task
 def crawl_agency_datasets(agency_id):
     """Task that crawl the datasets from an agency data catalog.
     Runs create_data_crawl_audit, which spawns inspect_data_catalog_item tasks which in turn spawns

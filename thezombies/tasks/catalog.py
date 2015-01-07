@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from itertools import islice
 from django.conf import settings
 from django.db import transaction, DatabaseError
-from celery import shared_task
+from django_atomic_celery import task
 import ujson
 from jsonschema import Draft4Validator
 
@@ -18,7 +18,7 @@ CATALOG_SCHEMA = ujson.load(open(SCHEMA_PATH, 'r')) if SCHEMA_PATH else None
 catalog_validator = Draft4Validator(CATALOG_SCHEMA)
 
 
-@shared_task(ignore_result=True, rate_limit='10/s')
+@task
 def inspect_data_catalog_item_url(taskarg):
     """Task to check an accessURL from a data catalog,
     using a HEAD request. Tracks and returns errors.
@@ -65,7 +65,7 @@ def inspect_data_catalog_item_url(taskarg):
     return returnval
 
 
-@shared_task
+@task
 def validate_json_catalog(taskarg):
     """
     Validate json data against the DATA_CATALOG_SCHEMA
@@ -120,7 +120,7 @@ def validate_json_catalog(taskarg):
     return returnval
 
 
-@shared_task
+@task
 def inspect_data_catalog_item(taskarg):
     """Inspect an item (json object) in a data catalog (json array) and
     check any included accessURLs, distributions or webServices
@@ -212,7 +212,7 @@ def inspect_data_catalog_item(taskarg):
         logger.warn('No valid item passed to inspect_data_catalog_item')
 
 
-@shared_task
+@task
 def create_data_crawl_audit(agency_id, catalog_url):
     """Create an audit to track the crawl of a data catalog url and
     spawns tasks to inspect individual objects in the catalog

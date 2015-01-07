@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from celery import shared_task
+from django_atomic_celery import task
 
 try:
     import simplejson as json
@@ -10,7 +10,7 @@ import ujson
 from .utils import ResultDict
 
 
-@shared_task
+@task
 def parse_json(taskarg):
     """
     Task to parse json from content
