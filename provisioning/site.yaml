@@ -1,0 +1,12 @@
+---
+- name: Set up www.thezombies
+  hosts: thezombies-site
+  roles:
+    - role: common-roles/common
+    - role: common-roles/django
+    - role: web
+      project_name: thezombies
+  tasks:
+    - name: Perform a safe upgrade
+      apt: upgrade=safe update_cache=yes
+

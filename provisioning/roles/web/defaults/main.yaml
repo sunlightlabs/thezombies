@@ -1,0 +1,3 @@
+---
+django_environment:
+  SECRET_KEY: electric-piano

@@ -1,0 +1,16 @@
+---
+- name: Install Postgres
+  hosts: thezombies-db
+  user: ubuntu
+  sudo: yes
+  roles:
+      - role: common-roles/common
+      - role: common-roles/ebs
+        ebs_path: /var/lib/postgresql
+        device_letter: g
+        volume_size: 50
+      - role: common-roles/postgres
+        dbuser: "thezombies"
+        dbpassword: "test"
+        dbname: "thezombies"
+        extensions: ["hstore"]
