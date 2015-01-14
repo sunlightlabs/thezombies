@@ -4,6 +4,11 @@
   roles:
     - role: common-roles/common
     - role: common-roles/django
+      python_version: 2
+      git_repositories:
+          - repo: "git://github.com/sunlightlabs/thezombies.org.git"
+            dir: thezombies
+      wsgi_module: thezombies.wsgi:application
     - role: web
       project_name: thezombies
   tasks:
