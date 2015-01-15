@@ -44,3 +44,6 @@ staticfiles/*
 media/
 !*.sql
 sandbox/
+
+# vagrant
+.vagrant
