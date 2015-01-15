@@ -10,29 +10,35 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.define "site" do |site|
         site.vm.network "private_network", ip: "10.64.7.100"
-        config.vm.provider "virtualbox" do |vb|
+        site.vm.synced_folder "./", "/projects/thezombies/src/thezombies"
+
+        site.vm.provider "virtualbox" do |vb|
             vb.name = "www.thezombies"
             vb.memory = 2048
         end
 
-        config.vm.provision "ansible" do |ansible|
+        site.vm.provision "ansible" do |ansible|
             ansible.playbook = "provisioning/site.yaml"
-            ansible.inventory_path = "ansible/hosts.vagrant"
+            ansible.inventory_path = "provisioning/hosts.vagrant"
+            ansible.limit = "all"
             ansible.extra_vars = { deploy_type: "vagrant" }
+            ansible.raw_arguments = ["-T 30"]
         end
     end
 
-    config.vm.define "db" do |site|
-        site.vm.network "private_network", ip: "10.64.7.101"
-        config.vm.provider "virtualbox" do |vb|
+    config.vm.define "db" do |db|
+        db.vm.network "private_network", ip: "10.64.7.101"
+        db.vm.provider "virtualbox" do |vb|
             vb.name = "db.thezombies"
             vb.memory = 1024
         end
 
-        config.vm.provision "ansible" do |ansible|
+        db.vm.provision "ansible" do |ansible|
             ansible.playbook = "provisioning/db.yaml"
-            ansible.inventory_path = "ansible/hosts.vagrant"
+            ansible.inventory_path = "provisioning/hosts.vagrant"
+            ansible.limit = "all"
             ansible.extra_vars = { deploy_type: "vagrant" }
+            ansible.raw_arguments = ["-T 30"]
         end
     end
 
