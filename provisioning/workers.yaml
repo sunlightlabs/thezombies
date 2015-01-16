@@ -1,19 +1,15 @@
 ---
-- name: Set up www.thezombies
-  hosts: thezombies-site
+- name: Set up workers.thezombies
+  hosts: thezombies-workers
   user: ubuntu
   sudo: yes
   roles:
     - role: common-roles/common
       extra_packages:
         - libpq-dev
-    - role: common-roles/django
+    - role: celery-django
       project_name: thezombies
       python_version: 2
       git_repositories:
           - repo: "git://github.com/sunlightlabs/thezombies.org.git"
             dir: thezombies
-      wsgi_module: thezombies.wsgi:application
-    - role: thezombies
-      project_name: thezombies
-

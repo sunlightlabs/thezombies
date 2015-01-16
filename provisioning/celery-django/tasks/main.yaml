@@ -1,0 +1,70 @@
+---
+# install python packages (using facts)
+- name: setup python 2 variables
+  set_fact: python_pkg=python python_dev_pkg=python-dev python_full_version=2.7
+  when: python_version == 2
+- name: setup python 3 variables
+  set_fact: python_pkg=python3 python_dev_pkg=python3-dev python_full_version=3.4
+  when: python_version == 3
+- name: install needed packages
+  apt: pkg={{item}} update_cache=yes
+  with_items:
+    - python-virtualenv
+    - "{{python_pkg}}"
+    - "{{python_dev_pkg}}"
+
+# celery dependencies
+- name: install celery dependencies (rabbitmq)
+  apt: name=rabbitmq-server update_cache=yes
+
+# create user directory
+- name: make project dir
+  file: path=/projects/{{project_name}} state=directory
+- name: add project user
+  user: name={{project_name}} home=/projects/{{project_name}} shell=/bin/bash state=present
+- name: chown user directory
+  file: path=/projects/{{project_name}} owner={{project_name}}
+- name: add user subdirectories
+  file: path=/projects/{{project_name}}/{{item}} owner={{project_name}} state=directory
+  with_items:
+    - logs
+    - data
+  sudo_user: "{{project_name}}"
+
+# setup code
+- name: create virtualenv
+  command: virtualenv -p {{python_pkg}} /projects/{{project_name}}/virt creates=/projects/{{project_name}}/virt
+  sudo_user: "{{project_name}}"
+  notify:
+    - restart celery-{{project_name}}
+- name: checkout project directories
+  git: repo={{item.repo}} dest=/projects/{{project_name}}/src/{{item.dir}}
+  sudo_user: "{{project_name}}"
+  with_items: git_repositories
+  notify:
+    - restart celery-{{project_name}}
+  when: deploy_type != "vagrant"
+- name: add checkouts to python path
+  lineinfile: dest=/projects/{{project_name}}/virt/lib/python{{python_full_version}}/site-packages/checkouts.pth create=yes state=present line=/projects/{{project_name}}/src/{{item.dir}}
+  with_items: git_repositories
+  sudo_user: "{{project_name}}"
+- name: install requirements
+  pip: requirements=/projects/{{project_name}}/src/{{item.dir}}/requirements.txt virtualenv=/projects/{{project_name}}/virt/
+  sudo_user: "{{project_name}}"
+  with_items: git_repositories
+
+# Write environment variables
+- name: write environment variables template
+  sudo_user: "{{project_name}}"
+  template: src=env.j2 dest=/projects/{{project_name}}/.env
+
+# Set up celery daemon
+- name: write celeryd template
+  template: src=celeryd.j2 dest=/etc/init.d/celery-{{project_name}} mode=u+rwx
+  notify:
+    - restart celery-{{project_name}}
+- name: write celeryd config
+  template: src=celeryd.config.j2 dest=/etc/default/celery-{{project_name}}
+  notify:
+    - restart celery-{{project_name}}
+

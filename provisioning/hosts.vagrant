@@ -1,2 +1,3 @@
 thezombies-site     ansible_ssh_host=10.64.7.100 ansible_ssh_user=vagrant
 thezombies-db       ansible_ssh_host=10.64.7.101 ansible_ssh_user=vagrant
+thezombies-workers  ansible_ssh_host=10.64.7.102 ansible_ssh_user=vagrant

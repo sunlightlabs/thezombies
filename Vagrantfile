@@ -14,7 +14,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         site.vm.provider "virtualbox" do |vb|
             vb.name = "www.thezombies"
-            vb.memory = 2048
         end
 
         site.vm.provision "ansible" do |ansible|
@@ -35,6 +34,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         db.vm.provision "ansible" do |ansible|
             ansible.playbook = "provisioning/db.yaml"
+            ansible.inventory_path = "provisioning/hosts.vagrant"
+            ansible.limit = "all"
+            ansible.extra_vars = { deploy_type: "vagrant" }
+            ansible.raw_arguments = ["-T 30"]
+        end
+    end
+
+    config.vm.define "workers" do |workers|
+        workers.vm.network "private_network", ip: "10.64.7.102"
+        workers.vm.synced_folder "./", "/projects/thezombies/src/thezombies"
+
+        workers.vm.provider "virtualbox" do |vb|
+            vb.name = "workers.thezombies"
+            vb.memory = 2048
+            vb.cpus = 2
+        end
+
+        workers.vm.provision "ansible" do |ansible|
+            ansible.playbook = "provisioning/workers.yaml"
             ansible.inventory_path = "provisioning/hosts.vagrant"
             ansible.limit = "all"
             ansible.extra_vars = { deploy_type: "vagrant" }

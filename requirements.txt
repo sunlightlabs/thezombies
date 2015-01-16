@@ -1,5 +1,6 @@
 attrdict
 ipython
+django-dotenv
 Gunicorn
 librabbitmq
 celery[eventlet]

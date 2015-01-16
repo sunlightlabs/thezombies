@@ -1,0 +1,3 @@
+---
+- name: restart celery-{{project_name}}
+  service: name=celery-{{project_name}} state=restarted

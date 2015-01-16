@@ -1,0 +1,4 @@
+---
+python_version: 2
+concurrency: 4
+worker_nodes: 3
