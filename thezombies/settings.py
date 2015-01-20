@@ -45,7 +45,11 @@ INSTALLED_APPS = (
 )
 
 if DEBUG:
-    INSTALLED_APPS += ('debug_toolbar',)
+    try:
+        import debug_toolbar
+        INSTALLED_APPS += ('debug_toolbar',)
+    except ImportError:
+        pass
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
