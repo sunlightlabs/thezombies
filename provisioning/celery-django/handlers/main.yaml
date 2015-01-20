@@ -1,3 +1,5 @@
 ---
 - name: restart celery-{{project_name}}
   service: name=celery-{{project_name}} state=restarted
+- name: restart rabbitmq
+  service: name=rabbitmq-server state=restarted
