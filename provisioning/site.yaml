@@ -5,6 +5,7 @@
   sudo: yes
   roles:
     - role: common-roles/common
+      hostname: thezombies.org
       extra_packages:
         - libpq-dev
     - role: common-roles/django
