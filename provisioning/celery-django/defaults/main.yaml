@@ -2,3 +2,7 @@
 python_version: 2
 concurrency: 4
 worker_nodes: 3
+django_environment:
+  DATABASE_URL: postgres://dcloud@localhost:5432/thezombies
+  SECRET_KEY: electric-piano
+  RABBITMQ_BIGWIG_RX_URL: amqp://localhost:5672//

@@ -27,3 +27,7 @@ CELERYD_GROUP="{{project_name}}"
 # If enabled pid and log directories will be created if missing,
 # and owned by the userid/group configured.
 CELERY_CREATE_DIRS=1
+
+{% for key, val in django_environment.items() %}
+export {{key}}={{val}}
+{% endfor %}

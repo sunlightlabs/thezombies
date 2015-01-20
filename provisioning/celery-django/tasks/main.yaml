@@ -58,11 +58,6 @@
   sudo_user: "{{project_name}}"
   with_items: git_repositories
 
-# Write environment variables
-- name: write environment variables template
-  sudo_user: "{{project_name}}"
-  template: src=env.j2 dest=/projects/{{project_name}}/.env
-
 # Set up celery daemon
 - name: write celeryd template
   template: src=celeryd.j2 dest=/etc/init.d/celery-{{project_name}} mode=u+rwx

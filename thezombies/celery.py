@@ -4,14 +4,6 @@ import os
 
 from celery import Celery
 
-try:
-    import dotenv
-    dotenv.read_dotenv('/projects/thezombies/.env')
-except ImportError:
-    pass
-except Exception:
-    pass
-
 from django.conf import settings
 
 # set the default Django settings module for the 'celery' program.
