@@ -6,3 +6,6 @@
 - name: migrate
   command: /projects/{{project_name}}/virt/bin/python manage.py migrate chdir=/projects/{{project_name}}/src/thezombies
   environment: django_environment
+- name: migrate
+  command: /projects/{{project_name}}/virt/bin/python manage.py loaddata ./thezombies/fixtures/agencies.json chdir=/projects/{{project_name}}/src/thezombies
+  environment: django_environment
