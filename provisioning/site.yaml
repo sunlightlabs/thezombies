@@ -12,7 +12,7 @@
       project_name: thezombies
       python_version: 2
       git_repositories:
-          - repo: "git://github.com/sunlightlabs/thezombies.org.git"
+          - repo: "git://github.com/sunlightlabs/thezombies.git"
             dir: thezombies
       wsgi_module: thezombies.wsgi:application
     - role: thezombies
