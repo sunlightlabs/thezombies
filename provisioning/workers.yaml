@@ -5,11 +5,15 @@
   sudo: yes
   roles:
     - role: common-roles/common
+      hostname: workers.thezombies.org
       extra_packages:
         - libpq-dev
+        - redis-server
     - role: celery-django
       project_name: thezombies
       python_version: 2
       git_repositories:
           - repo: "git://github.com/sunlightlabs/thezombies.git"
             dir: thezombies
+    - role: project-user
+      project_name: thezombies

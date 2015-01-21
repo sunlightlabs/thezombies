@@ -121,4 +121,4 @@ REQUEST_TIMEOUT = 60 * 3
 
 # Redis (caching backend)
 
-REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')

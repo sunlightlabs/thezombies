@@ -17,4 +17,6 @@
       wsgi_module: thezombies.wsgi:application
     - role: thezombies
       project_name: thezombies
+    - role: project-user
+      project_name: thezombies
 
