@@ -3,7 +3,7 @@ python_version: 2
 concurrency: 4
 worker_nodes: 3
 django_environment:
-  DATABASE_URL: postgres://thezombies:test@10.64.7.101:5432/thezombies
-  SECRET_KEY: electric-piano
-  BROKER_URL: amqp://10.64.7.102:5672//
-  CELERY_RESULT_BACKEND: amqp://10.64.7.102:5672//
+  DATABASE_URL: postgres://localhost:5432/thezombies
+  SECRET_KEY: analog-piano
+  BROKER_URL: amqp://localhost:5672//
+  CELERY_RESULT_BACKEND: amqp://localhost:5672//
