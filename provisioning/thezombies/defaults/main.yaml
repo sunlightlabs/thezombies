@@ -2,4 +2,5 @@
 django_environment:
   SECRET_KEY: electric-piano
   DATABASE_URL: postgres://thezombies:test@10.64.7.101:5432/thezombies
-  RABBITMQ_BIGWIG_RX_URL: http://10.64.7.102:5432//
+  BROKER_URL: amqp://10.64.7.102:5672//
+  CELERY_RESULT_BACKEND: amqp://10.64.7.102:5672//
