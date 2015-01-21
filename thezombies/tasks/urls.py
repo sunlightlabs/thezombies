@@ -74,7 +74,8 @@ def request_url(url, method='GET'):
     if corrected_url:
         try:
             logger.info('Requesting URL: {0}'.format(url))
-            resp = session.request(method.upper(), corrected_url, allow_redirects=True, timeout=REQUEST_TIMEOUT)
+            resp = session.request(method.upper(), corrected_url,
+                                   allow_redirects=True, timeout=REQUEST_TIMEOUT, verify=False)
         except requests.exceptions.Timeout as e:
             logger.warn('Requesting URL: {0}'.format(url))
             returnval.add_error(e)
