@@ -8,7 +8,7 @@
       hostname: workers.thezombies.org
       extra_packages:
         - libpq-dev
-        - redis-server
+    - role: redis-server
     - role: celery-django
       project_name: thezombies
       python_version: 2
