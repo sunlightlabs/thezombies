@@ -1,0 +1,5 @@
+---
+- name: add project user profile
+  template: src=profile.j2 dest=/projects/{{project_name}}/.profile
+- name: add project user bashrc
+  template: src=bashrc.j2 dest=/projects/{{project_name}}/.bashrc
