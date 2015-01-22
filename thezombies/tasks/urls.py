@@ -89,7 +89,10 @@ def request_url(url, method='GET'):
                 resp.raise_for_status()
             except Exception as e:
                 returnval.add_error(e)
-        returnval['response'] = response_to_dict(resp)
+            if isinstance(resp, requests.Response):
+                returnval['response'] = response_to_dict(resp)
+            else:
+                logger.error('session.request did not return a valid Response object')
     logger.info('Returning from request_url')
     return returnval
 

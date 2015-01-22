@@ -41,7 +41,7 @@ class ResultDict(dict):
         return self._errors
 
 
-def response_to_dict(resp):
+def response_to_dict(resp, history=True):
     """Rudimentary conversion of a requests.Response to a dictionary. Does not include values for all fields"""
     if isinstance(resp, Response):
         obj = dict.fromkeys([x for x in Response.__attrs__ if not x.startswith('_')], None)
@@ -52,7 +52,8 @@ def response_to_dict(resp):
         }
         obj['headers'] = dict(resp.headers)
         obj['content'] = resp.content
-        obj['history'] = [response_to_dict(r) for r in resp.history]
+        if history:
+            obj['history'] = [response_to_dict(r, history=False) for r in resp.history]
         obj['encoding'] = resp.encoding
         obj['status_code'] = resp.status_code
         obj['reason'] = resp.reason
