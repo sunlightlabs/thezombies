@@ -5,9 +5,6 @@ from django_atomic_celery import task
 
 import requests
 from requests.exceptions import InvalidURL
-import redis
-from cachecontrol import CacheControl
-from cachecontrol.caches import RedisCache
 
 from .utils import ResultDict, logger, response_to_dict
 from thezombies.models import URLInspection
@@ -20,9 +17,14 @@ except ImportError:
 
 REQUEST_TIMEOUT = getattr(settings, 'REQUEST_TIMEOUT', 60)
 
-pool = redis.ConnectionPool.from_url(settings.REDIS_URL)
-r = redis.Redis(connection_pool=pool)
-session = CacheControl(requests.Session(), cache=RedisCache(r), cache_etags=False)
+session = requests.Session()
+
+
+def open_url_stream(method, url):
+    """Open a URL for streaming. The file-like object will be available under resp.raw"""
+    resp = session.request(method.upper(), url, stream=True,
+                           allow_redirects=True, timeout=REQUEST_TIMEOUT, verify=False)
+    return resp
 
 
 @task
