@@ -6,7 +6,7 @@ from django_atomic_celery import task
 import ujson
 from jsonschema import Draft4Validator
 
-from .urls import request_url, get_or_create_inspection
+from .urls import inspect_url, get_or_create_inspection
 from .json import parse_json, json
 from .utils import logger, ResultDict
 from thezombies.models import (Probe, Audit, URLInspection)
@@ -16,53 +16,6 @@ SCHEMA_PATH = getattr(settings, 'DATA_CATALOG_SCHEMA_PATH', None)
 CATALOG_SCHEMA = ujson.load(open(SCHEMA_PATH, 'r')) if SCHEMA_PATH else None
 
 catalog_validator = Draft4Validator(CATALOG_SCHEMA)
-
-
-@task
-def inspect_data_catalog_item_url(taskarg):
-    """Task to check an accessURL from a data catalog,
-    using a HEAD request. Tracks and returns errors.
-
-    :param taskarg: A dictionary containing a url, and optionally a audit_id
-    """
-    returnval = ResultDict(taskarg)
-    url = taskarg.get('url', None)
-    url_type = taskarg.get('url_type', None)
-    audit_id = taskarg.get('audit_id', None)
-    prev_probe_id = taskarg.get('prev_probe_id', None)
-    probe = None
-    with transaction.atomic():
-        probe = Probe.objects.create(probe_type=Probe.URL_PROBE,
-                                     initial={'url': url, 'url_type': url_type},
-                                     previous_id=prev_probe_id, audit_id=audit_id)
-    if url:
-        result = request_url(url, 'HEAD')
-        response = result.pop('response', None)
-        returnval.errors.extend(result.errors)
-        probe.errors.extend(result.errors)
-        with transaction.atomic():
-            if response is not None:
-                inspection = URLInspection.objects.create_from_response(response, save_content=False)
-                if audit_id:
-                    inspection.audit_id = audit_id
-                inspection.probe = probe
-                inspection.save()
-                returnval['inspection_id'] = inspection.id
-            else:
-                timeout = result.get('timeout', False)
-                probe.result['timeout'] = timeout
-                inspection = URLInspection.objects.create(requested_url=url, timeout=timeout)
-                inspection.probe = probe
-                if audit_id:
-                    inspection.audit_id = audit_id
-                inspection.save()
-                returnval['inspection_id'] = inspection.id
-            probe.result.update(result)
-            probe.result['initial_url'] = url
-            probe.result['inspection_id'] = returnval['inspection_id']
-            probe.save()
-
-    return returnval
 
 
 @task
@@ -150,7 +103,7 @@ def inspect_data_catalog_item(taskarg):
                         collected_urls.add(url)
                         tasks.append(task_dict)
                 else:
-                    logger.error('Unable to make a task dictionary to pass to inspect_data_catalog_item_url')
+                    logger.error('Unable to make a task dictionary to pass to inspect_url')
             else:
                 logger.info("No '{0}' in {1}.".format(field, item_name))
         return tasks
@@ -195,7 +148,7 @@ def inspect_data_catalog_item(taskarg):
             probe.result['total_url_count'] = len(all_task_args)
             probe.result['unique_url_count'] = len(unique_urls)
             wrapped_args_tasks = [(t,) for t in unique_tasks]
-            item_url_grp = inspect_data_catalog_item_url.chunks(wrapped_args_tasks, 4).group()
+            item_url_grp = inspect_url.chunks(wrapped_args_tasks, 4).group()
             item_url_grp.skew(start=1, stop=10)()
         else:
             with transaction.atomic():

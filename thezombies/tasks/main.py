@@ -152,7 +152,7 @@ def validate_data_catalogs():
 def crawl_agency_datasets(agency_id):
     """Task that crawl the datasets from an agency data catalog.
     Runs create_data_crawl_audit, which spawns inspect_data_catalog_item tasks which in turn spawns
-    inspect_data_catalog_item_url tasks.
+    inspect_url tasks.
 
     :param agency_id: Database id of the agency whose catalog should be crawled.
 

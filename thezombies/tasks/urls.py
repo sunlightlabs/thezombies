@@ -7,7 +7,7 @@ import requests
 from requests.exceptions import InvalidURL
 
 from .utils import ResultDict, logger, response_to_dict
-from thezombies.models import URLInspection
+from thezombies.models import URLInspection, Probe
 
 try:
     from urllib.parse import urlparse, urlunparse
@@ -96,6 +96,52 @@ def request_url(url, method='GET'):
             else:
                 logger.error('session.request did not return a valid Response object')
     logger.info('Returning from request_url')
+    return returnval
+
+
+@task
+def inspect_url(taskarg):
+    """Task to check a URL and store some information about it. Tracks and returns errors.
+
+    :param taskarg: A dictionary containing a url, and optionally a audit_id
+    """
+    returnval = ResultDict(taskarg)
+    url = taskarg.get('url', None)
+    url_type = taskarg.get('url_type', None)
+    audit_id = taskarg.get('audit_id', None)
+    prev_probe_id = taskarg.get('prev_probe_id', None)
+    probe = None
+    with transaction.atomic():
+        probe = Probe.objects.create(probe_type=Probe.URL_PROBE,
+                                     initial={'url': url, 'url_type': url_type},
+                                     previous_id=prev_probe_id, audit_id=audit_id)
+    if url:
+        result = request_url(url, 'HEAD')
+        response = result.pop('response', None)
+        returnval.errors.extend(result.errors)
+        probe.errors.extend(result.errors)
+        with transaction.atomic():
+            if response is not None:
+                inspection = URLInspection.objects.create_from_response(response, save_content=False)
+                if audit_id:
+                    inspection.audit_id = audit_id
+                inspection.probe = probe
+                inspection.save()
+                returnval['inspection_id'] = inspection.id
+            else:
+                timeout = result.get('timeout', False)
+                probe.result['timeout'] = timeout
+                inspection = URLInspection.objects.create(requested_url=url, timeout=timeout)
+                inspection.probe = probe
+                if audit_id:
+                    inspection.audit_id = audit_id
+                inspection.save()
+                returnval['inspection_id'] = inspection.id
+            probe.result.update(result)
+            probe.result['initial_url'] = url
+            probe.result['inspection_id'] = returnval['inspection_id']
+            probe.save()
+
     return returnval
 
 
