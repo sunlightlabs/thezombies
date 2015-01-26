@@ -5,6 +5,7 @@
   sudo: yes
   roles:
       - role: common-roles/common
+        hostname: db.thezombies.org
       - role: common-roles/ebs
         ebs_path: /var/lib/postgresql
         device_letter: g
