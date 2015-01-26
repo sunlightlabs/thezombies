@@ -3,6 +3,9 @@
   hosts: thezombies-workers
   user: ubuntu
   sudo: yes
+  vars:
+    concurrency: 2
+    worker_nodes: 6
   roles:
     - role: common-roles/common
       hostname: workers.thezombies.org
