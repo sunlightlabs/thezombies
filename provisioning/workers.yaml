@@ -11,6 +11,7 @@
       hostname: workers.thezombies.org
       extra_packages:
         - libpq-dev
+        - yajl-tools
     - role: redis-server
     - role: celery-django
       project_name: thezombies

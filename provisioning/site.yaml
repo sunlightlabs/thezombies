@@ -8,6 +8,7 @@
       hostname: thezombies.org
       extra_packages:
         - libpq-dev
+        - yajl-tools
     - role: common-roles/django
       project_name: thezombies
       python_version: 2

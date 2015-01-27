@@ -9,7 +9,7 @@ requests
 redis
 CacheControl
 simplejson
-ujson
+ijson
 jsonschema
 psycopg2
 pytz
