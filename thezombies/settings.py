@@ -113,7 +113,14 @@ MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 
 # JSON Schema
 
-DATA_CATALOG_SCHEMA_PATH = os.path.join(BASE_DIR, 'schema/1_0_final/catalog.json')
+SCHEMA_DIR = os.path.join(BASE_DIR, 'schema/')
+
+JSON_SCHEMAS = {
+    'CATALOG_1.0': '1_0_final/catalog.json',
+    'DATASET_1.0': '1_0_final/single_entry.json',
+    'CATALOG_1.1': '1_1_draft/catalog.json',
+    'DATASET_1.1': '1_1_draft/dataset.json',
+}
 
 # Request timeout (seconds)
 

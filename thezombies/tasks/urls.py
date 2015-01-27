@@ -20,8 +20,13 @@ REQUEST_TIMEOUT = getattr(settings, 'REQUEST_TIMEOUT', 60)
 session = requests.Session()
 
 
-def open_url_stream(method, url):
-    """Open a URL for streaming. The file-like object will be available under resp.raw"""
+def open_streaming_response(method, url):
+    """
+    Open a URL for streaming. Returns a requests.Response.
+    The file-like object will be available under resp.raw.
+    **Don't forget to close the response object!**
+    http://docs.python-requests.org/en/latest/user/advanced/#body-content-workflow
+    """
     resp = session.request(method.upper(), url, stream=True,
                            allow_redirects=True, timeout=REQUEST_TIMEOUT, verify=False)
     return resp

@@ -1,14 +1,13 @@
 from __future__ import absolute_import
-from celery import chain, group
 from django_atomic_celery import task
 from django.db import transaction, DatabaseError
 
 from .utils import error_handler, ResultDict, logger
-from .urls import request_url
-from .json import parse_json
-from .catalog import (validate_json_catalog, create_data_crawl_audit)
+# from .urls import request_url
+# from .json import parse_json
+# from .catalog import (validate_json_catalog, create_data_crawl_audit)
 from thezombies.models import (Probe, Audit, URLInspection, Agency)
-from requests import Response
+# from requests import Response
 
 
 @task
@@ -76,76 +75,6 @@ def finalize_audit(taskarg):
             raise e
     else:
         logger.warn('Unable to finalize audit. No audit_id provided!')
-
-
-@task
-def audit_for_agency_url(agency_id, url, audit_type=Audit.GENERIC_AUDIT):
-    """Task to save a basic audit given an agency_id and a url.
-
-    :param agency_id: Database id of the agency to create a audit for.
-    :param url: URL to audit on.
-    :param audit_type: Optional audit type (as provided by Audit model)
-
-    """
-    probe = None
-    with transaction.atomic():
-        probe = Probe.objects.create(initial={'agency_id': agency_id, 'url': url}, probe_type=Probe.URL_PROBE)
-    result = request_url((url))
-    returnval = ResultDict(result)
-    if probe:
-        returnval['probe_id'] = probe.id
-    response = result.get('response', None)
-    inspection = None
-    with transaction.atomic():
-        if response is not None:
-            inspection = URLInspection.objects.create_from_response(response)
-            inspection.probe = probe
-            probe.result['status_code'] = response.get('status_code')
-            inspection.save()
-        audit = Audit.objects.create(agency_id=agency_id)
-        returnval['audit_id'] = audit.id
-        audit.audit_type = audit_type
-        audit.probe_set.add(probe)
-        audit.save()
-        if inspection:
-            returnval['inspection_id'] = inspection.id
-            probe.result['inspection_id'] = inspection.id
-        probe.errors.extend(returnval.errors)
-        probe.save()
-    if response and isinstance(response, Response) and not response.ok:
-            # If the inspection is not okay, raise an error so we can handle that as an error
-            logger.warn(u'Received non-okay response for requested url: {0}'.format(url))
-            response.raise_for_status()
-    return returnval
-
-
-@task
-def validate_agency_catalog(agency_id):
-    try:
-        agency = Agency.objects.get(id=agency_id)
-        task_chain = chain(
-            audit_for_agency_url.subtask((agency.id, agency.data_json_url, Audit.DATA_CATALOG_VALIDATION),
-                                         options={'link_error': error_handler.s()}),
-            parse_json_from_inspection.s(),
-            validate_json_catalog.s(),
-            finalize_audit.s()
-        )
-        return task_chain()
-    except Agency.DoesNotExist as e:
-        raise e
-
-
-@task
-def validate_data_catalogs():
-    agencies = Agency.objects.all()
-    groupchain = group([chain(
-        audit_for_agency_url.subtask((agency.id, agency.data_json_url, Audit.DATA_CATALOG_VALIDATION),
-                                     options={'link_error': error_handler.s()}),
-        parse_json_from_inspection.s(),
-        validate_json_catalog.s(),
-        finalize_audit.s()
-    ) for agency in agencies])
-    return groupchain.skew(start=1, stop=20)()
 
 
 @task
