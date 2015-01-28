@@ -116,10 +116,22 @@ MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 SCHEMA_DIR = os.path.join(BASE_DIR, 'schema/')
 
 JSON_SCHEMAS = {
-    'CATALOG_1.0': '1_0_final/catalog.json',
-    'DATASET_1.0': '1_0_final/single_entry.json',
-    'CATALOG_1.1': '1_1_draft/catalog.json',
-    'DATASET_1.1': '1_1_draft/dataset.json',
+    'CATALOG_1.0': {
+        'schema': '1_0_final/catalog.json',
+        'dataset_prefix': None
+    },
+    'DATASET_1.0': {
+        'schema': '1_0_final/single_entry.json',
+        'dataset_prefix': 'item'  # item is keyword for an item in an array
+    },
+    'CATALOG_1.1': {
+        'schema': '1_1_draft/catalog.json',
+        'dataset_prefix': None
+    },
+    'DATASET_1.1': {
+        'schema': '1_1_draft/dataset.json',
+        'dataset_prefix': 'dataset.item'
+    }
 }
 
 # Request timeout (seconds)

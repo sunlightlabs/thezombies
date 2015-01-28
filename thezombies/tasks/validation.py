@@ -1,14 +1,16 @@
 from __future__ import absolute_import
 from django_atomic_celery import task
+from celery import group, chunks
 from django.conf import settings
 from django.db import transaction, DatabaseError
 from itertools import islice
 import os.path
+from contextlib import closing
+
 try:
     import simplejson as json
 except ImportError:
     import json
-
 from ijson.common import (JSONError, IncompleteJSONError)
 try:
     import ijson.backends.yajl2 as ijson
@@ -24,6 +26,10 @@ SCHEMA_ERROR_LIMIT = 100
 SCHEMA_DIR = getattr(settings, 'SCHEMA_DIR', None)
 JSON_SCHEMAS = getattr(settings, 'JSON_SCHEMAS', None)
 
+DATASET_DESCRIPTIVE_KEYS = ('title', 'identifier', 'publisher', 'accessLevel')
+
+CATALOG_DATASETS_CHUNK_SIZE = 500
+
 
 @task
 def validate_json_object(taskarg):
@@ -32,7 +38,7 @@ def validate_json_object(taskarg):
     """
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
-    probe, prev_probe = None
+    probe = prev_probe = None
     is_valid = False
     json_object = taskarg.get('json_object', None)
     json_schema_name = taskarg.get('json_schema_name', None)
@@ -53,6 +59,7 @@ def validate_json_object(taskarg):
             except DatabaseError as e:
                 returnval.add_error(e)
                 returnval['success'] = False
+                logger.exception(e)
                 logger.error('Error fetching previous JSON probe in validate_json_object')
 
         # Create a validation probe to record results of validation attempt
@@ -61,6 +68,7 @@ def validate_json_object(taskarg):
                 probe = Probe.objects.create(probe_type=Probe.VALIDATION_PROBE)
         except DatabaseError as e:
             returnval.add_error(e)
+            logger.exception(e)
             logger.error('Error creating JSON probe in validate_json_object')
         if probe:
             returnval['probe_id'] = probe.id
@@ -70,7 +78,8 @@ def validate_json_object(taskarg):
                 probe.audit_id = audit_id
 
         # Build schema path, load schema json, and create validator
-        schema_path = os.path.join(SCHEMA_DIR, JSON_SCHEMAS.get(json_schema_name, ''))
+        schema_info = JSON_SCHEMAS.get(json_schema_name)
+        schema_path = os.path.join(SCHEMA_DIR, schema_info.get('schema'))
         if os.path.exists(schema_path):
             json_schema = json.load(open(schema_path, 'r'))
             validator = Draft4Validator(json_schema)
@@ -79,7 +88,7 @@ def validate_json_object(taskarg):
                 try:
                     is_valid = validator.is_valid(json_object)
                 except (JSONError, IncompleteJSONError) as e:
-                    logger.info(u'Encountered an error with a json object')
+                    logger.exception(e)
                     returnval.add_error(e)
                 if not is_valid:
                     # Save up to SCHEMA_ERROR_LIMIT errors from schema validation
@@ -88,13 +97,10 @@ def validate_json_object(taskarg):
                         returnval.add_error(e)
             if probe:
                 # Record results of validation into probe
+                probe.result['object_position'] = taskarg.get('object_position', None)
+                probe.result['object_identifier'] = json_object.get('identifier', None)
+                probe.result['object_info'] = {key: json_object.get(key, None) for key in DATASET_DESCRIPTIVE_KEYS}
                 probe.result['is_valid_schema_instance'] = is_valid
-                json_string = None
-                try:
-                    json_string = json.dumps(json_object)
-                    probe.result['json_string'] = json_string
-                except Exception:
-                    logger.error('Unable to dump json object for saving in probe')
                 # Record errors and save probe
                 with transaction.atomic():
                     probe.errors.extend(returnval.errors)
@@ -111,35 +117,48 @@ def validate_json_object(taskarg):
 
 @task
 def validate_catalog_datasets(agency_id, schema='DATASET_1.0'):
-    agency, audit, resp = None
+    agency = audit = resp = jobs = None
     with transaction.atomic():
         try:
             # Get agency
             agency = Agency.objects.get(id=agency_id)
 
         except Agency.DoesNotExist as e:
+            logger.exception(e)
             raise e
 
+    # Get schema info (schema path, dataset_prefix)
+    schema_info = JSON_SCHEMAS.get(schema, None)
+
     # TODO: Handle URL opening errors
-    # TODO: Create an audit object.
+    # ConnectionError
+    # HTTPError
     with transaction.atomic():
         audit = Audit.objects.create(agency_id=agency_id, audit_type=Audit.DATA_CATALOG_VALIDATION)
-    resp = open_streaming_response('GET', agency.data_json_url)
-    objects = ijson.items(resp.raw, 'items')
 
-    default_args = {
-        'audit_id': audit.id,
-        'json_schema': schema
-    }
+    try:
+        with closing(open_streaming_response('GET', agency.data_json_url)) as resp:
+            # Use the schema dataset_prefix to get an iterator for the items to be validated.
+            objects = ijson.items(resp.raw, schema_info.get('dataset_prefix', ''))
 
-    for o in objects:
-        args = default_args.copy()
-        args.update({'json_object': o})
-        validate_json_object.delay(args)
+            default_args = {'json_schema_name': schema, 'source_url': agency.data_json_url}
+            if audit:
+                default_args.update({'audit_id': audit.id})
 
-    # Close response
-    if resp:
-        resp.close()
+            job_list = []
+            for num, obj in enumerate(objects):
+                args = default_args.copy()
+                args.update({'json_object': obj, 'object_position': num})
+                job_list.append(validate_json_object.s((args)))
+
+            jobs = chunks(job_list, CATALOG_DATASETS_CHUNK_SIZE).group()
+    except Exception as e:
+        logger.exception(e)
+
+    if jobs:
+        return jobs.skew(stop=20, step=2)()
+    else:
+        return None
 
 
 # @task

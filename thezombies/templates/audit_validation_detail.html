@@ -9,12 +9,21 @@
     <section>
         {% for probe in object.probe_set.all %}
             <h4> {{ probe.get_probe_type_display }} </h4>
-            {% if probe.probe_type == probe.VALIDATION_PROBE %}
-                <p>Data catalog is valid: <strong>{{ probe.result.is_valid_data_catalog|yesno|title }}</strong></p>
-            {% endif %}
-            {% if probe.probe_type == probe.JSON_PROBE %}
-                <p>Is JSON: <strong>{{ probe.result.is_json|yesno|title }}</strong></p>
-            {% endif %}
+            <table>
+                <caption>Probe results</caption>
+                <thead>
+                    <tr>{% for key, value in probe.result.items %}{% ifnotequal key 'object_info' %}
+                        <th>{{ key|title }}</th>{% endifnotequal %}{% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>{% for key, value in probe.result.items %}{% ifnotequal key 'object_info' %}
+                        <td>
+                        {{ value|title }}
+                        </td>{% endifnotequal %}{% endfor %}
+                    </tr>
+                </tbody>
+            </table>
             {% if probe.probe_type == probe.URL_PROBE %}
             <p>{{ probe.initial.url }} &rarr; {{ probe.result.status_code }}</p>
             {% endif %}
