@@ -24,14 +24,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
     end
 
+    config.vm.define "broker" do |broker|
+        broker.vm.network "private_network", ip: "10.64.7.103"
+        broker.vm.synced_folder "./", "/projects/thezombies/src/thezombies"
+
+        broker.vm.provider "virtualbox" do |vb|
+            vb.name = "broker.thezombies"
+            vb.memory = 1024
+        end
+
+        broker.vm.provision "ansible" do |ansible|
+            ansible.playbook = "provisioning/broker.yaml"
+            ansible.inventory_path = "provisioning/hosts.vagrant"
+            ansible.limit = "all"
+            ansible.extra_vars = { deploy_type: "vagrant" }
+            ansible.raw_arguments = ["-T 30"]
+        end
+    end
+
     config.vm.define "workers" do |workers|
         workers.vm.network "private_network", ip: "10.64.7.102"
         workers.vm.synced_folder "./", "/projects/thezombies/src/thezombies"
 
         workers.vm.provider "virtualbox" do |vb|
             vb.name = "workers.thezombies"
-            vb.memory = 2048
-            vb.cpus = 2
+            vb.memory = 1024
+            vb.cpus = 4
         end
 
         workers.vm.provision "ansible" do |ansible|

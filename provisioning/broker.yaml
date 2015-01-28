@@ -1,0 +1,9 @@
+---
+- name: Set up broker.thezombies
+  hosts: thezombies-broker
+  user: ubuntu
+  sudo: yes
+  roles:
+    - role: common-roles/common
+      hostname: broker.thezombies.org
+    - role: rabbitmq-server

@@ -5,14 +5,13 @@
   sudo: yes
   vars:
     concurrency: 2
-    worker_nodes: 6
+    worker_nodes: 4
   roles:
     - role: common-roles/common
       hostname: workers.thezombies.org
       extra_packages:
         - libpq-dev
         - yajl-tools
-    - role: redis-server
     - role: celery-django
       project_name: thezombies
       python_version: 2
