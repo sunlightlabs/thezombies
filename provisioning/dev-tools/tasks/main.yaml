@@ -1,0 +1,4 @@
+- name: install developer helper packages
+  apt: pkg={{item}} update_cache=yes
+  with_items:
+    - htop

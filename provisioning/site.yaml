@@ -20,4 +20,5 @@
       project_name: thezombies
     - role: project-user
       project_name: thezombies
+    - { role: dev-tools, when: deploy_type == 'vagrant' }
 

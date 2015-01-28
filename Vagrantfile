@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         db.vm.network "private_network", ip: "10.64.7.101"
         db.vm.provider "virtualbox" do |vb|
             vb.name = "db.thezombies"
-            vb.memory = 1024
+            vb.memory = 768
         end
 
         db.vm.provision "ansible" do |ansible|
@@ -48,7 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         workers.vm.provider "virtualbox" do |vb|
             vb.name = "workers.thezombies"
-            vb.memory = 1024
+            vb.memory = 2048
             vb.cpus = 4
         end
 

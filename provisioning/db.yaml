@@ -4,14 +4,15 @@
   user: ubuntu
   sudo: yes
   roles:
-      - role: common-roles/common
-        hostname: db.thezombies.org
-      - role: common-roles/ebs
-        ebs_path: /var/lib/postgresql
-        device_letter: g
-        volume_size: 50
-      - role: common-roles/postgres
-        dbuser: "thezombies"
-        dbpassword: "test"
-        dbname: "thezombies"
-        extensions: ["hstore"]
+    - role: common-roles/common
+      hostname: db.thezombies.org
+    - role: common-roles/ebs
+      ebs_path: /var/lib/postgresql
+      device_letter: g
+      volume_size: 50
+    - role: common-roles/postgres
+      dbuser: "thezombies"
+      dbpassword: "test"
+      dbname: "thezombies"
+      extensions: ["hstore"]
+    - { role: dev-tools, when: deploy_type == 'vagrant' }

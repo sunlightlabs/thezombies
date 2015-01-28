@@ -7,3 +7,5 @@
     - role: common-roles/common
       hostname: broker.thezombies.org
     - role: rabbitmq-server
+    - { role: dev-tools, when: deploy_type == 'vagrant' }
+
