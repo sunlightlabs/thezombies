@@ -28,6 +28,11 @@ CELERYD_GROUP="{{project_name}}"
 # and owned by the userid/group configured.
 CELERY_CREATE_DIRS=1
 
+# Limit number of tasks a child runs before being reloaded
+{% if celeryd_max_tasks_per_child %}
+CELERYD_MAX_TASKS_PER_CHILD={{ celeryd_max_tasks_per_child }}
+{% endif %}
+
 {% for key, val in django_environment.items() %}
 export {{key}}={{val}}
 {% endfor %}
