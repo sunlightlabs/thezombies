@@ -5,7 +5,13 @@ from django_atomic_celery import task
 from celery.utils.log import get_task_logger
 from requests.models import Response
 
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
+import ssl
+
 logger = get_task_logger(__name__)
+
+COUNTDOWN_MODULO = 21
 
 
 class ResultDict(dict):
@@ -68,3 +74,13 @@ def error_handler(uuid):
     result = AsyncResult(uuid)
     exc = result.get(propagate=False)
     logger.warn(u'Task {0} raised exception: {1!r}\n{2!r}'.format(uuid, exc, result.traceback))
+
+
+class InsecureHttpAdapter(HTTPAdapter):
+    """"Transport adapter" that allows us to use TLSv1. Such a bad idea, but necessary."""
+
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = PoolManager(num_pools=connections,
+                                       maxsize=maxsize,
+                                       block=block,
+                                       ssl_version=ssl.PROTOCOL_TLSv1)

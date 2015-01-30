@@ -1,5 +1,4 @@
 from __future__ import absolute_import
 
-from .main import crawl_agency_datasets
-from .catalog import create_data_crawl_audit
+from .crawl import crawl_agency_catalog
 from .validation import validate_catalog_datasets

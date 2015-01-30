@@ -17,9 +17,10 @@ except ImportError:
     import ijson
 from jsonschema import Draft4Validator
 
-from .utils import logger, ResultDict
+from .utils import logger, ResultDict, COUNTDOWN_MODULO
 from .urls import open_streaming_response
 from thezombies.models import (Probe, Audit, Agency)
+
 
 SCHEMA_ERROR_LIMIT = 100
 SCHEMA_DIR = getattr(settings, 'SCHEMA_DIR', None)
@@ -27,7 +28,20 @@ JSON_SCHEMAS = getattr(settings, 'JSON_SCHEMAS', None)
 
 DATASET_DESCRIPTIVE_KEYS = ('title', 'identifier', 'publisher', 'accessLevel')
 
-COUNTDOWN_MODULO = 21
+
+def get_schema_prefix(schema):
+    schema_info = JSON_SCHEMAS.get(schema, None)
+    return schema_info.get('dataset_prefix', None)
+
+
+def get_schema_object(schema):
+    # Get schema info (schema path, dataset_prefix)
+    schema_info = JSON_SCHEMAS.get(schema, None)
+    schema_path = os.path.join(SCHEMA_DIR, schema_info.get('schema'))
+    if os.path.exists(schema_path):
+        return json.load(open(schema_path, 'r'))
+    else:
+        return None
 
 
 @task
@@ -37,7 +51,7 @@ def validate_json_object(taskarg):
     """
     if isinstance(taskarg, tuple):
         taskarg = taskarg[0]
-    probe = prev_probe = None
+    probe = None
     is_valid = False
     json_object = taskarg.get('json_object', None)
     json_schema_name = taskarg.get('json_schema_name', None)
@@ -72,11 +86,9 @@ def validate_json_object(taskarg):
                 probe.audit_id = audit_id
 
         # Build schema path, load schema json, and create validator
-        schema_info = JSON_SCHEMAS.get(json_schema_name)
-        schema_path = os.path.join(SCHEMA_DIR, schema_info.get('schema'))
-        if os.path.exists(schema_path):
-            json_schema = json.load(open(schema_path, 'r'))
-            validator = Draft4Validator(json_schema)
+        schema_object = get_schema_object(json_schema_name)
+        if schema_object:
+            validator = Draft4Validator(schema_object)
 
             if json_object and validator:
                 try:
@@ -124,9 +136,6 @@ def validate_catalog_datasets(agency_id, schema='DATASET_1.0'):
     # Get schema info (schema path, dataset_prefix)
     schema_info = JSON_SCHEMAS.get(schema, None)
 
-    # TODO: Handle URL opening errors
-    # ConnectionError
-    # HTTPError
     with transaction.atomic():
         audit = Audit.objects.create(agency_id=agency_id, audit_type=Audit.DATA_CATALOG_VALIDATION)
 
@@ -151,15 +160,3 @@ def validate_catalog_datasets(agency_id, schema='DATASET_1.0'):
         logger.exception(e)
 
     return tasks
-
-# @task
-# def validate_data_catalogs():
-#     agencies = Agency.objects.all()
-#     groupchain = group([chain(
-#         audit_for_agency_url.subtask((agency.id, agency.data_json_url, Audit.DATA_CATALOG_VALIDATION),
-#                                      options={'link_error': error_handler.s()}),
-#         parse_json_from_inspection.s(),
-#         # validate_json_catalog.s(),
-#         finalize_audit.s()
-#     ) for agency in agencies])
-#     return groupchain.skew(start=1, stop=20)()

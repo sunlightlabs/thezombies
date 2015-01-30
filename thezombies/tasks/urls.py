@@ -6,7 +6,7 @@ from django_atomic_celery import task
 import requests
 from requests.exceptions import InvalidURL
 
-from .utils import ResultDict, logger, response_to_dict
+from .utils import (ResultDict, logger, response_to_dict, InsecureHttpAdapter)
 from thezombies.models import URLInspection, Probe
 
 try:
@@ -18,6 +18,7 @@ except ImportError:
 REQUEST_TIMEOUT = getattr(settings, 'REQUEST_TIMEOUT', 60)
 
 session = requests.Session()
+session.mount('https://www.sba.gov/', InsecureHttpAdapter())
 
 
 def open_streaming_response(method, url):
@@ -27,8 +28,12 @@ def open_streaming_response(method, url):
     **Don't forget to close the response object!**
     http://docs.python-requests.org/en/latest/user/advanced/#body-content-workflow
     """
-    resp = session.request(method.upper(), url, stream=True,
-                           allow_redirects=True, timeout=REQUEST_TIMEOUT, verify=False)
+    try:
+        resp = session.request(method.upper(), url, stream=True,
+                               allow_redirects=True, timeout=REQUEST_TIMEOUT, verify=False)
+    except Exception as e:
+        logger.exception(e)
+        return None
     return resp
 
 
