@@ -99,10 +99,8 @@ class AuditView(SingleObjectMixin, ListView):
         return context
 
     def get_queryset(self):
-        url_inspections = URLInspection.objects.filter(probe__in=self.object.probe_set.all())
-        # url_inspections.prefetch_related('content__content_type').defer('content__binary')
-        # url_inspections.defer('probe__initial', 'probe__result')
-        return url_inspections
+        # Paginate probe objects
+        return self.object.probe_set.order_by('id')
 
     def get_template_names(self):
         template_names = super(AuditView, self).get_template_names()
