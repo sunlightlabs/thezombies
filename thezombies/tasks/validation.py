@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from django_atomic_celery import task
-from celery import group, chunks
 from django.conf import settings
 from django.db import transaction, DatabaseError
 from itertools import islice
@@ -28,7 +27,7 @@ JSON_SCHEMAS = getattr(settings, 'JSON_SCHEMAS', None)
 
 DATASET_DESCRIPTIVE_KEYS = ('title', 'identifier', 'publisher', 'accessLevel')
 
-CATALOG_DATASETS_CHUNK_SIZE = 500
+COUNTDOWN_MODULO = 21
 
 
 @task
@@ -51,16 +50,6 @@ def validate_json_object(taskarg):
             logger.info('Validating JSON object for audit {0}'.format(audit_id))
         else:
             logger.warning(u'validate_json_object running without an audit_id')
-        # May be in a chain of probes, typically when validating an entire catalog, not one entry
-        if prev_probe_id:
-            try:
-                with transaction.atomic():
-                    prev_probe = Probe.objects.get(id=prev_probe_id)
-            except DatabaseError as e:
-                returnval.add_error(e)
-                returnval['success'] = False
-                logger.exception(e)
-                logger.error('Error fetching previous JSON probe in validate_json_object')
 
         # Create a validation probe to record results of validation attempt
         try:
@@ -72,8 +61,13 @@ def validate_json_object(taskarg):
             logger.error('Error creating JSON probe in validate_json_object')
         if probe:
             returnval['probe_id'] = probe.id
-            if prev_probe:
-                probe.previous_id = prev_probe_id
+        # May be in a chain of probes, typically when validating an entire catalog, not one entry
+            if prev_probe_id:
+                prev_probe_exists = False
+                with transaction.atomic():
+                    prev_probe_exists = Probe.objects.filter(id=prev_probe_id).exists()
+                if prev_probe_exists:
+                    probe.previous_id = prev_probe_id
             if audit_id:
                 probe.audit_id = audit_id
 
@@ -117,7 +111,7 @@ def validate_json_object(taskarg):
 
 @task
 def validate_catalog_datasets(agency_id, schema='DATASET_1.0'):
-    agency = audit = resp = jobs = None
+    agency = audit = tasks = resp = None
     with transaction.atomic():
         try:
             # Get agency
@@ -145,21 +139,18 @@ def validate_catalog_datasets(agency_id, schema='DATASET_1.0'):
             if audit:
                 default_args.update({'audit_id': audit.id})
 
-            job_list = []
+            # We're going to spin off async tas
+            tasks = []
             for num, obj in enumerate(objects):
                 args = default_args.copy()
                 args.update({'json_object': obj, 'object_position': num})
-                job_list.append(validate_json_object.s((args)))
+                task = validate_json_object.apply_async(args=(args,), countdown=(num % COUNTDOWN_MODULO))
+                tasks.append(task)
 
-            jobs = chunks(job_list, CATALOG_DATASETS_CHUNK_SIZE).group()
     except Exception as e:
         logger.exception(e)
 
-    if jobs:
-        return jobs.skew(stop=20, step=2)()
-    else:
-        return None
-
+    return tasks
 
 # @task
 # def validate_data_catalogs():
