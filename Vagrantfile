@@ -24,17 +24,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
     end
 
-    config.vm.define "broker" do |broker|
-        broker.vm.network "private_network", ip: "10.64.7.103"
-        broker.vm.synced_folder "./", "/projects/thezombies/src/thezombies"
+    config.vm.define "beehive" do |beehive|
+        beehive.vm.network "private_network", ip: "10.64.7.103"
+        beehive.vm.synced_folder "./", "/projects/thezombies/src/thezombies"
 
-        broker.vm.provider "virtualbox" do |vb|
-            vb.name = "broker.thezombies"
+        beehive.vm.provider "virtualbox" do |vb|
+            vb.name = "beehive.thezombies"
             vb.memory = 1024
         end
 
-        broker.vm.provision "ansible" do |ansible|
-            ansible.playbook = "provisioning/broker.yaml"
+        beehive.vm.provision "ansible" do |ansible|
+            ansible.playbook = "provisioning/beehive.yaml"
             ansible.inventory_path = "provisioning/hosts.vagrant"
             ansible.limit = "all"
             ansible.extra_vars = { deploy_type: "vagrant" }
@@ -48,7 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         workers.vm.provider "virtualbox" do |vb|
             vb.name = "workers.thezombies"
-            vb.memory = 2048
+            vb.memory = 1024
             vb.cpus = 4
         end
 

@@ -1,11 +1,12 @@
 ---
-- name: Set up broker.thezombies
-  hosts: thezombies-broker
+- name: Set up beehive.thezombies
+  hosts: thezombies-beehive
   user: ubuntu
   sudo: yes
   roles:
     - role: common-roles/common
-      hostname: broker.thezombies.org
+      hostname: beehive.thezombies.org
+    - role: redis-server
     - role: rabbitmq-server
     - { role: dev-tools, when: deploy_type == 'vagrant' }
 
