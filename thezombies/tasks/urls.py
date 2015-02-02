@@ -38,7 +38,7 @@ def open_streaming_response(method, url):
 
 
 @task
-def check_and_correct_url(url, method='GET'):
+def check_and_correct_url(url, method='GET', keep_fragments=False):
     """Check a url for issues, record exceptions, and attempt to correct the url.
 
     :param url: URL to check and correct
@@ -58,7 +58,7 @@ def check_and_correct_url(url, method='GET'):
         if netloc is '':
             raise InvalidURL('Invalid network location')
 
-        corrected_url = urlunparse((scheme, netloc, path, params, query, fragments))
+        corrected_url = urlunparse((scheme, netloc, path, params, query, fragments if keep_fragments else None))
         returnval['valid_url'] = True
         returnval['corrected_url'] = corrected_url
     except Exception as e:
