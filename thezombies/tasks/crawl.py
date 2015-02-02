@@ -10,7 +10,7 @@ except ImportError:
     import json
 
 from .validation import get_schema_prefix, ijson
-from .urls import inspect_url, open_streaming_response
+from .urls import inspect_url, remove_url_fragments, open_streaming_response
 from .utils import logger, ResultDict, COUNTDOWN_MODULO
 from thezombies.models import (Probe, Audit)
 
@@ -28,7 +28,7 @@ def inspect_catalog_dataset(taskarg):
         url = dataset.get(field, None)
         if url:
             task_dict = ResultDict(orig_task)
-            task_dict['url'] = url
+            task_dict['url'] = remove_url_fragments(url)
             task_dict['url_type'] = field
             return task_dict
         return None
@@ -98,10 +98,10 @@ def inspect_catalog_dataset(taskarg):
             else:
                 logger.warn('No distribution in dataset')
         # If we've made a list of task args, we can spin off unique tasks to inspect those URLs
-        if len(all_task_args) > 0:
+        if all_task_args:
             # Make a set of the distinct URLS (there can be repeats)
             unique_urls = set([x.get('url') for x in all_task_args if x and x.get('url', False)])
-            unique_tasks = remove_duplicate_url_tasks(all_task_args, unique_urls)
+            unique_tasks = remove_duplicate_url_tasks(all_task_args, unique_urls.copy())
             # Add some stats to our probe
             probe.result['urls'] = list(unique_urls)
             probe.result['total_url_count'] = len(all_task_args)

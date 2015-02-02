@@ -23,18 +23,25 @@ session.mount('https://www.sba.gov/', InsecureHttpAdapter())
 
 def open_streaming_response(method, url):
     """
-    Open a URL for streaming. Returns a requests.Response.
+    Open a URL for streaming, making sure to indidate a non-gzip response
+    Returns a requests.Response.
     The file-like object will be available under resp.raw.
     **Don't forget to close the response object!**
     http://docs.python-requests.org/en/latest/user/advanced/#body-content-workflow
     """
     try:
-        resp = session.request(method.upper(), url, stream=True,
+        req_headers = {'Accept-Encoding': 'identity'}
+        resp = session.request(method.upper(), url, headers=req_headers, stream=True,
                                allow_redirects=True, timeout=REQUEST_TIMEOUT, verify=False)
     except Exception as e:
         logger.exception(e)
         return None
     return resp
+
+
+def remove_url_fragments(url):
+    scheme, netloc, path, params, query, fragments = urlparse(url)
+    return urlunparse((scheme, netloc, path, params, query, None))
 
 
 @task
