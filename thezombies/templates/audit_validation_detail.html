@@ -11,36 +11,7 @@
         <p>Probes: <strong>{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of {{ paginator.count }}</p>
         {% endif %}
         {% include "_pagination_links.html" %}
-
-        <table>
-        {% for probe in page_obj %}
-            <tr>
-                <th>Probe id</th>
-                {% for key in probe.result.keys %}{% ifnotequal key 'object_info' %}
-                <th>{{ key|title }}</th>{% endifnotequal %}{% endfor %}
-            </tr>
-            <tr>
-                <td>{{ probe.id }}</td>
-            {% for key, value in probe.result.items %}{% ifnotequal key 'object_info' %}
-                <td>
-                {{ value|title }}
-                </td>{% endifnotequal %}{% endfor %}
-            </tr>
-        {% comment %}
-        {% if probe.probe_type == probe.URL_PROBE %}
-        <p>{{ probe.initial.url }} &rarr; {{ probe.result.status_code }}</p>
-        {% endif %}
-        {% if probe.errors %}
-        <h5>Errors</h5>
-        <ul>
-        {% for e in probe.errors  %}
-            <li>{{ e }}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-        {% endcomment %}
-        {% endfor %}
-        </table>
+        {% include "_audit_probe_table.html" with page_obj=page_obj %}
         {% include "_pagination_links.html" %}
     </section>
 {% endblock %}

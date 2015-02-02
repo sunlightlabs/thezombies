@@ -1,0 +1,22 @@
+{% for probe in page_obj %}
+<table role="grid" width="100%">
+    <tr>
+        <th>Probe id</th>
+        <td width="70%">{{ probe.id }}</td>
+    </tr>
+    <tr>
+        <th>Probe type</th>
+        <td width="70%">{{ probe.get_probe_type_display }}</td>
+    </tr>
+    <tr>
+        <th>Previous Probe</th>
+        <td width="70%">{{ probe.previous.id|default:"None" }}</td>
+    </tr>{% for key, value in probe.result.items %}{% ifnotequal key 'object_info' %}
+    <tr>
+        <th scope="row">{{ key|title }}</th>
+        <td width="70%">
+        {{ value|truncatechars:90 }}
+        </td>{% endifnotequal %}
+    </tr>{% endfor %}
+</table>
+{% endfor %}
